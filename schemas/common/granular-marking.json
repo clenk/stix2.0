@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "granular-marking",
+  "description": "Represents a set of granular markings against content.",
+  "type": "object",
+  "properties": {
+    "content_selectors": {
+      "type": "array",
+      "description": "A list of selectors for content within the including object, represented with JSONPath",
+      "items": {
+        "type": "string"
+      }
+    },
+    "marking_refs": {
+      "type": "array",
+      "description": "A list of identifiers for data-marking objects that apply to the content selected in the content_selectors field.",
+      "items": {
+        "$ref": "file:common/identifier.json"
+      }
+    }
+  },
+  "required": ["content_selectors", "marking_refs"]
+}

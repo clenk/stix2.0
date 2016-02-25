@@ -1,4 +1,4 @@
-# STIX 2.0 Schema Development
+# STIX 2.0 MTI JSON Schema Development
 
 **NOTE: If you are looking for the latest official release of STIX, please see http://stixproject.github.io/ for the STIX 1.2 XML schemas. The schemas in this repository are DRAFT JSON schemas for STIX 2.0, are NOT OFFICIAL, and should not be used in production.**
 
