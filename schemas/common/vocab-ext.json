@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "vocab-ext",
+  "description": "Represents a value in a custom (not defined by the CTI specification) vocabulary.",
+  "type": "object",
+  "properties": {
+    "value": {
+      "description": "The value in the custom vocabulary."
+    },
+    "vocab": {
+      "type": "string",
+      "description": "A name, URI, or other identifier for the custom vocabulary."
+    }
+  },
+  "required": ["value"]
+}
