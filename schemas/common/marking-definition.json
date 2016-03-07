@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "marking-definition",
+  "description": "Abstract set of properties applied to all top-level objects.",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "core.json"
+    },
+    {
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The type of this object, which MUST be the literal `marking-definition`",
+          "enum": ["marking-definition"]
+        },
+        "definition_type": {
+          "type": "string",
+          "description": "The type of marking this represents."
+        },
+        "definition": {
+          "type": "object",
+          "description": "A representation of the actual marking, which MUST conform to the type identified in the `definition_type` field."
+        }
+      }
+    }
+  ],
+  "required": ["definition_type", "definition"]
+}

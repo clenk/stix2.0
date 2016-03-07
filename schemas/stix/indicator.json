@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "marking-definition",
+  "description": "Indicator represents a pattern of behavior that may be observed.",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "../common/core.json"
+    },
+    {
+      "$ref": "../common/descriptive-properties.json"
+    },
+    {
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The type of this object, which MUST be the literal `indicator`",
+          "enum": ["indicator"]
+        },
+        "indicator_types": {
+          "type": "array",
+          "description": "Specifies the types for this indicator.",
+          "items": {
+            "type": "string",
+            "enum": [
+              "anomalous-activity",
+              "anonymization",
+              "command-and-control",
+              "compromised",
+              "malicious-activity",
+              "watchlist"
+            ]
+          }
+        },
+        "indicator_types_ext": {
+          "type": "array",
+          "description": "Specifies the types for this indicator in an extended vocabulary.",
+          "items": {
+            "type": { "$ref": "../common/vocab-ext.json" }
+          }
+        },
+        "valid_start_time": {
+          "$ref": "../common/timestamp.json",
+          "description": "The start time for which this indicator is valid"
+        },
+        "valid_end_time": {
+          "$ref": "../common/timestamp.json",
+          "description": "The end time for which this indicator is valid"
+        },
+        "indicator_expression": {
+          "type": "object",
+          "description": "The pattern expression that, when matched, means this indicator has been detected."
+        }
+      }
+    }
+  ],
+  "required": ["indicator_expression", "indicator_types"]
+}

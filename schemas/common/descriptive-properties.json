@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "descriptive-properties",
+  "description": "Abstract set of properties applied to objects that are described with a title and description.",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "A title for this object"
+    },
+    "descriptions": {
+      "type": "array",
+      "description": "A list of descriptions for this object",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

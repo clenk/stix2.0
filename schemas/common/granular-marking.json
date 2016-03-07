@@ -15,7 +15,7 @@
       "type": "array",
       "description": "A list of identifiers for data-marking objects that apply to the content selected in the content_selectors field.",
       "items": {
-        "$ref": "file:common/identifier.json"
+        "$ref": "identifier.json"
       }
     }
   },

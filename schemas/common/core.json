@@ -9,7 +9,7 @@
       "description": "The exact name of the class of top-level object being represented."
     },
     "id": {
-      "$ref": "file:common/identifier.json",
+      "$ref": "identifier.json",
       "description": "The identifier for this object."
     },
     "spec_version": {
@@ -18,25 +18,25 @@
       "enum": ["2.0"]
     },
     "created_at": {
-      "$ref": "file:common/timestamp.json",
+      "$ref": "timestamp.json",
       "description": "The time at which this object was created."
     },
     "created_by_ref": {
-      "$ref": "file:common/identifier.json",
+      "$ref": "identifier.json",
       "description": "The identifier of the identity (organization, person, etc.) that created this object."
     },
     "object_marking_refs": {
       "type": "array",
       "description": "A list of references to data-marking objects that apply to this object.",
       "items": {
-        "$ref": "file:common/identifier.json"
+        "$ref": "identifier.json"
       }
     },
     "granular_markings": {
       "type": "array",
       "description": "A list of granular markings that apply to this object.",
       "items": {
-        "$ref": "file:common/granular-marking.json"
+        "$ref": "granular-marking.json"
       }
     }
   },
