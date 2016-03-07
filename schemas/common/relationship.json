@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "relationship",
+  "description": "Relationship represents a pattern of behavior that may be observed.",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "core.json"
+    },
+    {
+      "$ref": "../common/descriptive-properties.json"
+    },
+    {
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The type of this object, which MUST be the literal `relationship`",
+          "enum": ["relationship"]
+        },
+        "kind_of_relationship": {
+          "type": "string",
+          "description": "The descriptor for this relationship."
+        },
+        "kind_of_relationship_ext": {
+          "$ref": "vocab-ext.json",
+          "description": "The descriptor for this relationship, in a non-standard vocabulary."
+        },
+        "source_ref": {
+          "$ref": "identifier.json",
+          "description": "The ID of the source (from) object."
+        },
+        "target_ref": {
+          "$ref": "identifier.json",
+          "description": "The ID of the target (to) object."
+        },
+        "is_directional": {
+          "type": "boolean",
+          "description": "Indicates whether the relationship is directional. For values in the standard vocabulary, this attribute may be hardcoded to a particular value."
+        },
+        "confidence": {
+          "type": "integer",
+          "description": "The confidence in the accuracy of this relationship, using the credibility scale of the admirality code."
+        },
+        "confidence_ext": {
+          "$ref": "vocab-ext.json",
+          "description": "The confidence in the accuracy of this relationship, using a non-standard vocabulary."
+        }
+      }
+    }
+  ],
+  "required": ["kind_of_relationship", "source_ref", "target_ref", "is_directional", "confidence"]
+}

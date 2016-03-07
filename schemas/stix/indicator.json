@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "marking-definition",
+  "title": "indicator",
   "description": "Indicator represents a pattern of behavior that may be observed.",
   "type": "object",
   "allOf": [
