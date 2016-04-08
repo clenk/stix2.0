@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "indicator",
-  "description": "Indicator represents a pattern of behavior that may be observed.",
+  "description": "The Indicator object is a STIX TLO that uses the CybOX patterning grammar to describe something (as a general expression or exact match) that you might see or should look for and includes an assertion of what it means if you see it.",
   "type": "object",
   "allOf": [
     {
@@ -17,42 +17,52 @@
           "description": "The type of this object, which MUST be the literal `indicator`",
           "enum": ["indicator"]
         },
-        "indicator_types": {
+        "kinds_of_indicator": {
           "type": "array",
           "description": "Specifies the types for this indicator.",
-          "items": {
-            "type": "string",
-            "enum": [
-              "anomalous-activity",
-              "anonymization",
-              "command-and-control",
-              "compromised",
-              "malicious-activity",
-              "watchlist"
-            ]
-          }
+          "items": { "$ref": "#definitions/indicator-kind-cv" }
         },
-        "indicator_types_ext": {
+        "kinds_of_indicator_ext": {
           "type": "array",
           "description": "Specifies the types for this indicator in an extended vocabulary.",
-          "items": {
-            "type": { "$ref": "../common/vocab-ext.json" }
-          }
+          "items": { "$ref": "../common/vocab-ext.json" }
         },
-        "valid_start_time": {
+        "start_time": {
           "$ref": "../common/timestamp.json",
           "description": "The start time for which this indicator is valid"
         },
-        "valid_end_time": {
+        "end_time": {
           "$ref": "../common/timestamp.json",
           "description": "The end time for which this indicator is valid"
         },
-        "indicator_expression": {
-          "type": "object",
-          "description": "The pattern expression that, when matched, means this indicator has been detected."
+        "pattern": {
+          "type": "string",
+          "description": "The CybOX pattern expression that, when matched, means this indicator has been detected."
+        },
+        "confidence": {
+          "$ref": "../common/confidence.json",
+          "description": "Confidence that when the pattern for this indicator is matched, the associated context is present"
+        },
+        "confidence_ext": {
+          "$ref": "../common/vocab-ext.json",
+          "description": "Confidence that when the pattern for this indicator is matched, the associated context is present, using a third-party vocabulary"
         }
       }
     }
   ],
-  "required": ["indicator_expression", "indicator_types"]
+  "required": ["pattern", "kinds_of_indicator", "confidence"],
+  "definitions": {
+    "indicator-kind-cv": {
+      "type": "string",
+      "enum": [
+        "anomalous-activity",
+        "anonymization",
+        "command-and-control",
+        "compromised",
+        "malicious-activity",
+        "watchlist",
+        "other"
+      ]
+    }
+  }
 }

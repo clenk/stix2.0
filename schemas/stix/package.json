@@ -1,0 +1,145 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "package",
+  "description": "A grouping of TLOs that may have relationships with one another.",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "../common/core.json"
+    },
+    {
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The type of this object, which MUST be the literal `package`",
+          "enum": ["package"]
+        },
+        "attack_patterns": {
+          "type": "array",
+          "description": "List of attack patterns",
+          "items": {"$ref": "attack-pattern.json"}
+        },
+        "campaigns": {
+          "type": "array",
+          "description": "List of campaigns",
+          "items": {"$ref": "campaign.json"}
+        },
+        "configurations": {
+          "type": "array",
+          "description": "List of configurations",
+          "items": {"$ref": "configuration.json"}
+        },
+        "courses_of_action": {
+          "type": "array",
+          "description": "List of courses of action",
+          "items": {"$ref": "course-of-action.json"}
+        },
+        "exploits": {
+          "type": "array",
+          "description": "List of exploits",
+          "items": {"$ref": "exploit.json"}
+        },
+        "identities": {
+          "type": "array",
+          "description": "List of identities",
+          "items": {"$ref": "identity.json"}
+        },
+        "incidents": {
+          "type": "array",
+          "description": "List of incidents",
+          "items": {"$ref": "incident.json"}
+        },
+        "indicators": {
+          "type": "array",
+          "description": "List of indicators",
+          "items": {"$ref": "indicator.json"}
+        },
+        "kill_chains": {
+          "type": "array",
+          "description": "List of kill chains",
+          "items": {"$ref": "kill-chain.json"}
+        },
+        "kill_chain_phases": {
+          "type": "array",
+          "description": "List of kill chain phases",
+          "items": {"$ref": "kill-chain-phase.json"}
+        },
+        "malicious_infrastructures": {
+          "type": "array",
+          "description": "List of malicious infrastructures",
+          "items": {"$ref": "malicious-infrastructure.json"}
+        },
+        "malicious_tools": {
+          "type": "array",
+          "description": "List of malicious tools",
+          "items": {"$ref": "malicious-tool.json"}
+        },
+        "malware": {
+          "type": "array",
+          "description": "List of malware",
+          "items": {"$ref": "malware.json"}
+        },
+        "marking_definitions": {
+          "type": "array",
+          "description": "List of marking definitions",
+          "items": {"$ref": "../common/marking-definition.json"}
+        },
+        "observations": {
+          "type": "array",
+          "description": "List of observations",
+          "items": {"$ref": "observation.json"}
+        },
+        "personas": {
+          "type": "array",
+          "description": "List of personas",
+          "items": {"$ref": "persona.json"}
+        },
+        "references": {
+          "type": "array",
+          "description": "List of references",
+          "items": {"$ref": "reference.json"}
+        },
+        "relationships": {
+          "type": "array",
+          "description": "List of relationships",
+          "items": {"$ref": "relationship.json"}
+        },
+        "reports": {
+          "type": "array",
+          "description": "List of reports",
+          "items": {"$ref": "report.json"}
+        },
+        "sightings": {
+          "type": "array",
+          "description": "List of sightings",
+          "items": {"$ref": "sighting.json"}
+        },
+        "threat_actors": {
+          "type": "array",
+          "description": "List of threat actors",
+          "items": {"$ref": "threat-actor.json"}
+        },
+        "tools": {
+          "type": "array",
+          "description": "List of tools",
+          "items": {"$ref": "tool.json"}
+        },
+        "victim_targeting": {
+          "type": "array",
+          "description": "List of victim targetings",
+          "items": {"$ref": "victim-targeting.json"}
+        },
+        "vulnerabilities": {
+          "type": "array",
+          "description": "List of vulnerabilities",
+          "items": {"$ref": "vulnerability.json"}
+        },
+        "weaknesses": {
+          "type": "array",
+          "description": "List of weaknesses",
+          "items": {"$ref": "weakness.json"}
+        }
+      }
+    }
+  ]
+}

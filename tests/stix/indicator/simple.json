@@ -3,6 +3,7 @@
   "id": "indicator--f3c5ae03-c324-4ceb-a510-5176b78a0ee3",
   "spec_version": "2.0",
   "created_time": "2016-02-01T01:01:01Z",
-  "indicator_types": ["watchlist"],
-  "indicator_expression": {}
+  "kinds_of_indicator": ["watchlist"],
+  "pattern": "blah",
+  "confidence": 80
 }

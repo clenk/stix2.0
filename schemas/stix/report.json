@@ -1,0 +1,75 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "report",
+  "description": "A grouping of asserted related TLOs for purposes of reporting.",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "../common/core.json"
+    },
+    {
+      "$ref": "../common/descriptive-properties.json"
+    },
+    {
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The type of this object, which MUST be the literal `report`",
+          "enum": ["report"]
+        },
+        "intents": {
+          "type": "array",
+          "description": "Specifies the intended purposes or uses of this report.",
+          "items": { "$ref": "#definitions/report-intent-cv" }
+        },
+        "intents_ext": {
+          "type": "array",
+          "description": "Specifies alternate intended purposes or uses of this report.",
+          "items": { "$ref": "../common/vocab-ext.json" }
+        },
+        "report_contains_refs": {
+          "type": "array",
+          "description": "Specifies the objects that are in this report.",
+          "items": { "$ref": "../common/identifier.json" }
+        },
+        "confidence": {
+          "$ref": "../common/confidence.json",
+          "description": "The confidence that the objects contained in this report are related as asserted by the title, description, and intents using the standard confidence vocabulary."
+        },
+        "confidence_ext": {
+          "$ref": "../common/vocab-ext.json",
+          "description": "The confidence that the objects contained in this report are related as asserted by the title, description, and intents using a non-standard confidence vocabulary."
+        }
+      }
+    }
+  ],
+  "required": ["title", "intents", "confidence"],
+  "definitions": {
+    "report-intent-cv": {
+      "type": "string",
+      "enum": [
+        "collective-threat-intelligence",
+        "threat-report",
+        "indicators",
+        "indicators-phishing",
+        "indicators-watchlist",
+        "indicators-malware-artifacts",
+        "indicators-network-activity",
+        "indicators-endpoint-characteristics",
+        "campaign-characterization",
+        "threat-actor-characterization",
+        "exploit-characterization",
+        "attack-pattern-characterization",
+        "malware-characterization",
+        "ttp-infrastructure",
+        "ttp-tools",
+        "courses-of-action",
+        "incident",
+        "observations",
+        "observations-email",
+        "malware-samples",
+        "other"
+      ]
+    }
+  }
+}
