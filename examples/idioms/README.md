@@ -1,6 +1,6 @@
 # Notes on 1.2 STIX Idioms translated to STIX 2.0 (json)
 
-## General
+## General Comments
 * All of these idioms will be placed within a Package, even if they previously weren’t.  There is one idiom that contains reports, otherwise, they were avoided.
 * There is a lot of repetition since all TLOs require things like: created_time, spec_version, etc.  It might be useful to specify that any missing required properties can be obtained from a parent object.
 * Since created_date is required for all TLOs, if it was missing, the common one from the idiom was often used.  However, created_times on identities don't seem to fit that paradigm (i.e., identities seem more long-lived than arbitrary packages).
@@ -22,7 +22,7 @@ Idioms in italics were not translated
 none
 
 ### Command and Control IP List
-	none
+none
 
 ### Course of Action to Block Network Traffic
 * How do we handle "statement"
