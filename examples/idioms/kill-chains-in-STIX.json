@@ -1,0 +1,239 @@
+{
+  "type": "package",
+  "id": "package--44af6c39-c09b-49c5-9de2-394224b04982",
+  
+    "identities": [
+      {
+          "type": "identity",
+          "id": "identity--b38f3d24-a0a9-4424-9f84-23682fa5853b",
+          "name": "LMCO",
+          "created_time": "?"
+      },
+      
+      {
+          "type": "identity",
+          "id": "identity--15207629-c742-4a9d-83a0-dfab01dc3fb2",
+          "name": "Myself",
+          "created_time": "?"
+      }    
+    ],
+  
+    "indicators": [
+      {
+        "type": "indicator",
+        "id": "indicator--f33c2b75-aa60-4ffb-9829-3746ef233311",
+        "spec_version": "2.0",
+        "created_time": "2014-10-21T21:10:09.423000Z",
+        "description": "Resident binary which implements infostealing and credit card grabber",
+        "pattern": "?"
+      }
+   ],
+   
+   "kill_chains": [
+     {
+         "type": "kill-chain",
+         "id": "kill-chain--af3e707f-2fb9-49e5-8c37-14026ca0a5ff",
+         "spec_version": "2.0",
+         "created_time": "2014-10-21T21:10:09.423000Z",
+         "created_by_ref": "identity--b38f3d24-a0a9-4424-9f84-23682fa5853b",
+         "title": "LM Cyber Kill Chain"
+     },
+     
+          {
+         "type": "kill-chain",
+         "id": "kill-chain--2ff5b98b-0bff-4354-918f-a2dad2e4ac46",
+         "spec_version": "2.0",
+         "created_time": "2014-10-21T21:10:09.423000Z",
+         "created_by_ref": "identity--15207629-c742-4a9d-83a0-dfab01dc3fb2",
+         "title": "Organization-specific Kill Chain"
+     }
+   ],
+   
+   "kill_chain_phases": [
+     {
+         "type": "kill-chain-phase",
+         "id": "kill-chain-phase--af1016d6-a744-4ed7-ac91-00fe2272185a",
+         "spec_version": "2.0",
+         "created_time": "2014-10-21T21:10:09.423000Z",
+         "title": "Reconnaissance"
+     },
+     
+     {
+         "type": "kill-chain-phase",
+         "id": "kill-chain-phase--445b4827-3cca-42bd-8421-f2e947133c16",
+         "spec_version": "2.0",
+         "created_time": "2014-10-21T21:10:09.423000Z",
+         "title": "Weaponization"
+     },    
+     
+     {
+         "type": "kill-chain-phase",
+         "id": "kill-chain-phase--79a0e041-9d5f-49bb-ada4-8322622b162d",
+         "spec_version": "2.0",
+         "created_time": "2014-10-21T21:10:09.423000Z",
+         "title": "Delivery"
+     },    
+     
+     {
+         "type": "kill-chain-phase",
+         "id": "kill-chain-phase--f706e4e7-53d8-44ef-967f-81535c9db7d0",
+         "spec_version": "2.0",
+         "created_time": "2014-10-21T21:10:09.423000Z",
+         "title": "Exploitation"
+     },    
+     
+     {
+         "type": "kill-chain-phase",
+         "id": "kill-chain-phase--e1e4e3f7-be3b-4b39-b80a-a593cfd99a4f",
+         "spec_version": "2.0",
+         "created_time": "2014-10-21T21:10:09.423000Z",
+         "title": "Installation"
+     },    
+     
+     {
+         "type": "kill-chain-phase",
+         "id": "kill-chain-phase--d6dc32b9-2538-4951-8733-3cb9ef1daae2",
+         "spec_version": "2.0",
+         "created_time": "2014-10-21T21:10:09.423000Z",
+         "title": "Command and Control"
+     },    
+     
+     {
+         "type": "kill-chain-phase",
+         "id": "kill-chain-phase--786ca8f9-2d9a-4213-b38e-399af4a2e5d6",
+         "spec_version": "2.0",
+         "created_time": "2014-10-21T21:10:09.423000Z",
+         "title": "Actions on Objectives"
+     },    
+     
+     {
+         "type": "kill-chain-phase",
+         "id": "kill-chain-phase--6c8a64c1-cc06-45fd-9649-c2154bdd9167",
+         "spec_version": "2.0",
+         "created_time": "2014-10-21T21:10:09.423000Z",
+         "title": "Infect Machine"
+     },    
+     
+     {
+         "type": "kill-chain-phase",
+         "id": "kill-chain-phase--60933d46-bf09-4080-9c6e-b3c81113e0af",
+         "spec_version": "2.0",
+         "created_time": "2014-10-21T21:10:09.423000Z",
+         "title": "Exfiltrate Data"
+     }    
+   ],
+   
+   "relationships": [
+     {
+         "type": "relationship",
+         "id": "relationship--8cd56f27-e638-4f90-85bf-7ba31b21b254",
+         "spec_version": "2.0",
+         "created_time": "2014-10-09T21:38:50.631509Z",   
+         "kinds_of_relationships": [ 
+            "indicates"
+         ],
+         "source_ref": "indicator--efe1dec4-2f86-44ce-9977-543d15507892",
+         "target_ref": "kill-chain-phase--786ca8f9-2d9a-4213-b38e-399af4a2e5d6",
+         "is_directional": "true"
+     },
+     
+         {
+         "type": "relationship",
+         "id": "relationship--93a99a4d-d30b-4cd2-848d-1e65f62bf9f2",
+         "spec_version": "2.0",
+         "created_time": "2014-10-09T21:38:50.631509Z",
+         "kinds_of_relationships": [ 
+            "in-kill-chain"
+         ],
+         "source_ref": "kill-chain-phase--af1016d6-a744-4ed7-ac91-00fe2272185a",
+         "target_ref": "kill-chain--af3e707f-2fb9-49e5-8c37-14026ca0a5ff",
+         "is_directional": "true",
+         "ordinality": 1
+     },
+     
+     {
+         "type": "relationship",
+         "id": "relationship--cc293302-9a0b-4812-979b-86a65b5495a8",
+         "spec_version": "2.0",
+         "created_time": "2014-10-09T21:38:50.631509Z",
+         "kinds_of_relationships": [ 
+            "in-kill-chain"
+         ],
+         "source_ref": "kill-chain-phase--445b4827-3cca-42bd-8421-f2e947133c16",
+         "target_ref": "kill-chain--af3e707f-2fb9-49e5-8c37-14026ca0a5ff",
+         "is_directional": "true",
+         "ordinality": 2
+     },
+     
+          {
+         "type": "relationship",
+         "id": "relationship--c5f1e600-5e53-435b-a09e-748054a18440",
+         "spec_version": "2.0",
+         "created_time": "2014-10-09T21:38:50.631509Z",
+         "kinds_of_relationships": [ 
+            "in-kill-chain"
+         ],
+         "source_ref": "kill-chain-phase--79a0e041-9d5f-49bb-ada4-8322622b162d",
+         "target_ref": "kill-chain--af3e707f-2fb9-49e5-8c37-14026ca0a5ff",
+         "is_directional": "true",
+         "ordinality": 3
+     },
+     
+          {
+         "type": "relationship",
+         "id": "relationship--040365d0-7bf3-4374-a9d1-823fc2cb41b5",
+         "spec_version": "2.0",
+         "created_time": "2014-10-09T21:38:50.631509Z",
+         "kinds_of_relationships": [ 
+            "in-kill-chain"
+         ],
+         "source_ref": "kill-chain-phase--f706e4e7-53d8-44ef-967f-81535c9db7d0",
+         "target_ref": "kill-chain--af3e707f-2fb9-49e5-8c37-14026ca0a5ff",
+         "is_directional": "true",
+         "ordinality": 4
+     },
+     
+          {
+         "type": "relationship",
+         "id": "relationship--c01e904a-7808-46ac-90e4-f1a4e5d81fca",
+         "spec_version": "2.0",
+         "created_time": "2014-10-09T21:38:50.631509Z",
+         "kinds_of_relationships": [ 
+            "in-kill-chain"
+         ],
+         "source_ref": "kill-chain-phase--e1e4e3f7-be3b-4b39-b80a-a593cfd99a4f",
+         "target_ref": "kill-chain--af3e707f-2fb9-49e5-8c37-14026ca0a5ff",
+         "is_directional": "true",
+         "ordinality": 5
+     },
+     
+          {
+         "type": "relationship",
+         "id": "relationship--cd15c4b3-9113-43eb-a611-81c3c63c3fee",
+         "spec_version": "2.0",
+         "created_time": "2014-10-09T21:38:50.631509Z",
+         "kinds_of_relationships": [ 
+            "in-kill-chain"
+         ],
+         "source_ref": "kill-chain-phase--d6dc32b9-2538-4951-8733-3cb9ef1daae2",
+         "target_ref": "kill-chain--af3e707f-2fb9-49e5-8c37-14026ca0a5ff",
+         "is_directional": "true",
+         "ordinality": 6
+     },
+     
+     {
+         "type": "relationship",
+         "id": "relationship--2bd3538a-78ac-499e-bc19-6626e3c34b7b",
+         "spec_version": "2.0",
+         "created_time": "2014-10-09T21:38:50.631509Z",
+         "kinds_of_relationships": [ 
+            "in-kill-chain"
+         ],
+         "source_ref": "kill-chain-phase--786ca8f9-2d9a-4213-b38e-399af4a2e5d6",
+         "target_ref": "kill-chain--af3e707f-2fb9-49e5-8c37-14026ca0a5ff",
+         "is_directional": "true",
+         "ordinality": 7
+     }
+   ]
+}
+  

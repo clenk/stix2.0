@@ -1,0 +1,16 @@
+{
+  "type": "package",
+  "id": "package--44af6c39-c09b-49c5-9de2-394224b04982",
+
+  "indicators": [
+    {
+      "type": "indicator",
+      "id": "indicator--d81f86b9-975b-bc0b-775e-810c5ad45a4f",
+      "spec_version": "2.0",
+      "created_time": "?",
+      "kinds_of_indicator": [ "URL Watchlist" ],
+      "title": "Malicious site hosting downloader",
+      "pattern": "url-object:value = 'http://x4z9arb.cn/4712'"
+    }
+  ]
+}

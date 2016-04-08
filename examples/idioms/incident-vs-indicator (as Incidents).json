@@ -1,0 +1,70 @@
+{
+  "type": "package",
+  "id": "package--44af6c39-c09b-49c5-9de2-394224b04982",
+  
+  "incidents": [
+    {
+       "type": "incident",
+       "id": "incident--da4e5808-0159-497a-be65-a65c8974f027",
+       "spec_version": "2.0",
+       "created_time": "2014-08-25T13:49:37.079000Z",
+       "title":  "192.168.1.1", 
+       "time_of_first_malicious_action": "2014-01-01T09:23:23Z"
+    }
+  ],
+  
+  "malware": [
+    {
+      "type": "malware",
+      "id": "malware--d6b60324-a1b8-4d51-8c26-3aef6351371d",
+      "spec_version": "2.0",
+      "created_time": "2014-08-22T20:17:38.959000Z",
+      "title": "zbot",
+      "kind_of_malware": [ "Bot" ] 
+    },
+  ],
+  
+  "observations": [
+    {
+       "type": "observation",
+       "id": "observation--57501ad9-3b55-44aa-a084-eb55b1a84301",
+       "spec_version": "2.0",
+       "created_time": "2014-08-22T20:17:38.959000Z", 
+       "objects": [
+        {
+              "type": "ipv4addr-object",
+              "id": "ipv4addr-object--cbff060f-0010-4f36-9e45-48df756871e1",
+              "value:": "192.168.1.1"
+          }
+       ]
+    }
+  ],
+  
+  "relationships": [
+    {
+       "type": "relationship",
+        "id": "relationship--d56d54c4-a25f-4147-9cf7-5187f2c42024",
+        "spec_version": "2.0",
+        "created_time": "2014-08-22T20:17:38.959000Z", 
+        "kinds_of_relationships": [ 
+            "leverages"
+        ],
+        "source_ref": "incident--da4e5808-0159-497a-be65-a65c8974f027",
+        "target_ref": "malware--d6b60324-a1b8-4d51-8c26-3aef6351371d",
+        "is_directional": "true"
+    },  
+    
+    {
+       "type": "relationship",
+        "id": "relationship--b0b2ba2a-b568-4ba4-b90f-4f4615a677f8",
+        "spec_version": "2.0",
+        "created_time": "2014-08-22T20:17:38.959000Z", 
+        "kinds_of_relationships": [ 
+            "evidenced-by"
+        ],
+        "source_ref": "incident--da4e5808-0159-497a-be65-a65c8974f027",
+        "target_ref": "observation--57501ad9-3b55-44aa-a084-eb55b1a84301",
+        "is_directional": "true"
+    } 
+  ]
+}

@@ -1,0 +1,87 @@
+{
+  "type": "package",
+  "id": "package--44af6c39-c09b-49c5-9de2-394224b04982",
+
+  "indicators": [
+    {
+        "type": "indicator",
+        "id": "indicator--efe1dec4-2f86-44ce-9977-543d15507892",
+        "spec_version": "2.0",
+        "created_time": "2014-10-09T21:38:50.631509Z",
+        "title": "Malicious executable",
+        "description": "Resident binary which implements infostealing and credit card grabber",
+        "pattern": "?"
+    }
+   ],
+   
+   "kill_chains": [
+     {
+         "type": "kill-chain",
+         "id": "kill-chain--13c00902-fc04-4d63-9362-29afedd50805",
+         "spec_version": "2.0",
+         "created_time": "2014-10-09T21:38:50.631509Z",
+         "title": "Organization-specific Kill Chain"
+     }
+   ],
+   
+   "kill_chain_phases": [
+     {
+         "type": "kill-chain-phase",
+         "id": "kill-chain-phase--32628418-b677-4bb3-8543-3e7e6c0c7500",
+         "spec_version": "2.0",
+         "created_time": "2014-10-09T21:38:50.631509Z",
+         "title": "Infect Machine"
+     },
+     
+    {
+         "type": "kill-chain-phase",
+         "id": "kill-chain-phase--3ffb6f6d-042f-49a4-8eea-0e0b6686090b",
+         "spec_version": "2.0",
+         "created_time": "2014-10-09T21:38:50.631509Z",
+         "title": "Exfiltrate Data"
+     }     
+   ],
+   
+   "relationships": [
+     {
+         "type": "relationship",
+         "id": "relationship--39b62fb5-3fde-4081-8992-73d7a496c7a8",
+         "spec_version": "2.0",
+         "created_time": "2014-10-09T21:38:50.631509Z",   
+         "kinds_of_relationships": [ 
+            "indicates"
+         ],
+         "source_ref": "indicator--efe1dec4-2f86-44ce-9977-543d15507892",
+         "target_ref": "kill-chain-phase--32628418-b677-4bb3-8543-3e7e6c0c7500",
+         "is_directional": "true"
+     },
+     
+         {
+         "type": "relationship",
+         "id": "relationship--601f38b0-5916-4012-bd9b-d87ec11c147a",
+         "spec_version": "2.0",
+         "created_time": "2014-10-09T21:38:50.631509Z",
+         "kinds_of_relationships": [ 
+            "in-kill-chain"
+         ],
+         "source_ref": "kill-chain-phase--32628418-b677-4bb3-8543-3e7e6c0c7500",
+         "target_ref": "kill-chain--13c00902-fc04-4d63-9362-29afedd50805",
+         "is_directional": "true",
+         "ordinality": 1
+     },
+     
+         {
+         "type": "relationship",
+         "id": "relationship--c0ec0e03-6752-49f3-9f2f-77fd01a374cd",
+         "spec_version": "2.0",
+         "created_time": "2014-10-09T21:38:50.631509Z",
+         "kinds_of_relationships": [ 
+            "in-kill-chain"
+         ],
+         "source_ref": "kill-chain-phase--3ffb6f6d-042f-49a4-8eea-0e0b6686090b",
+         "target_ref": "kill-chain--13c00902-fc04-4d63-9362-29afedd50805",
+         "is_directional": "true",
+         "ordinality": 2
+     }
+   ]
+}

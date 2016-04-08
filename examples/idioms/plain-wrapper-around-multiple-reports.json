@@ -1,0 +1,66 @@
+{
+  "type": "package",
+  "id": "package--50578bc7-bb17-4f31-abf2-d5827d131368",
+  "created_time": "2015-05-07T14:22:14.761012Z",
+  
+  "campaigns": [
+    {
+        "type": "campaign",
+        "id": "campaign--1855cb8a-d96c-4859-a450-abb1e7c061f2",
+        "spec_version": "2.0",
+        "created_time": "2015-05-07T14:22:14.760144Z",    
+        "title": "Campaign against ICS"
+    }
+  ],
+  
+  "identities": [
+    {
+          "type": "identity",
+          "id": "identity--d7ae33db-0111-45e7-9adb-75a7b081859a",
+          "name": "Government Sharing Program - GSP",
+          "created_time": "?"
+    }
+  ],
+  
+  "malware": [
+    {
+      "type": "malware",
+      "id": "malware--66647c79-5766-4ca7-ab8a-a579056e3c83",
+      "spec_version": "2.0",
+      "created_time": "2015-05-07T14:22:14.760302Z",
+      "title": "DrownedRat",
+      "kind_of_malware": [ "remote-access-trojan" ] 
+    }
+  ],
+  
+  "reports": [
+  {
+      "type": "report",   
+      "id": "report--41e59083-e2d9-4e4b-9095-ebd1eb2f9350",
+      "spec_version": "2.0",
+      "created_time": "2015-05-07T14:22:14.760467Z",
+      "created_by_ref": "identity--d7ae33db-0111-45e7-9adb-75a7b081859a",
+      "title": "Report on Adversary Alpha's Campaign against the Industrial Control Sector",
+      "descriptions": ["Adversary Alpha has a campaign against the ICS sector!"],
+      "intents": ["campaign-characterization"],
+      "report_contains_refs": [
+        "campaign--1855cb8a-d96c-4859-a450-abb1e7c061f2"
+      ]
+    },
+    
+    {
+      "type": "report",   
+      "id": "report--bd9cdb35-16a3-4b20-927a-3ae97d5ec4b9",
+      "spec_version": "2.0",
+      "created_time": "2015-05-07T14:22:14.760756Z",
+      "created_by_ref": "identity--d7ae33db-0111-45e7-9adb-75a7b081859a",
+      "title": "Indicators for Malware DrownedRat",
+      "descriptions": ["Adversary Alpha has a campaign against the ICS sector!"],
+      "intents": ["indicators-malware-artifacts"],
+      "report_contains_refs": [
+        "malware--66647c79-5766-4ca7-ab8a-a579056e3c83"
+      ]
+    }
+  ]
+}
+  

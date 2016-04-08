@@ -1,0 +1,64 @@
+{
+  "type": "package",
+  "id": "package--44af6c39-c09b-49c5-9de2-394224b04982",
+  
+  "identity": [
+    {
+       "type": "identity",
+       "id": "identity--cd64aaa6-b1c0-4026-8ea1-14ff5a19e5fb",
+       "name": "Sample Investigations, LLC",
+       "created_time": "?"
+    },
+    
+    {
+       "type": "identity",
+       "id": "identity--dd8637b7-51b4-48f0-9e3c-a2b23b3a2dd7",
+       "name": "Cyber Tech Dynamics",
+       "created_time": "?"
+    }
+    
+  ],
+
+"incidents": [
+    {
+       "type": "incident",
+       "id": "incident--8236b4a2-abe0-4b56-9347-288005c4bb92",
+       "spec_version": "2.0",
+       "created_time": "2014-11-18T23:40:08.061362Z",
+       "title":  "Breach of Cyber Tech Dynamics",
+       "description": "Intrusion into enterprise network",
+       "time_of_initial_compromise": "2012-01-30T00:00:00Z",
+       "time_of_incident_discovery": "2012-05-10T00:00:00Z",
+       "time_of_restoration_achieved": "2012-08-10T00:00:00Z",
+       "time_of_incident_reported": "2012-12-10T00:00:00Z"
+    }
+  ],
+  
+  "relationships": [
+      {
+        "type": "relationship",
+        "id": "relationship--da843787-fa3e-48cc-8368-3a9c9c261189",
+        "spec_version": "2.0",
+        "created_time": "2014-11-18T23:40:08.061362Z", 
+        "kinds_of_relationships": [ 
+            "reported-by"
+        ],
+        "source_ref": "incident--8236b4a2-abe0-4b56-9347-288005c4bb92",
+        "target_ref": "identity--cd64aaa6-b1c0-4026-8ea1-14ff5a19e5fb",
+        "is_directional": "true"
+    },
+    
+    {
+        "type": "relationship",
+        "id": "relationship--90f7a645-6771-408c-b237-7ed6aba7e5fd",
+        "spec_version": "2.0",
+        "created_time": "2014-11-18T23:40:08.061362Z", 
+        "kinds_of_relationships": [ 
+            "victim-of"
+        ],
+        "source_ref": "incident--8236b4a2-abe0-4b56-9347-288005c4bb92",
+        "target_ref": "identity--dd8637b7-51b4-48f0-9e3c-a2b23b3a2dd7",
+        "is_directional": "true"
+    }
+  ]
+}

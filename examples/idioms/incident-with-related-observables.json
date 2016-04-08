@@ -1,0 +1,81 @@
+{
+  "type": "package",
+  "id": "package--44af6c39-c09b-49c5-9de2-394224b04982",
+  
+  "incidents": [
+      {
+       "type": "incident",
+       "id": "incident--84d86106-d801-489b-87b6-d56bac58e6c1",
+       "spec_version": "2.0",
+       "created_time": "2014-09-15T14:37:54.297669Z",
+       "title":  "Malicious files detected"
+      }
+  ],
+  
+  "observations": [
+    {
+       "type": "observation",
+       "id": "observation--0fd77202-c962-41c7-b90f-a906ab3b5392",
+       "spec_version": "2.0",
+       "created_time": "2014-09-15T14:37:54.297669Z", 
+       "objects": [
+         {
+              "type": "file-object",
+              "id": "file-object--043d8340-0300-46ee-b3bd-27693c8f64b7",
+              "file_name:": "readme.doc.exe",
+              "hashes": {
+                  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              },
+              "size": 40891
+          }
+       ]
+    },
+    
+    {
+       "type": "observation",
+       "id": "observation--b74949f0-cf41-4094-9b80-240201a96b60",
+       "spec_version": "2.0",
+       "created_time": "2014-09-15T14:37:54.297669Z", 
+       "objects": [
+        {
+              "type": "file-object",
+              "id": "file-object--bc006562-2330-4fd1-a938-8f975eefbc71",
+              "file_name:": "readme.doc.exe",
+              "hashes": {
+                  "sha256": "d7a8fbb307d7809469ca9abcb0082e4f8d5651e46d3cdb762d02d0bf37c9e592"
+              },
+              "size": 40891
+          }
+       ]
+    }
+  ],
+  
+  "relationships": [
+    {
+        "type": "relationship",
+        "id": "relationship--489f7188-84db-4dd1-b9d7-25498149a126",
+        "spec_version": "2.0",
+        "created_time": "2014-09-15T14:37:54.297669Z", 
+        "kinds_of_relationships": [ 
+            "evidenced-by"
+        ],
+        "source_ref": "incident--84d86106-d801-489b-87b6-d56bac58e6c1",
+        "target_ref": "observation--0fd77202-c962-41c7-b90f-a906ab3b5392",
+        "is_directional": "true"
+    },
+    
+    {
+        "type": "relationship",
+        "id": "relationship--88b0b03a-6097-4d01-abf7-8854a5ee75bd",
+        "spec_version": "2.0",
+        "created_time": "2014-09-15T14:37:54.297669Z", 
+        "kinds_of_relationships": [ 
+            "evidenced-by"
+        ],
+        "source_ref": "incident--84d86106-d801-489b-87b6-d56bac58e6c1",
+        "target_ref": "observation--b74949f0-cf41-4094-9b80-240201a96b60",
+        "is_directional": "true"
+    },
+  ]
+}
+  

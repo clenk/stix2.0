@@ -1,0 +1,55 @@
+{
+  "type": "package",
+  "id": "package--44af6c39-c09b-49c5-9de2-394224b04982",
+  
+  "courses_of_action": [
+    {
+        "type": "course_of_action",
+        "id": "course_of_action--55f57cc7-ddd5-467b-a3a2-6fd602549d9e",
+        "spec_version": "2.0",
+        "created_time": "?", 
+        "kind_of_coa": "perimeter-blocking",
+        "stage": "response",
+        "impact": {
+            "value": "low",
+            "description": "This IP address is not used for legitimate hosting so there should be no operational impact."
+        },
+        "impact": {
+            "value": "low"
+        }
+    }
+  ],
+  
+  "observations": [
+   {
+       "type": "observation",
+       "id": "observation--e04425e4-60a2-4d91-a9f9-0ca956f19edb",
+       "spec_version": "2.0",
+       "created_time": "?", 
+       "objects": [
+        {
+              "type": "ipv4addr-object",
+              "id": "ipv4addr-object--d5bc7186-319d-44e0-85f4-0b65f59034a3",
+              "value:": "10.10.10.10"
+          }
+       ]
+    }
+  ],
+  
+  "relationships": [
+   {
+       "type": "relationship",
+        "id": "relationship--b2dae1ac-53bf-4d1e-b478-fdc11018c649",
+        "spec_version": "2.0",
+        "created_time": "?", 
+        "kinds_of_relationships": [ 
+            "evidenced-by"
+        ],
+        "source_ref": "course_of_action--55f57cc7-ddd5-467b-a3a2-6fd602549d9e",
+        "target_ref": "observation--e04425e4-60a2-4d91-a9f9-0ca956f19edb",
+        "is_directional": "true"
+    }
+  ]
+}
+  
+  

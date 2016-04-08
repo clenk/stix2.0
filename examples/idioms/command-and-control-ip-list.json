@@ -1,0 +1,102 @@
+{
+  "type": "package",
+  "id": "package--44af6c39-c09b-49c5-9de2-394224b04982",
+  
+  "malicious-infrastructure": [
+    {
+        "type": "malicious-infrastructure",
+        "id": "malicious-infrastructure--dd955e08-16d0-6f08-5064-50d9e7a3104d",
+        "spec_version": "2.0",
+        "created_time": "2014-02-20T09:00:00.000000Z",
+        "title": "Malware C2 Channel",
+        "kinds_of_malicious-infrastructure": [ "other" ],
+        "kinds_of_malicious-infrastructure_ext": [ 
+            {
+                "value": "malware-c2"
+            } 
+         ]
+    }
+  ],
+  
+  "observations": [
+ 
+    {
+        "type": "observation",
+        "id": "observation--b57aa65f-9598-04fb-a9d1-5094c36d5dc4",
+        "spec_version": "2.0",
+        "created_time": "2014-02-20T09:00:00.000000Z",
+        "objects": [
+          {
+              "type": "ipv4addr-object",
+              "id": "ipv4addr-object--d7fcce87-0e98-4537-81bf-1e7ca9ad3734",
+              "value:": "198.51.100.2"
+          }
+        ]       
+    },
+    {
+        "type": "observation",
+        "id": "observation--19c16346-0eb4-99e2-00bb-4ec3ed174cac",
+        "spec_version": "2.0",
+        "created_time": "2014-02-20T09:00:00.000000Z",
+        "objects": [
+          {
+              "type": "ipv4addr-object",
+              "id": "ipv4addr-object--f4fac80a-1239-47cc-b0e6-771b1a73f817",
+              "value:": "198.51.100.17"             
+          }
+        ]
+    },
+    {
+        "type": "observation",
+        "id": "observation--c8c32b6e-2ea8-51c4-6446-7f5218072f27",
+        "spec_version": "2.0",
+        "created_time": "2014-02-20T09:00:00.000000Z",
+        "objects": [
+          {
+              "type": "ipv4addr-object",
+              "id": "ipv4addr-object--174bf9a3-f163-4919-9119-b52598f97ce3",
+              "value:": "198.51.100.17"                  
+          }
+        ]
+    },
+  ],
+  
+  "relationships": [
+    {
+        "type": "relationship",
+        "id": "relationship--d7a8ed2d-ebd8-41af-a5b6-7b55b60e2799",
+        "spec_version": "2.0",
+        "created_time": "2014-02-20T09:00:00.000000Z",
+        "kinds_of_relationships": [ 
+            "evidenced-by"
+        ],
+        "source_ref": "malicious-infrastructure--dd955e08-16d0-6f08-5064-50d9e7a3104d",
+        "target_ref": "observation--c8c32b6e-2ea8-51c4-6446-7f5218072f27",
+        "is_directional": "true"
+    },
+    {
+        "type": "relationship",
+        "id": "relationship--d76b1d1a-65f7-4daa-b7f9-606bb2f245a6",
+        "spec_version": "2.0",
+        "created_time": "2014-02-20T09:00:00.000000Z",
+        "kinds_of_relationships": [ 
+            "evidenced-by"
+        ],
+        "source_ref": "malicious-infrastructure--dd955e08-16d0-6f08-5064-50d9e7a3104d",
+        "target_ref": "observation--b57aa65f-9598-04fb-a9d1-5094c36d5dc4",
+        "is_directional": "true"
+    },
+    {
+        "type": "relationship",
+        "id": "relationship--752efb82-681d-4f71-9459-5c49ee4491fc",
+        "spec_version": "2.0",
+        "created_time": "2014-02-20T09:00:00.000000Z",
+        "kinds_of_relationships": [ 
+            "evidenced-by"
+        ],
+        "source_ref": "malicious-infrastructure--dd955e08-16d0-6f08-5064-50d9e7a3104d",
+        "target_ref": "observation--19c16346-0eb4-99e2-00bb-4ec3ed174cac",
+        "is_directional": "true"
+    }
+  ]
+}
