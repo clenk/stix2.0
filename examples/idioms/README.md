@@ -13,7 +13,9 @@
 
 ## Comments for Individual Idioms
 
-### Assets Affected in an Incident
+Idioms in italics were not translated
+
+### *Assets Affected in an Incident*
 * This idiom and the currently defined asset in 2.0 are too disimilar at this time.
 
 ### CVE in an Exploit Target
@@ -35,7 +37,7 @@ none
 * There was an indicated TTP, which I assumed is malware.
 * Malware requires a “kind”, but the idiom gave no indication what that should be
 
-### Identifying a Threat Actor Profile
+### *Identifying a Threat Actor Profile*
 * how do we deal with CIQ is still undecided
 
 ### Incident Essentials - Who, What, When
@@ -90,7 +92,7 @@ none
 * TTP is an attack-pattern
 * why are there two indicators?
 
-### Malware Characterization using MAEC
+### *Malware Characterization using MAEC*
 * not much to this, basically a MAEC wrapper
     
 ### Malware Indicator for File Hash
@@ -100,25 +102,25 @@ none
 * malware.name -> malware.title. In MAEC?
 * The relationship name "uses-malware" was used in the idiom.  Maybe use it instead of "leverages", or generalize and just use "uses" a la "indicates"
     
-### OpenIOC Test Mechanism
+### *OpenIOC Test Mechanism*
 * Is this idiom useful in 2.0?
 
 ### Plain Wrapper Around Multiple Reports
 * added malware kind because it is required - assumed it was a RAT based on its name
 * is there a reason that the title of the second report mentioned indicators, but there are none in the idiom?
     
-### Snort Test Mechanism
+### *Snort Test Mechanism*
 * Not part of 2.0 yet
 
 ### Threat Actor Leveraging Attack Patterns and Malware
 * no timestamps
 
-### Victim Targeting by Sectors
+### *Victim Targeting by Sectors*
 * how do we deal with CIQ is still undecided
 
 ### Victim Targeting for a Campaign
 * victim-targeting.target is not really defined sufficently to complete this idiom
     
-### Yara Test Mechanism
+### *Yara Test Mechanism*
 * Not part of 2.0 yet
 
