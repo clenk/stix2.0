@@ -6,7 +6,7 @@ from urllib import urlopen
 print ""
 
 schemas_dir = os.path.abspath(os.path.dirname(__file__) + '/../schemas/')
-examples_dir = os.path.abspath(os.path.dirname(__file__) + '/../examples/')
+examples_dir = os.path.abspath(os.path.dirname(__file__) + '/../tests/')
 
 # This is necessary because the URL resolver doesn't think a filename is a file URL. Setting the handler for the "" URL scheme to default to file (as here) solves it
 def default_handler (uri):
@@ -35,17 +35,24 @@ for root, dirnames, filenames in os.walk(examples_dir):
 # Go through each test case, loading the appropriate schema based on directory hierarchy
 all_errors = []
 for test_case in matches:
-    schema_path = ('/').join(test_case.split('/examples/')[1].split('/')[0:-1]) + '.json'
+    schema_path = ('/').join(test_case.split('/tests/')[1].split('/')[0:-1]) + '.json'
     with open(schemas_dir + '/' + schema_path) as schema_file:
+        cont = True
         try:
             schema = json.load(schema_file)
-            resolver = RefResolver(schemas_dir + '/' + schema_path, schema, {}, True, {"": default_handler})
-            validator = Draft4Validator(schema, resolver=resolver)
-            run_test(schema, validator, test_case)
-        except ValueError:
-            all_errors.append({'file': test_case, 'errors': ['invalid JSON']})
-        except schema_exceptions.RefResolutionError:
-            all_errors.append({'file': test_case, 'errors': ['invalid JSON Schema']})
+        except ValueError as e:
+            all_errors.append({'file': test_case, 'errors': ['invalid JSON in schema or included schema: ' + schema_file.name + "\n" + str(e)]})
+            cont = False
+
+        if cont:
+            try:
+                resolver = RefResolver(schemas_dir + '/' + schema_path, schema, {}, True, {"": default_handler})
+                validator = Draft4Validator(schema, resolver=resolver)
+                run_test(schema, validator, test_case)
+            except ValueError as e:
+                all_errors.append({'file': schema_path, 'errors': ['invalid JSON in instance: ' + test_case + "\n" + str(e)]})
+            except schema_exceptions.RefResolutionError:
+                all_errors.append({'file': test_case, 'errors': ['invalid JSON Schema']})
 
 # Print results
 for errors in all_errors:

@@ -17,7 +17,7 @@
       "description": "The version of the CTI core specification that this object conforms to.",
       "enum": ["2.0"]
     },
-    "created_at": {
+    "created_time": {
       "$ref": "timestamp.json",
       "description": "The time at which this object was created."
     },
@@ -40,5 +40,5 @@
       }
     }
   },
-  "required": ["type", "id", "spec_version", "created_at"]
+  "required": ["type", "id", "spec_version", "created_time"]
 }

@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "impact",
+  "description": "Impact is used throughout the STIX specification wherever a construct needs to represent estimated or actual impact as a result of a threat.",
+  "type": "object",
+  "properties": {
+    "level": {
+      "type": "integer",
+      "description": "The estimated severity of the impact"
+    },
+    "intended_effects": {
+      "type": "array",
+      "items": {
+        "$ref": "../vocabularies/intended-effect-cv.json"
+      },
+      "description": "A list of effects that the threat intends to create (e.g. fraud, harrassment)"
+    },
+    "description": {
+      "type": "string",
+      "description": "A prose description of the impact"
+    },
+    "confidence": {
+      "$ref": "confidence.json",
+      "description": "The confidence of this impact statement, using the STIX vocabulary"
+    },
+    "confidence_ext": {
+      "$ref": "vocab-ext.json"
+    }
+  }
+}
