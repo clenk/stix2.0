@@ -18,7 +18,7 @@
         "id": "indicator--c43a0a05-e8d2-4f64-ae37-3f3fb153f8d9",
         "spec_version": "2.0",
         "created_time": "2014-09-09T19:58:39.609000Z",
-        "kinds_of_indicator": ["ip-watchlist"],
+        "kinds_of_indicator": ["watchlist"],
         "pattern": "ipv4addr-object.value = '10.0.0.0'"
     }
   ],
