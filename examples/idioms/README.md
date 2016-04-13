@@ -35,7 +35,7 @@ none
 * victim-targeting.target is not really defined sufficently to complete this idiom
     
 ### File Hash Reputation
-* where does indicator:confidence go?
+* indicator:confidence is specified as a cv, but the JSON schema says its an integer.
 * There was an indicated TTP, which I assumed is malware.
 * Malware requires a “kind”, but the idiom gave no indication what that should be
 
@@ -90,7 +90,7 @@ none
 * how do we add extra properties on relationships - ordinality, and can/should it be required?
     
 ### Malicious E-mail Indicator With Attachment
-* where does indicator:confidence go?
+* indicator:confidence is specified as a cv, but the JSON schema says its an integer.
 * TTP is an attack-pattern
 * why are there two indicators?
 
