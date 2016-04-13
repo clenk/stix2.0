@@ -10,7 +10,7 @@
 * Is Package a TLO - currently it inherits from cti-core?
 * created_by_ref information is missing from the idioms, for the most part 
 * TLO arrays are specified in alphabetical order in a Package
-* indicator:confidence isn't fully defined, so it was not used, eventhough it is a required property.
+* indicator:confidence isn't fully defined, even though it is a required property.  It was used only if in the original idiom.
 
 [STIX 1.2 XML Idioms](http://stixproject.github.io/documentation/idioms/)
 
@@ -36,7 +36,6 @@ none
 * victim-targeting.target is not really defined sufficently to complete this idiom
     
 ### File Hash Reputation
-* indicator:confidence is specified as a cv, but the JSON schema says its an integer.
 * There was an indicated TTP, which I assumed is malware.
 * Malware requires a “kind”, but the idiom gave no indication what that should be
 
@@ -91,7 +90,6 @@ none
 * how do we add extra properties on relationships - ordinality, and can/should it be required?
     
 ### Malicious E-mail Indicator With Attachment
-* indicator:confidence is specified as a cv, but the JSON schema says its an integer.
 * TTP is an attack-pattern
 * why are there two indicators?
 
