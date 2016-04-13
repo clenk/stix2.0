@@ -21,6 +21,7 @@
         "created_time": "2014-10-31T15:52:13.127931Z",
         "title": "Malicious E-mail",
         "kinds_of_indicator": [ "malicious-activity" ],
+        "confidence": "low",
         "pattern": "message-object:extended_properties['email-message'].subject MATCHES /^\[IMPORTANT\] Please Review Before/ AND message-object:extended_properties['email-message'].attachments[*].name MATCHES /^Final Report.+\.exe$/"
     }
   ],
