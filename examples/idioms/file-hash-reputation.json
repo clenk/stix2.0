@@ -10,7 +10,8 @@
       "spec_version": "2.0",
       "title": "File Reputation for SHA256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "kinds_of_indicator": ["watchlist"],
-      "pattern": "file-object:hashes.sha-256 = 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'"
+      "pattern": "file-object:hashes.sha-256 = 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'",
+      "confidence": 75
     }
    ],
    
