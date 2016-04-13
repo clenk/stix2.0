@@ -8,6 +8,7 @@
         "id": "attack-pattern--d7b066aa-4091-4276-a142-29d5d81c3484",
         "spec_version": "2.0",
         "created_time": "2014-10-31T15:52:13.126765Z",
+        "title": "Phishing",
         "capec_id": "capec-98"
     }
   ],
