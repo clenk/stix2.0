@@ -10,6 +10,7 @@
 * Is Package a TLO - currently it inherits from cti-core?
 * created_by_ref information is missing from the idioms, for the most part 
 * TLO arrays are specified in alphabetical order in a Package
+* indicator:confidence isn't fully defined, so it was not used, eventhough it is a required property.
 
 [STIX 1.2 XML Idioms](http://stixproject.github.io/documentation/idioms/)
 
