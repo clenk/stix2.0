@@ -43,7 +43,7 @@
       }
     }
   ],
-  "required": ["title", "intents", "confidence", report_contains_refs],
+  "required": ["title", "intents", "confidence", "report_contains_refs"],
   "definitions": {
     "report-intent-cv": {
       "type": "string",
