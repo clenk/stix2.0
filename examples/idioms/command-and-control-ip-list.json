@@ -25,13 +25,15 @@
         "id": "observation--b57aa65f-9598-04fb-a9d1-5094c36d5dc4",
         "spec_version": "2.0",
         "created_time": "2014-02-20T09:00:00.000000Z",
-        "objects": [
-          {
-              "type": "ipv4addr-object",
-              "id": "ipv4addr-object--d7fcce87-0e98-4537-81bf-1e7ca9ad3734",
-              "value:": "198.51.100.2"
-          }
-        ]       
+        "cybox": {
+          "objects": [
+            {
+                "type": "ipv4addr-object",
+                "id": "ipv4addr-object--d7fcce87-0e98-4537-81bf-1e7ca9ad3734",
+                "value:": "198.51.100.2"
+            }
+          ]
+        }
     },
     {
         "type": "observation",
@@ -54,7 +56,7 @@
         "objects": [
           {
               "type": "ipv4addr-object",
-              "id": "ipv4addr-object--174bf9a3-f163-4919-9119-b52598f97ce3",
+              "id": "ipv4addr-object--1",
               "value:": "198.51.100.17"                  
           }
         ]
