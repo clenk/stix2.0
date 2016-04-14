@@ -8,7 +8,7 @@
       "$ref": "core.json"
     },
     {
-      "$ref": "../common/descriptive-properties.json"
+      "$ref": "descriptive-properties.json"
     },
     {
       "properties": {
