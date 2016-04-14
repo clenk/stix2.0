@@ -42,13 +42,15 @@
        "id": "observation--6a93879e-58b9-47b0-a44a-77fdb0cf1bb7",
        "spec_version": "2.0",
        "created_time": "?", 
-       "objects": [
-        {
+       "cybox": {
+          "objects": [
+            {
               "type": "ipv4addr-object",
-              "id": "ipv4addr-object--7e4f44b8-a0f9-4940-9de4-da313b6a2827",
+              "id": "ipv4addr-object--1",
               "value:": "192.168.1.1"
-          }
-       ]
+            }
+          ]
+       }
     }
   ],
    
