@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "indicator",
-  "description": "The Indicator object is a STIX TLO that uses the CybOX patterning grammar to describe something (as a general expression or exact match) that you might see or should look for and includes an assertion of what it means if you see it.",
+  "title": "attack-pattern",
+  "description": "The Attack Pattern object is a STIX TLO that describes a general approach for attacking a system or network. In addition to the standard TTP properties, it has a reference to a CAPEC (Common Attack Pattern Enumeration and Classification - http://capec.mitre.org/) ID"},
   "type": "object",
   "allOf": [
     {
