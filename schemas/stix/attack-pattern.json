@@ -21,6 +21,7 @@
           "type": "string",
           "description": "Specifies a reference to an entry in the CAPEC dictionary.",
         }
-    
+      }
+    }
   ]
 }
