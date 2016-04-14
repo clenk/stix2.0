@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "ttp",
+  "description": "In cyber threat intelligence, TTPs represent the tactics, techniques, and procedures that are used to carry out attacks. TTPs are a type of top-level object: the attack pattern, exploit, infrastructure, malware, persona, tool, and victim targeting top-level objects are all types of TTPs.",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "../common/core.json"
+    },
+    {
+      "$ref": "../common/descriptive-properties.json"
+    },
+    {
+      "properties": {
+          "impact": {
+            "$ref": "../common/impact.json",
+            "description": "The impact on operations if this ttp were to be used."
+          }
+      }
+    }
+  ]
+}
