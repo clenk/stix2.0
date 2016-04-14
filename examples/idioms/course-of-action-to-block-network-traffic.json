@@ -26,13 +26,15 @@
        "id": "observation--e04425e4-60a2-4d91-a9f9-0ca956f19edb",
        "spec_version": "2.0",
        "created_time": "?", 
-       "objects": [
-        {
-              "type": "ipv4addr-object",
-              "id": "ipv4addr-object--d5bc7186-319d-44e0-85f4-0b65f59034a3",
-              "value:": "10.10.10.10"
-          }
-       ]
+       "cybox": {
+          "objects": [
+              {
+                "type": "ipv4addr-object",
+                "id": "ipv4addr-object--1",
+                "value:": "10.10.10.10"
+              }
+          ]
+       }
     }
   ],
   
