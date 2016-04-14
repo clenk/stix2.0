@@ -18,17 +18,19 @@
        "id": "observation--0fd77202-c962-41c7-b90f-a906ab3b5392",
        "spec_version": "2.0",
        "created_time": "2014-09-15T14:37:54.297669Z", 
-       "objects": [
-         {
+       "cybox": {
+          "objects": [
+            {
               "type": "file-object",
-              "id": "file-object--043d8340-0300-46ee-b3bd-27693c8f64b7",
+              "id": "file-object--1",
               "file_name:": "readme.doc.exe",
               "hashes": {
                   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
               },
               "size": 40891
-          }
-       ]
+            }
+          ]
+       }
     },
     
     {
@@ -36,17 +38,19 @@
        "id": "observation--b74949f0-cf41-4094-9b80-240201a96b60",
        "spec_version": "2.0",
        "created_time": "2014-09-15T14:37:54.297669Z", 
-       "objects": [
-        {
+       "cybox": {
+          "objects": [
+            {
               "type": "file-object",
-              "id": "file-object--bc006562-2330-4fd1-a938-8f975eefbc71",
+              "id": "file-object--2",
               "file_name:": "readme.doc.exe",
               "hashes": {
                   "sha256": "d7a8fbb307d7809469ca9abcb0082e4f8d5651e46d3cdb762d02d0bf37c9e592"
               },
               "size": 40891
-          }
-       ]
+            }
+          ]
+       }
     }
   ],
   
