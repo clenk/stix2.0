@@ -30,13 +30,15 @@
        "id": "observation--57501ad9-3b55-44aa-a084-eb55b1a84301",
        "spec_version": "2.0",
        "created_time": "2014-08-22T20:17:38.959000Z", 
-       "objects": [
-        {
+       "cybox": {
+          "objects": [
+            {
               "type": "ipv4addr-object",
-              "id": "ipv4addr-object--cbff060f-0010-4f36-9e45-48df756871e1",
+              "id": "ipv4addr-object--1",
               "value:": "192.168.1.1"
-          }
-       ]
+            }
+          ]
+       }
     }
   ],
   
