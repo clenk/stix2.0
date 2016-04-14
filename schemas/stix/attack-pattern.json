@@ -5,10 +5,7 @@
   "type": "object",
   "allOf": [
     {
-      "$ref": "../common/core.json"
-    },
-    {
-      "$ref": "../common/descriptive-properties.json"
+      "$ref": "ttp.json"
     },
     {
       "properties": {
