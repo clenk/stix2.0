@@ -22,7 +22,18 @@
           "description": "The impact on operations if this threat actor were successful."
         },
         "motivation": {
-          "$ref": "../common/statement.json",
+          "allOf": [
+            {
+              $ref": "../common/statement.json"
+            },
+            { 
+              "properties": {
+                "value": {
+                  "$ref": "#definitions/threat-actor-motivation-cv"
+                }
+              }
+            }
+          ],
           "description": "The motivation of this threat actor."
         },
         "sophistication": {
@@ -35,6 +46,28 @@
         }
       }
     }
-  ]
+  ],
+  "definitions": {
+    "threat-actor-motivation-cv": {
+      "type": "string",
+      "enum": [
+          "ideological",
+          "ideological-anti-corruption",
+          "ideological-anti-establishment",
+          "ideological-environmental",
+          "ideological-ethnic-or-nationalist",
+          "ideological-information-freedom",
+          "ideological-religious",
+          "ideological-security-awareness",
+          "ideological-human-rights",
+          "ego",
+          "financial-or-economic",
+          "military",
+          "opportunistic",
+          "political",
+          "other"
+      ]
+    }
+  }
 }
         
