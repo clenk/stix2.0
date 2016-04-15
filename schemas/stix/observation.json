@@ -22,7 +22,7 @@
           "$ref": "../common/timestamp.json",
           "description": "The time of the end of this observation. For single point in time observations, this should match the start time."
         },
-        "cybox": [
+        "cybox": {
           "$ref": "../common/timestamp.json",
           "description": "The CybOX content that describes what was seen."
         }
