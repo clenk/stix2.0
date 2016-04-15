@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "cybox",
+  "description": "STIX gateway to Cybox Objects",
+  "type": "object",
+  "properties": {
+    "objects": {
+      "type": "array",
+      "description": "List of CybOX objects",
+      "items": {"$ref": "../cybox/object.json"}
+    },
+    "actions": {
+      "type": "array",
+      "description": "List of CybOX actions",
+      "items": {"$ref": "../cybox/action.json"}
+    },
+    "relationships": {
+      "type": "array",
+      "description": "List of CybOX relationships",
+      "items": {"$ref": "../cybox/relationship.json"}
+    }
+  }
+}
