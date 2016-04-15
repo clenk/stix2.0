@@ -37,7 +37,18 @@
           "description": "The motivation of this threat actor."
         },
         "sophistication": {
-          "$ref": "../common/statement.json",
+          "allOf": [
+            {
+              "$ref": "../common/statement.json"
+            },
+            { 
+              "properties": {
+                "value": {
+                  "$ref": "#definitions/threat-actor-sophistication-cv"
+                }
+              }
+            }
+          ],
           "description": "The sophistication of this threat actor."
         },
         "planning_and_operational_support": {
@@ -51,21 +62,32 @@
     "threat-actor-motivation-cv": {
       "type": "string",
       "enum": [
-          "ideological",
-          "ideological-anti-corruption",
-          "ideological-anti-establishment",
-          "ideological-environmental",
-          "ideological-ethnic-or-nationalist",
-          "ideological-information-freedom",
-          "ideological-religious",
-          "ideological-security-awareness",
-          "ideological-human-rights",
-          "ego",
-          "financial-or-economic",
-          "military",
-          "opportunistic",
-          "political",
-          "other"
+        "ideological",
+        "ideological-anti-corruption",
+        "ideological-anti-establishment",
+        "ideological-environmental",
+        "ideological-ethnic-or-nationalist",
+        "ideological-information-freedom",
+        "ideological-religious",
+        "ideological-security-awareness",
+        "ideological-human-rights",
+        "ego",
+        "financial-or-economic",
+        "military",
+        "opportunistic",
+        "political",
+        "other"
+      ]
+    },
+    "threat-actor-sophistication-cv": {
+      "type": "string",
+      "enum": [
+        "innovator",
+        "expert",
+        "practitioner",
+        "novice",
+        "aspirant",
+        "other"
       ]
     }
   }
