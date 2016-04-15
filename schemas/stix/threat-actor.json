@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "threat-actor",
+  "description": "A threat actor describes an individual or group with malicious intent.",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "../common/core.json"
+    },
+    {
+      "$ref": "../common/descriptive-properties.json"
+    },
+    {
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The type of this object, which MUST be the literal `threat-actor`",
+          "enum": ["threat-actor"]
+        },
+        "impact": {
+          "$ref": "../common/impact.json",
+          "description": "The impact on operations if this threat actor were successful."
+        },
+        "motivation": {
+          "$ref": "../common/statement.json",
+          "description": "The motivation of this threat actor."
+        },
+        "sophistication": {
+          "$ref": "../common/statement.json",
+          "description": "The sophistication of this threat actor."
+        },
+        "planning_and_operational_support": {
+          "$ref": "../common/statement.json",
+          "description": "The planning and operational support available to this threat actor."
+        }
+      }
+    }
+  ]
+}
+        
