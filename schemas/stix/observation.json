@@ -28,6 +28,6 @@
         }
       }
     }
-  ]
+  ],
   "required": ["start", "end", "cybox"]
 }
