@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "sighting",
+  "description": " The Sighting object describes something (an event) that the producer would like to provide or request additional context about.",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "../common/core.json"
+    },
+    {
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The type of this object, which MUST be the literal `sighting`",
+          "enum": ["sighting"]
+        },
+        "sightings_of_refs": {
+          "type": "array",
+          "description": "List of indicator refs",
+          "items": {"$ref": "../common/identifier.json"}
+        },
+        "observation_refs": {
+          "type": "array",
+          "description": "List of observation refs",
+          "items": {"$ref": "../common/identifier.json"}
+        },
+        "count": {
+          "type": "integer",
+          "description": "Number of sightings",
+          "minimum": 0,
+          "maximum": 999999999
+        },
+        "first_seen": {
+          "$ref": "../common/timestamp.json",
+          "description": "When an Observation that matches the Indicator was first observed."
+        },
+        "last_seen": {
+          "$ref": "../common/timestamp.json",
+          "description": "When an Observation that matches the Indicator was last observed."
+        },
+        "confidence": {
+          "$ref": "../common/confidence.json",
+          "description": "?"
+        }
+      }
+    ],
+    "required": ["sighting_of_ref", "count", "first_seen", "last_seen", "confidence"]
+  }
+        
