@@ -24,7 +24,7 @@
         "motivation": {
           "allOf": [
             {
-              $ref": "../common/statement.json"
+              "$ref": "../common/statement.json"
             },
             { 
               "properties": {
