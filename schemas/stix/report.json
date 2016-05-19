@@ -17,35 +17,22 @@
           "description": "The type of this object, which MUST be the literal `report`",
           "enum": ["report"]
         },
-        "intents": {
+        "labels": {
           "type": "array",
-          "description": "Specifies the intended purposes or uses of this report.",
-          "items": { "$ref": "#definitions/report-intent-cv" }
-        },
-        "intents_ext": {
-          "type": "array",
-          "description": "Specifies alternate intended purposes or uses of this report.",
-          "items": { "$ref": "../common/vocab-ext.json" }
+          "description": "This field is an Open Vocabulary that specifies the intended purposes or uses of this report. The suggested values for this field are in report-label-cv.",
+          "items": "string"
         },
         "report_contains_refs": {
           "type": "array",
           "description": "Specifies the objects that are in this report.",
           "items": { "$ref": "../common/identifier.json" }
-        },
-        "confidence": {
-          "$ref": "../common/confidence.json",
-          "description": "The confidence that the objects contained in this report are related as asserted by the title, description, and intents using the standard confidence vocabulary."
-        },
-        "confidence_ext": {
-          "$ref": "../common/vocab-ext.json",
-          "description": "The confidence that the objects contained in this report are related as asserted by the title, description, and intents using a non-standard confidence vocabulary."
         }
       }
     }
   ],
-  "required": ["title", "intents", "confidence", "report_contains_refs"],
+  "required": ["title", "labels", "report_contains_refs"],
   "definitions": {
-    "report-intent-cv": {
+    "report-labels-cv": {
       "type": "string",
       "enum": [
         "collective-threat-intelligence",
