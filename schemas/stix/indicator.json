@@ -17,51 +17,47 @@
           "description": "The type of this object, which MUST be the literal `indicator`",
           "enum": ["indicator"]
         },
-        "kinds_of_indicator": {
+        "labels": {
           "type": "array",
-          "description": "Specifies the types for this indicator.",
-          "items": { "$ref": "#definitions/indicator-kind-cv" }
+          "description": "Specifies the types for this indicator. Open vocab - indicator-label-cv",
+          "items": "string"
         },
-        "kinds_of_indicator_ext": {
-          "type": "array",
-          "description": "Specifies the types for this indicator in an extended vocabulary.",
-          "items": { "$ref": "../common/vocab-ext.json" }
-        },
-        "start_time": {
+        "start": {
           "$ref": "../common/timestamp.json",
           "description": "The start time for which this indicator is valid"
         },
-        "end_time": {
+        "start_precision": {
+          "$ref": "../common/timestamp-precision.json",
+          "description": "The precision of the start timestamp"
+        },
+        "end": {
           "$ref": "../common/timestamp.json",
           "description": "The end time for which this indicator is valid"
+        },
+        "end_precision": {
+          "$ref": "../common/timestamp-precision.json",
+          "description": "The precision of the end timestamp"
         },
         "pattern": {
           "type": "string",
           "description": "The CybOX pattern expression that, when matched, means this indicator has been detected."
-        },
-        "confidence": {
-          "$ref": "../common/confidence.json",
-          "description": "Confidence that when the pattern for this indicator is matched, the associated context is present"
-        },
-        "confidence_ext": {
-          "$ref": "../common/vocab-ext.json",
-          "description": "Confidence that when the pattern for this indicator is matched, the associated context is present, using a third-party vocabulary"
         }
       }
     }
   ],
-  "required": ["pattern", "kinds_of_indicator", "confidence"],
+  "required": ["pattern", "labels"],
   "definitions": {
-    "indicator-kind-cv": {
+    "indicator-label-cv": {
       "type": "string",
       "enum": [
         "anomalous-activity",
         "anonymization",
+        "benign",
+        "brute-force",
         "command-and-control",
         "compromised",
-        "malicious-activity",
-        "watchlist",
-        "other"
+        "exfiltration",
+        "malicious-activity"
       ]
     }
   }
