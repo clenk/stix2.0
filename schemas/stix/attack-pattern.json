@@ -14,11 +14,30 @@
           "description": "The type of this object, which MUST be the literal `attack-pattern`",
           "enum": ["attack-pattern"]
         },
-        "capec_id": {
-          "type": "string",
-          "description": "Specifies a reference to an entry in the CAPEC dictionary.",
-        }
-      }
+        "title": {
+		   "type": "string",
+		   "description": "A name or short description used to identify this Attack Pattern."
+		},
+		"description": {
+		   "type": "string",
+		   "description": "A description that provides the recipient with context about this Attack Pattern."
+		},
+		"kill_chain_phases": {
+		   "type": "array",
+		   "description": "The list of kill chain phases for which this attack pattern is used.",
+		   "items": {
+		     "$ref": "kill_chain_phase.json"
+		   }
+		},
+		"external_references": {
+		   "type": "array",
+		   "description": "A list of external-reference objects which refer to non-STIX information."
+		   "items": {
+		     "$ref": "external-reference.json"
+		   }
+		}		
+      }	  
     }
-  ]
+  ],
+  "required": ["type", "title"]
 }

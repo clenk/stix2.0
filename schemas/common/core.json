@@ -12,7 +12,7 @@
       "$ref": "identifier.json",
       "description": "The identifier for this object."
     },
-    "spec_version": {
+    "version": {
       "type": "string",
       "description": "The version of the CTI core specification that this object conforms to.",
       "enum": ["2.0"]
@@ -21,6 +21,18 @@
       "$ref": "timestamp.json",
       "description": "The time at which this object was created."
     },
+	"modified_time": {
+      "$ref": "timestamp.json",
+      "description": "The time at which this object was modified."
+    },
+	"revoked": {
+	  "type": "boolean",
+	  "description": "Identifies whether or not this object has been revoked."
+	},
+	"version_comment": {
+	   "type": "string",
+	   "description": "A comment outlining why the new version of this object was created."
+	},
     "created_by_ref": {
       "$ref": "identifier.json",
       "description": "The identifier of the identity (organization, person, etc.) that created this object."
@@ -40,5 +52,5 @@
       }
     }
   },
-  "required": ["type", "id", "spec_version", "created_time"]
+  "required": ["type", "id", "version", "created_time", "modified_time"]
 }
