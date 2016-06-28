@@ -17,14 +17,18 @@
           "description": "The type of this object, which MUST be the literal `relationship`",
           "enum": ["relationship"]
         },
+		"title": {
+		   "type": "string",
+		   "description": "A name or short description used to identify the relationship."
+		},
+		"description": {
+		   "type": "string",
+		   "description": "A description that helps provide context about the relationship."
+		},
         "kind_of_relationship": {
           "type": "string",
           "description": "The descriptor for this relationship."
-        },
-        "kind_of_relationship_ext": {
-          "$ref": "vocab-ext.json",
-          "description": "The descriptor for this relationship, in a non-standard vocabulary."
-        },
+        },        
         "source_ref": {
           "$ref": "identifier.json",
           "description": "The ID of the source (from) object."
@@ -36,17 +40,9 @@
         "is_directional": {
           "type": "boolean",
           "description": "Indicates whether the relationship is directional. For values in the standard vocabulary, this attribute may be hardcoded to a particular value."
-        },
-        "confidence": {
-          "type": "integer",
-          "description": "The confidence in the accuracy of this relationship, using the credibility scale of the admirality code."
-        },
-        "confidence_ext": {
-          "$ref": "vocab-ext.json",
-          "description": "The confidence in the accuracy of this relationship, using a non-standard vocabulary."
-        }
+        }       
       }
     }
   ],
-  "required": ["kind_of_relationship", "source_ref", "target_ref", "is_directional", "confidence"]
+  "required": ["kind_of_relationship", "source_ref", "target_ref", "is_directional"]
 }
