@@ -5,7 +5,7 @@
   "type": "object",
   "allOf": [
     {
-      "$ref": "ttp.json"
+      "$ref": "core.json"
     },
     {
       "properties": {
@@ -31,7 +31,7 @@
 		},
 		"external_references": {
 		   "type": "array",
-		   "description": "A list of external-reference objects which refer to non-STIX information."
+		   "description": "A list of external-reference objects which refer to non-STIX information.",
 		   "items": {
 		     "$ref": "external-reference.json"
 		   }
