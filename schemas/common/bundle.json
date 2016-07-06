@@ -1,0 +1,85 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "bundle",
+  "description": "A grouping of TLOs that may have relationships with one another.",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "core.json"
+    },
+    {
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The type of this object, which MUST be the literal `bundle`.",
+          "enum": ["bundle"]
+        },
+		"spec_version": {
+		   "type": { "enum": ["spec-version-enum"]},
+		   "description": "The version of the STIX specification used to represent the content in this bundle."		   
+		},
+        "attack_patterns": {
+          "type": "array",
+          "description": "List of attack patterns",
+          "items": {"$ref": "../stix/attack-pattern.json"}
+        },		
+        "campaigns": {
+          "type": "array",
+          "description": "List of campaigns",
+          "items": {"$ref": "../stix/campaign.json"}
+        },        
+        "courses_of_action": {
+          "type": "array",
+          "description": "List of courses of action",
+          "items": {"$ref": "../stix/course-of-action.json"}
+        },        
+        "identities": {
+          "type": "array",
+          "description": "List of identities",
+          "items": {"$ref": "../stix/identity.json"}
+        },        
+        "indicators": {
+          "type": "array",
+          "description": "List of indicators",
+          "items": {"$ref": "../stix/indicator.json"}
+        },  
+        "malware": {
+          "type": "array",
+          "description": "List of malware",
+          "items": {"$ref": "../stix/malware.json"}
+        },
+        "marking_definitions": {
+          "type": "array",
+          "description": "List of marking definitions",
+          "items": {"$ref": "marking-definition.json"}
+        },
+        "observations": {
+          "type": "array",
+          "description": "List of observations",
+          "items": {"$ref": "../stix/observation.json"}
+        },       
+        "relationships": {
+          "type": "array",
+          "description": "List of relationships",
+          "items": {"$ref": "relationship.json"}
+        },
+        "reports": {
+          "type": "array",
+          "description": "List of reports",
+          "items": {"$ref": "../stix/report.json"}
+        },
+        "sightings": {
+          "type": "array",
+          "description": "List of sightings",
+          "items": {"$ref": "../stix/sighting.json"}
+        },
+        "threat_actors": {
+          "type": "array",
+          "description": "List of threat actors",
+          "items": {"$ref": "../stix/threat-actor.json"}
+        }        
+      }
+    }
+  ],
+  "required": ["type", "spec_version"]
+}

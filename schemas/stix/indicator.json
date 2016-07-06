@@ -8,7 +8,7 @@
       "$ref": "../common/core.json"
     },
     {
-      "$ref": "../common/descriptive-properties.json"
+      "$ref": "../commmon/descriptive-properties.json"
     },
     {
       "properties": {
@@ -17,6 +17,22 @@
           "description": "The type of this object, which MUST be the literal `indicator`",
           "enum": ["indicator"]
         },
+		"title": {
+		   "type": "string",
+		   "description": "A name or title used to identify this Indicator."
+		},
+		"description": {
+		   "type": "string",
+		   "description": "A description that provides the recipient with context about this Indicator potentially including its purpose and its key characteristics."
+		},
+		"pattern": {
+		   "type": "string",
+		   "description": "The CybOX pattern expression that, when matched, means this indicator has been detected."
+		},
+		"pattern_lang": {
+		   "type": { "enum": ["pattern-type-enum"]},
+		   "description": "The language used to define the pattern (in the pattern field). The default is cybox."		   
+		},		
         "labels": {
           "type": "array",
           "description": "Specifies the types for this indicator. Open vocab - indicator-label-cv",
@@ -24,28 +40,31 @@
         },
         "start": {
           "$ref": "../common/timestamp.json",
-          "description": "The start time for which this indicator is valid"
+          "description": "The start time for which this indicator is valid."
         },
         "start_precision": {
           "$ref": "../common/timestamp-precision.json",
-          "description": "The precision of the start timestamp"
+          "description": "The precision of the start timestamp."
         },
         "end": {
           "$ref": "../common/timestamp.json",
-          "description": "The end time for which this indicator is valid"
+          "description": "The end time for which this indicator is valid."
         },
         "end_precision": {
           "$ref": "../common/timestamp-precision.json",
-          "description": "The precision of the end timestamp"
+          "description": "The precision of the end timestamp."
         },
-        "pattern": {
-          "type": "string",
-          "description": "The CybOX pattern expression that, when matched, means this indicator has been detected."
+        "kill_chain_phases": {
+          "type": "array",
+		  "description": "The phases of the kill chain that this indicator detects.",
+		  "items": {
+		     "$ref": "../common/kill-chain-phase.json"
+		   }
         }
       }
     }
   ],
-  "required": ["pattern", "labels"],
+  "required": ["pattern", "labels", "start", "pattern"],
   "definitions": {
     "indicator-label-cv": {
       "type": "string",
