@@ -1,0 +1,59 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "identity",
+  "description": "This object represents basic identifying information for individuals and organizations.",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "../common/core.json"
+    },
+    {
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The type of this object, which MUST be the literal `identity`.",
+          "enum": ["identity"]
+        },
+		"name": {
+		   "type": "string",
+		   "description": "The name of this Identity."
+		},
+		"description": {
+		   "type": "string",
+		   "description": "A description that provides more details and context about Identity."
+		},
+		"aliases": {
+		   "type": "array",
+		   "description": "A list of other names that this entity is believed to use.",
+		   "items": "string"
+		},
+		"is_organization": {
+		   "type": "boolean",
+		   "description": "If true, organization. If false, individual."
+		},
+		"is_class": {
+		   "type": "boolean",
+		   "description": "If true, this refers to the class or group of entities matching this description. If false, this refers to a specific entity."
+		},
+		"functions": {
+		   "type": "array",
+		   "description": "The list of functions that this identity performs.",
+		   "items": "string"
+		},
+		"sectors": {
+		   "type": "array",
+		   "description": "The list of sectors that this identity belongs to. Open Vocab - sector-ov",
+		   "items": "string"
+		},
+		"localities": {
+		   "type": "array",
+		   "description": "The list of localities (regions, nationalities) for this identity.",
+		   "items": "string"
+		}
+	  }
+	}
+	],
+	"required": ["is_class"]
+}
+	
+		

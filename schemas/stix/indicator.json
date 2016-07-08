@@ -35,7 +35,7 @@
 		},		
         "labels": {
           "type": "array",
-          "description": "Specifies the types for this indicator. Open vocab - indicator-label-cv",
+          "description": "Specifies the types for this indicator. Closed vocab - indicator-label-cv",
           "items": "string"
         },
         "start": {

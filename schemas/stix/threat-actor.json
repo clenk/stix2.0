@@ -14,72 +14,60 @@
       "properties": {
         "type": {
           "type": "string",
-          "description": "The type of this object, which MUST be the literal `threat-actor`",
+          "description": "The type of this object, which MUST be the literal `threat-actor`.",
           "enum": ["threat-actor"]
         },
-        "impact": {
-          "$ref": "../common/impact.json",
-          "description": "The impact on operations if this threat actor were successful."
-        },
-        "motivation": {
-          "allOf": [
-            {
-              "$ref": "../common/statement.json"
-            },
-            { 
-              "properties": {
-                "value": {
-                  "$ref": "#definitions/threat-actor-motivation-cv"
-                }
-              }
-            }
-          ],
-          "description": "The motivation of this threat actor."
-        },
+        "name": {
+		   "type": "string",
+		   "description": "A name used to identify this threat actor."
+		},
+        "motivations": {
+		   "type": "array",
+		   "description": "The reason, motivation, or purpose behind this Threat Actor. Open Vocab - motivation-ov",
+		   "items": "string"
+		},
+		"labels": {
+		   "type": "array",
+		   "description": "This field specifies the type of threat actor. Open Vocab - threat-actor-label-ov",
+		   "items": "string"
+		},
         "sophistication": {
-          "allOf": [
-            {
-              "$ref": "../common/statement.json"
-            },
-            { 
-              "properties": {
-                "value": {
-                  "$ref": "#definitions/threat-actor-sophistication-cv"
-                }
-              }
-            }
-          ],
-          "description": "The sophistication of this threat actor."
+           "type": "string",
+		   "description": "This field specifies the level of sophistication pertaining to this threat actor. Open Vocab - threat-actor-sophistication-ov"
         },
-        "planning_and_operational_support": {
-          "$ref": "../common/statement.json",
-          "description": "The planning and operational support available to this threat actor."
+        "objectives": {
+		   "type": "array",
+		   "description": "The goal or intended effect of this threat actor.",
+		   "items": "string"
         }
       }
     }
   ],
+  "required": ["name"],
   "definitions": {
-    "threat-actor-motivation-cv": {
+    "motivation-ov": {
       "type": "string",
       "enum": [
+	    "criminal",
         "ideological",
-        "ideological-anti-corruption",
-        "ideological-anti-establishment",
-        "ideological-environmental",
-        "ideological-ethnic-or-nationalist",
-        "ideological-information-freedom",
-        "ideological-religious",
-        "ideological-security-awareness",
-        "ideological-human-rights",
+        "anti-corruption",
+        "anti-establishment",
+        "environmental",
+        "ethnic-or-nationalist",
+        "information-freedom",
+        "religious",
+        "security-awareness",
+        "human-rights",
         "ego",
         "financial-or-economic",
+		"fraud",
         "military",
         "opportunistic",
         "political",
-        "other"
+        "fear"
       ]
     },
-    "threat-actor-sophistication-cv": {
+    "threat-actor-sophistication-ov": {
       "type": "string",
       "enum": [
         "innovator",
@@ -89,7 +77,29 @@
         "aspirant",
         "other"
       ]
-    }
+    },
+	"threat-actor-label-ov": {
+	   "type": "string",
+	   "enum": [
+	     "cyber-espionage-operations",
+		 "hacker",
+		 "hacker-white-hat",
+		 "hacker-gray-hat",
+		 "hacker-black-hat",
+		 "hacktivist",
+		 "state-actor-agency",
+		 "ecrime-actor-credential-theft-botnet-operator",
+		 "ecrime-actor-credential-theft-botnet-service",
+		 "ecrime-actor-malware-developer",
+		 "ecrime-actor-money-laundering-network",
+		 "ecrime-actor-organized-crime-actor",
+		 "ecrime-actor-spam-service",
+		 "ecrime-actor-traffic-service",
+		 "ecrime-actor-underground-call-service",
+		 "insider-threat",
+		 "other"
+	   ]
+	}
   }
 }
         

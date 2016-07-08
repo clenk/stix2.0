@@ -14,25 +14,33 @@
       "properties": {
         "type": {
           "type": "string",
-          "description": "The type of this object, which MUST be the literal `report`",
+          "description": "The type of this object, which MUST be the literal `report`.",
           "enum": ["report"]
         },
         "labels": {
           "type": "array",
-          "description": "This field is an Open Vocabulary that specifies the intended purposes or uses of this report. The suggested values for this field are in report-label-cv.",
+          "description": "This field is an Open Vocabulary that specifies the intended purposes or uses of this report. The suggested values for this field are in report-intent-ov.",
           "items": "string"
         },
-        "report_contains_refs": {
+        "report_refs": {
           "type": "array",
-          "description": "Specifies the objects that are in this report.",
+          "description": "Specifies other top-level objects that are referred to by this Report",
           "items": { "$ref": "../common/identifier.json" }
-        }
+        },
+		"published": {
+		   "$ref": "../common/timestamp.json",
+           "description": "The date that this report object was officially published."
+	    },
+		"published_precision": {
+		   "$ref": "../common/timestamp-precision.json",
+           "description": "The precision of the published field."
+		}
       }
     }
   ],
-  "required": ["title", "labels", "report_contains_refs"],
+  "required": ["title", "labels", "report_refs", "published"],
   "definitions": {
-    "report-labels-cv": {
+    "report-intent-ov": {
       "type": "string",
       "enum": [
         "collective-threat-intelligence",

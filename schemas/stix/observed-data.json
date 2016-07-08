@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "observation",
-  "description": "Observations document actions and objects that were observed at a certain time. The Observation object uses CybOX objects to describe something that was seen and is a container or wrapper (entry point) for CybOX data in STIX",
+  "title": "observed-data",
+  "description": "This object document actions and objects that were observed at a specific time. The observed-data object uses CybOX objects to describe what was seen.",
   "type": "object",
   "allOf": [
     {
@@ -11,8 +11,8 @@
       "properties": {
        "type": {
           "type": "string",
-          "description": "The type of this object, which MUST be the literal `observation`",
-          "enum": ["observation"]
+          "description": "The type of this object, which MUST be the literal `observed-data`.",
+          "enum": ["observed-data"]
         },
         "start": {
           "$ref": "../common/timestamp.json",

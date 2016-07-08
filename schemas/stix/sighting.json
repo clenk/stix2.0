@@ -11,39 +11,26 @@
       "properties": {
         "type": {
           "type": "string",
-          "description": "The type of this object, which MUST be the literal `sighting`",
+          "description": "The type of this object, which MUST be the literal `sighting`.",
           "enum": ["sighting"]
         },
-        "sightings_of_refs": {
-          "type": "array",
-          "description": "List of indicator refs",
-          "items": {"$ref": "../common/identifier.json"}
+        "sighting_of_ref": {
+          "$ref": "identifier.json",
+          "description": "An ID reference to the object that has been sighted."          
         },
         "observation_refs": {
           "type": "array",
           "description": "List of observation refs",
           "items": {"$ref": "../common/identifier.json"}
-        },
-        "count": {
-          "type": "integer",
-          "description": "Number of sightings",
-          "minimum": 0,
-          "maximum": 999999999
-        },
-        "first_seen": {
-          "$ref": "../common/timestamp.json",
-          "description": "When an Observation that matches the Indicator was first observed."
-        },
-        "last_seen": {
-          "$ref": "../common/timestamp.json",
-          "description": "When an Observation that matches the Indicator was last observed."
-        },
-        "confidence": {
-          "$ref": "../common/confidence.json",
-          "description": "?"
-        }
+        },        
+        "where_sighted_refs": {
+          "type": "array",
+          "description": "The ID of the Identity objects of the entities that saw the sighting.",
+          "items": {"$ref": "../common/identifier.json"}
+		}
       }
+	}
     ],
-    "required": ["sighting_of_ref", "count", "first_seen", "last_seen", "confidence"]
+    "required": ["sighting_of_ref"]
   }
         
