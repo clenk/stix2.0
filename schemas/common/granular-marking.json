@@ -1,23 +1,23 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "granular-marking",
-  "description": "Represents a set of granular markings against content.",
+  "description": "The granular-marking type defines how the list of marking-definition objects referenced by the marking_refs property to apply to a set of content identified by the list of selectors in the selectors property.",
   "type": "object",
   "properties": {
-    "content_selectors": {
+    "selectors": {
       "type": "array",
-      "description": "A list of selectors for content within the including object, represented with JSONPath",
+      "description": "A list of selectors for content contained within the STIX object in which this field appears.",
       "items": {
         "type": "string"
       }
     },
     "marking_refs": {
       "type": "array",
-      "description": "A list of identifiers for data-marking objects that apply to the content selected in the content_selectors field.",
+      "description": "The list of markings that apply to the fields selected by selectors.",
       "items": {
         "$ref": "identifier.json"
       }
     }
   },
-  "required": ["content_selectors", "marking_refs"]
+  "required": ["selectors", "marking_refs"]
 }

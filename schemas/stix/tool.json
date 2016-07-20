@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "tool",
-  "description": "Tool refers to a program that is inserted into a system with the intent of compromising confidentiality, integrity, or availability of the victim.",
+  "description": "A Tool object represents legitimate software (or in some cases grayware) that is used by threat actors to perform attacks.",
   "type": "object",
   "allOf": [
     {
@@ -14,6 +14,11 @@
           "description": "The type of this object, which MUST be the literal `tool`.",
           "enum": ["tool"]
         },
+		"labels": {
+		  "type": "array",
+		  "description": "The kind(s) of tool(s) being described. Open Vocab - tool-label-ov",
+		  "items": "string"
+		},
 		"name": {
 		   "type": "string",
 		   "description": "The name used to identify the Tool."
@@ -21,12 +26,7 @@
 		"descripton": {
 		   "type": "string",
 		   "description": "Provides more context and details about the Tool object."
-		},
-		"labels": {
-		   "type": "array",
-		   "description": "The kind(s) of tool(s) being described. Open Vocab - tool-label-ov",
-		   "items": "string"
-		},
+		},		
 		"tool_version": {
 		   "type": "string",
 		   "description": "The version identifier associated with the tool."
@@ -44,10 +44,12 @@
 	  "tool-label-ov": {
 	    "type": "string",
 		"enum": [
-		  "network-scanner",
-		  "password-cracker",
+		  "denial-of-service",
+		  "exploitation",
+		  "network-capture",
+		  "password-cracking",
 		  "remote-access",
-		  "denial-of-service"
+		  "vulnerability-scanning"
 		]
 	  }
 	}

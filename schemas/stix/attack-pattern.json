@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "attack-pattern",
-  "description": "The Attack Pattern object is a STIX TLO that describes a general approach for attacking a system or network. In addition to the standard TTP properties, it has a reference to a CAPEC (Common Attack Pattern Enumeration and Classification - http://capec.mitre.org/) ID",
+  "description": "An Attack Pattern is a mechanism for describing and documenting how an attack against one or more targets may be executed.",
   "type": "object",
   "allOf": [
     {
@@ -14,26 +14,23 @@
           "description": "The type of this object, which MUST be the literal `attack-pattern`.",
           "enum": ["attack-pattern"]
         },
-        "title": {
+        "name": {
 		   "type": "string",
-		   "description": "A name or short description used to identify this Attack Pattern."
+		   "description": "The name used to identify the Attack Pattern."
 		},
 		"description": {
 		   "type": "string",
-		   "description": "A description that provides the recipient with context about this Attack Pattern."
+		   "description": "A description that provides more details and context about the Attack Pattern, potentially including its purpose and its key characteristics."
 		},
 		"kill_chain_phases": {
 		   "type": "array",
 		   "description": "The list of kill chain phases for which this attack pattern is used.",
-		   "items": {"$ref": "../common/kill-chain-phase.json"}
-		},
-		"external_references": {
-		   "type": "array",
-		   "description": "A list of external-reference objects which refer to non-STIX information.",
-		   "items": {"$ref": "../common/external-reference.json"}
+		   "items": {
+		     "$ref": "../common/kill-chain-phase.json"
+		   }
 		}		
       }	  
     }
   ],
-  "required": ["type", "title"]
+  "required": ["name"]
 }

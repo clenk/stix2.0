@@ -1,0 +1,130 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "asset",
+  "description": "The Asset object is used to describe something that belongs to an organization (either friendly or hostile)",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "../common/core.json"
+    },
+    {
+      "$ref": "../common/descriptive-properties.json"
+    },
+    {
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The type of this object, which MUST be the literal `asset`.",
+          "enum": ["asset"]
+        },
+		"category": {
+		  "type": "string",
+		  "description": "What type of asset this Asset object represents. Closed Vocab - asset-type-cv"
+		},
+		"kind_of_asset": {
+		  "type": "string",
+		  "description": "What type of asset this Asset object represents. Closed Vocab - asset-kind-cv"
+		},
+		"category_ext": {
+		  "$ref": "../common/vocab-ext.json",
+		  "description": "Specifies alternate values for the category property."
+		},
+		"compromised": {
+		  "type": "boolean",
+		  "description": "Is the asset compromised?"
+		},
+		"owner_aware": {
+		  "type": "boolean",
+		  "description": "Is the owner aware the asset is compromised?"
+		}
+	  }
+	}
+	],
+	"required": ["category", "kind_of_asset"],
+	"definitions": {
+	  "asset-kind-cv": {
+	    "type": "string",
+		"enum": [
+		  "access-reader",
+		  "administrator",
+		  "atm",
+		  "auditor",
+		  "auth-token",
+		  "backup",
+		  "broadband",
+		  "call-center",
+		  "camera",
+		  "cashier",
+		  "customer",
+		  "database",
+		  "dcs",
+		  "desktop",
+		  "developer",
+		  "dhcp",
+		  "directory",
+		  "disk-drive",
+		  "disk-media",
+		  "dns",
+		  "documents",
+		  "end-user",
+		  "executive",
+		  "file",
+		  "finance",
+		  "firewall",
+		  "flash-drive",
+		  "former-employee",
+		  "gas-terminal",
+		  "guard",
+		  "helpdesk",
+		  "hsm",
+		  "human-resources",
+		  "ids",
+		  "kiosk",
+		  "lan",
+		  "laptop",
+		  "log",
+		  "mail",
+		  "mainframe",
+		  "maintenance",
+		  "manager",
+		  "media",
+		  "mobile-phone",
+		  "network",
+		  "other",
+		  "partner",
+		  "payment-card",
+		  "payment-switch",
+		  "pbx",
+		  "ped-pad",
+		  "peripheral",
+		  "person",
+		  "plc",
+		  "pos-controller",
+		  "pos-terminal",
+		  "print",
+		  "private-wan",
+		  "proxy",
+		  "public-wan",
+		  "remote-access",
+		  "router-or-switch",
+		  "rtu",
+		  "san",
+		  "scada",
+		  "server",
+		  "smart-card",
+		  "tablet",
+		  "tapes",
+		  "telephone",
+		  "unknown",
+		  "user-device",
+		  "voip-adapter",
+		  "voip-phone",
+		  "web-application",
+		  "wlan"
+		]
+	  }
+	}
+}
+		  
+		  
+		

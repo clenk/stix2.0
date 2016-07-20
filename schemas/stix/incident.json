@@ -1,0 +1,75 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "incident",
+  "description": "Incidents are discrete instances of threats affecting an organization along with information discovered or decided during an incident response investigation.",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "../common/core.json"
+    },
+    {
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The type of this object, which MUST be the literal `incident`.",
+          "enum": ["incident"]
+        },
+		"labels": {
+          "type": "array",
+          "description": "This field is an Open Vocabulary that specifies the type of Indicator. Open Vocabulary - incident-label-ov.",
+          "items": "string"
+        },
+		"name": {
+		  "type": "string",
+		  "description": "The name used to identify the Incident."
+		},
+		"description": {
+		  "type": "string",
+		  "description": "A description that provides more details and context about this object, potentially including its purpose and its key characteristics."
+		},		
+		"initial_compromise": {
+		  "$ref": "../common/timestamp.json",
+		  "description": "Specifies the time that the initial compromise occurred for the Incident."
+		},
+		"initial_compromise_precision": {
+          "$ref": "../common/timestamp-precision.json",
+          "description": "The precision of the initial compromise timestamp."
+        },
+		"discovery": {
+		  "$ref": "../common/timestamp.json",
+		  "description": "Specifies the first time at which the organization learned the Incident had occurred."
+		},
+		"discovery_precision": {
+		  "$ref": "../common/timestamp-precision.json",
+		  "description": "The timestamp precision of discovery."
+		},
+		"remediation": {
+		  "$ref": "../common/timestamp.json",
+		  "description": "Specifies the first time at which the Incident is remediated."
+		},
+		"remediation_precision": {
+		  "$ref": "../common/timestamp-precision.json",
+		  "description": "The timestamp precision of remediation."
+		}
+	  }
+	}
+	],
+	"required": ["name", "labels"],
+	"definitions": {
+    "incident-label-ov": {
+      "type": "string",
+      "enum": [
+        "benign",
+        "denial-of-service",
+        "improper-usage",
+        "compromise-asset",
+        "compromise-information",
+        "insider-breach",
+        "malicious-code",
+        "probing-scanning",
+		"unauthorized-access",
+		"investigating"
+      ]
+    }
+  }
+}

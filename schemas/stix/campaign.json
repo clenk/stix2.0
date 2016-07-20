@@ -1,15 +1,12 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "campaign",
-  "description": "Campaign is used to describe a pattern of malicious activity by one or more threat actors with a particular intent over time.",
+  "description": "A Campaign is a set of related instances of a threat actor or group of threat actors pursuing a specific objective or result.",
   "type": "object",
   "allOf": [
     {
       "$ref": "../common/core.json"
-    },
-    {
-      "$ref": "../common/descriptive-properties.json"
-    },
+    },    
     {
       "properties": {
         "type": {
@@ -17,47 +14,102 @@
           "description": "The type of this object, which MUST be the literal `campaign`.",
           "enum": ["campaign"]
         },
+		"name": {
+		  "type": "string",
+		  "description": "The name used to identify the Campaign."
+		},
+		"description": {
+		  "type": "string",
+		  "description": "A description that provides more details and context about this object, potentially including its purpose and its key characteristics."
+		},
 		"aliases": {
 		   "type": "array",
 		   "description": "Alternative names used to identify this campaign.",
 		   "items": "string"
 		},
-		"motivations": {
-		   "type": "array",
-		   "description": "The reason, motivation, or purpose this Campaign is being used by a Threat Actor. Open Vocab - motivation-ov",
-		   "items": "string"
+		"first_seen": {
+		  "$ref": "../common/timestamp.json",
+		  "description": "The time that his Campaign was first seen."
+		},
+		"first_seen_precision": {
+		  "$ref": "../common/timestamp-precision.json",
+		  "description": "The precision of the first_seen timestamp."
 		},
 		"objectives": {
 		   "type": "array",
-		   "description": "The goal or intended effect of this threat actor.",
+		   "description": "This field defines the Campaign’s primary goal, objectives, desired outcomes, or intended effect. Open Vocab - attack-objectives-ov",
 		   "items": "string"
-        }
+        },
+		"resource_level": {
+		  "type": "string",
+		  "description": "This defines the organizational level at which this Campaign typically works. Open Vocab - attack-resource-level-ov"
+		},
+		"primary_motivation": {
+		  "type": "string",
+		  "description": "The primary reason, motivation, or purpose behind this Campaign. Open Vocab - attack-motivation-ov"
+		},
+		"secondary_motivations": {
+		   "type": "array",
+		   "description": "The secondary reasons, motivations, or purposes behind this Campaign. Open Vocab - attack-motivation-ov",
+		   "items": "string"
+		},
+		"regions": {
+		  "type": "array",
+		  "description": "The list of regions (localities, nationalities) for this Campaign.",
+		  "items": "string"
+		},
+        "origin": {
+		  "type": "string",
+		  "description": "The country of origin for this Campaign."}		
 	  }
 	}
 	],
+	"required": ["name"],
 	"definitions": {
-      "motivation-ov": {
+      "attack-motivation-ov": {
         "type": "string",
         "enum": [
-	      "criminal",
-          "ideological",
-          "anti-corruption",
-          "anti-establishment",
-          "environmental",
-          "ethnic-or-nationalist",
-          "information-freedom",
-          "religious",
-          "security-awareness",
-          "human-rights",
-          "ego",
-          "financial-or-economic",
-		  "fraud",
-          "military",
-          "opportunistic",
-          "political",
-          "fear"
-      ]
-    }
+	      "accidental",
+          "coercion",
+          "dominance",
+          "ideology",
+          "notoriety",
+          "organizational-gain",
+          "personal-gain",
+          "personal-satisfaction",
+          "revenge",
+          "unpredictable"          
+        ]
+      },
+	  "attack-objectives-ov": {
+	    "type": "string",
+		"enum": [
+		  "acquisition-theft",
+		  "business-advantage",
+		  "damage",
+		  "embarrassment",
+		  "technical-advantage",
+		  "account-takeover",
+		  "brand-damage",
+		  "credential-theft",
+		  "degradation-of-service",
+		  "extortion",
+		  "harassment",
+		  "identity-theft",
+		  "intellectual-property-theft"
+		]
+	  },
+	  "attack-resource-level-ov": {
+	    "type": "string",
+		"enum": [
+		  "individual",
+		  "club",
+		  "contest",
+		  "team",
+		  "organization",
+		  "government"
+		]
+	  }
   }
 }
 	

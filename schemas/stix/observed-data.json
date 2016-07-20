@@ -14,24 +14,24 @@
           "description": "The type of this object, which MUST be the literal `observed-data`.",
           "enum": ["observed-data"]
         },
-        "start": {
+        "first_observed": {
           "$ref": "../common/timestamp.json",
-          "description": "The time of the start of this observation."
+          "description": "The starting time of this Observed Data."
         },
-        "end": {
+        "last-observed": {
           "$ref": "../common/timestamp.json",
-          "description": "The time of the end of this observation. For single point in time observations, this should match the start time."
+          "description": "The ending time this Observed Data. For single point in time data, this should match the start time."
         },
 		"count": {
 		  "type": "integer",
 		  "description": "This is an integer between 0 and 999,999,999 inclusive."
 		},
         "cybox": {
-          "$ref": "../common/cybox.json",
+          "$ref": "../common/cybox-container.json",
           "description": "The CybOX content that describes what was seen."
         }
       }
     }
   ],
-  "required": ["start", "end", "count", "cybox"]
+  "required": ["first-observed", "last-observed", "count", "cybox"]
 }
