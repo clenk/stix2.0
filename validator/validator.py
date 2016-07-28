@@ -78,16 +78,10 @@ def print_results(all_errors):
         print "----------------------------"
         print ("\n").join(errors['errors'])
 
-class StixValidatorException(Exception):
-    def __init__(self,*args,**kwargs):
-        Exception.__init__(self,*args,**kwargs)
+def run_validation(doc):
 
-if args.docs == None:
-    run_tests()
-else:
-    # Open the instance file
     all_errors = []
-    with open(args.docs) as instance_file:
+    with open(doc) as instance_file:
         instance = json.load(instance_file)
 
     # Load the schema corresponding to its type
@@ -100,8 +94,23 @@ else:
     if len(matches) > 0:
         schema_path = matches[0]
         schema = load_schema(schema_path)
-        results = run_test(schema, args.docs, schema_path)
+        results = run_test(schema, doc, schema_path)
         if results == True:
             print "Passed schema validation!"
         else:
-            print_results([{'file': args.docs, 'errors': results}])
+            print_results([{'file': doc, 'errors': results}])
+    else:
+        print "Unable to find schema for " + schema_filename
+
+class StixValidatorException(Exception):
+    def __init__(self,*args,**kwargs):
+        Exception.__init__(self,*args,**kwargs)
+
+if args.docs == None:
+    run_tests()
+else:
+    # Open the instance file
+    try:
+        run_validation(args.docs)
+    except ValueError:
+        print "Invalid JSON: " + args.docs
