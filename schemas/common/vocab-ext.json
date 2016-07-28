@@ -5,11 +5,12 @@
   "type": "object",
   "properties": {
     "value": {
-      "description": "The value in the custom vocabulary."
+	  "type": "string",
+      "description": "Arbitrary value or value from an alternate vocabulary."
     },
     "vocab": {
       "type": "string",
-      "description": "A name, URI, or other identifier for the custom vocabulary."
+      "description": "Name or location of alternate vocabulary."
     }
   },
   "required": ["value"]

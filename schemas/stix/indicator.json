@@ -1,64 +1,86 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "indicator",
-  "description": "The Indicator object is a STIX TLO that uses the CybOX patterning grammar to describe something (as a general expression or exact match) that you might see or should look for and includes an assertion of what it means if you see it.",
+  "description": "An Indicator is used to detect activities of interest and for conveying specific patterns combined with their contextual information.",
   "type": "object",
   "allOf": [
     {
       "$ref": "../common/core.json"
-    },
-    {
-      "$ref": "../common/descriptive-properties.json"
-    },
+    },    
     {
       "properties": {
         "type": {
           "type": "string",
-          "description": "The type of this object, which MUST be the literal `indicator`",
+          "description": "The type of this object, which MUST be the literal `indicator`.",
           "enum": ["indicator"]
         },
-        "labels": {
+		"labels": {
           "type": "array",
-          "description": "Specifies the types for this indicator. Open vocab - indicator-label-cv",
+          "description": "This field is an Open Vocabulary that specifies the type of indicator. Open vocab - indicator-label-ov",
           "items": "string"
         },
-        "start": {
+		"name": {
+		   "type": "string",
+		   "description": "The name used to identify the Indicator."
+		},
+		"description": {
+		   "type": "string",
+		   "description": "A description that provides the recipient with context about this Indicator potentially including its purpose and its key characteristics."
+		},
+		"pattern": {
+		   "type": "string",
+		   "description": "The detection pattern for this indicator. The default language is CybOX Patterning."
+		},
+		"pattern_lang": {
+		   "type": "string",
+		   "description": "The language used to define the pattern (in the pattern field). The default is cybox if the field is omitted. Open Vocabulary - pattern-lang-ov"		   
+		},       
+        "valid_from": {
           "$ref": "../common/timestamp.json",
-          "description": "The start time for which this indicator is valid"
+          "description": "The time from which this indicator should be considered valuable intelligence."
         },
-        "start_precision": {
+        "valid_from_precision": {
           "$ref": "../common/timestamp-precision.json",
-          "description": "The precision of the start timestamp"
+          "description": "The precision of the start timestamp."
         },
-        "end": {
+        "valid_to": {
           "$ref": "../common/timestamp.json",
-          "description": "The end time for which this indicator is valid"
+          "description": "The time at which this indicator should no longer be considered valuable intelligence."
         },
-        "end_precision": {
+        "valid_to_precision": {
           "$ref": "../common/timestamp-precision.json",
-          "description": "The precision of the end timestamp"
+          "description": "The precision of the end timestamp."
         },
-        "pattern": {
-          "type": "string",
-          "description": "The CybOX pattern expression that, when matched, means this indicator has been detected."
+        "kill_chain_phases": {
+          "type": "array",
+		  "description": "The phases of the kill chain that this indicator detects.",
+		  "items": {
+		     "$ref": "../common/kill-chain-phase.json"
+		   }
         }
       }
     }
   ],
-  "required": ["pattern", "labels"],
+  "required": ["pattern", "labels", "valid_from"],
   "definitions": {
-    "indicator-label-cv": {
+    "indicator-label-ov": {
       "type": "string",
       "enum": [
         "anomalous-activity",
         "anonymization",
-        "benign",
-        "brute-force",
-        "command-and-control",
+        "benign",       
         "compromised",
-        "exfiltration",
-        "malicious-activity"
+        "malicious-activity",
+        "attribution"
       ]
-    }
+    },
+	"pattern-lang-ov": {
+	  "type": "string",
+	  "enum": [
+	    "cybox",
+		"snort",
+		"yara"
+	  ]
+	}
   }
 }

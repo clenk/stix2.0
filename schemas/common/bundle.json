@@ -1,0 +1,112 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "bundle",
+  "description": "A bundle is a collection of STIX Objects grouped together to enable them to be exchanged across interoperable systems.",
+  "type": "object",
+  "properties": {
+	"type": {
+	  "type": "string",
+	  "description": "The type of this object, which MUST be the literal `bundle`.",
+	  "enum": ["bundle"]
+	},
+	"id": {
+	  "$ref": "identifier.json",
+	  "description": "An identifier for this bundle."
+	},
+	"spec_version": {
+	   "type": { "enum": ["spec-version-enum"]},
+	   "description": "The version of the STIX specification used to represent the content in this bundle."		   
+	},
+	"attack_patterns": {
+	  "type": "array",
+	  "description": "Specifies a set of one or more Attack Patterns.",
+	  "items": {"$ref": "../stix/attack-pattern.json"}
+	},		
+	"campaigns": {
+	  "type": "array",
+	  "description": "Specifies a set of one or more Campaigns.",
+	  "items": {"$ref": "../stix/campaign.json"}
+	},        
+	"courses_of_action": {
+	  "type": "array",
+	  "description": "Specifies a set of one or more Courses of Action that could be taken in regard to one of more cyber threats.",
+	  "items": {"$ref": "../stix/course-of-action.json"}
+	}, 
+    "incidents": {
+	  "type": "array",
+	  "description": "Specifies a set of one or more cyber threat Incidents.",
+	  "items": {"$ref": "../stix/incident.json"}
+	},	
+	"indicators": {
+	  "type": "array",
+	  "description": "Specifies a set of one or more cyber threat Indicators.",
+	  "items": {"$ref": "../stix/indicator.json"}
+	},  
+	"intrusion_sets": {
+	  "type": "array",
+	  "description": "Specifies a set of one or more cyber threat Intrusion Sets.",
+	  "items": {"$ref": "../stix/intrusion-set.json"}
+	},
+	"malware": {
+	  "type": "array",
+	  "description": "Specifies a set of one or more Malware TTPs.",
+	  "items": {"$ref": "../stix/malware.json"}
+	},
+	"marking_definitions": {
+	  "type": "array",
+	  "description": "Specifies a set of one or more Marking Definitions.",
+	  "items": {"$ref": "marking-definition.json"}
+	},
+	"observed_data": {
+	  "type": "array",
+	  "description": "Specifies a set of one or more piece of Observed Data.",
+	  "items": {"$ref": "../stix/observed-data.json"}
+	},       
+	"relationships": {
+	  "type": "array",
+	  "description": "Specifies a set of one or more relationships between SDOs.",
+	  "items": {"$ref": "relationship.json"}
+	},
+	"reports": {
+	  "type": "array",
+	  "description": "Specifies a set of one or more reports.",
+	  "items": {"$ref": "../stix/report.json"}
+	},
+	"sightings": {
+	  "type": "array",
+	  "description": "Specifies a set of one or more sightings.",
+	  "items": {"$ref": "../stix/sighting.json"}
+	},
+	"sources": {
+	  "type": "array",
+	  "description": "Specifies a set of one or more individual or organizational sources.",
+	  "items": {"$ref": "../stix/source.json"}
+	},
+	"threat_actors": {
+	  "type": "array",
+	  "description": "Specifies a set of one or more Threat Actors.",
+	  "items": {"$ref": "../stix/threat-actor.json"}
+	},
+    "tools": {
+	  "type": "array",
+	  "description": "Specifies a set of one or more Tools.",
+	  "items": {"$ref": "../stix/tool.json"}
+	},
+    "victim_targets": {
+	  "type": "array",
+	  "description": "Specifies a set of one or more Victim Targets.",
+	  "items": {"$ref": "../stix/victim-target.json"}
+	},
+    "vulnerabilities": {
+	  "type": "array",
+	  "description": "Specifies a set of one or more Vulnerabilities.",
+	  "items": {"$ref": "../stix/vulnerability.json"}
+	},
+    "custom_objects": {
+	  "type": "array",
+	  "description": "Specifies a list of one or more custom objects.",
+	  "items": "object"
+	}	
+  },
+  "required": ["type", "id", "spec_version"]
+}

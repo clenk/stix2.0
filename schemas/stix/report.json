@@ -1,61 +1,63 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "report",
-  "description": "A grouping of asserted related TLOs for purposes of reporting.",
+  "description": "The Report object is used to relay related cyber threat intelligence via a set of related STIX objects which provide context and details.",
   "type": "object",
   "allOf": [
     {
       "$ref": "../common/core.json"
     },
     {
-      "$ref": "../common/descriptive-properties.json"
-    },
-    {
       "properties": {
         "type": {
           "type": "string",
-          "description": "The type of this object, which MUST be the literal `report`",
+          "description": "The type of this object, which MUST be the literal `report`.",
           "enum": ["report"]
         },
         "labels": {
           "type": "array",
-          "description": "This field is an Open Vocabulary that specifies the intended purposes or uses of this report. The suggested values for this field are in report-label-cv.",
+          "description": "This field is an Open Vocabulary that specifies the primary subject of this report. The suggested values for this field are in report-label-ov.",
           "items": "string"
         },
-        "report_contains_refs": {
+		"name": {
+		  "type": "string",
+		  "description": "The name used to identify the Report."
+		},
+		"description": {
+		  "type": "string",
+		  "description": "A description that provides more details and context about Report."
+		},
+		"published": {
+		   "$ref": "../common/timestamp.json",
+           "description": "The date that this report object was officially published by the creator of this report."
+	    },
+		"published_precision": {
+		   "$ref": "../common/timestamp-precision.json",
+           "description": "The precision of the published field."
+		},
+		"report_refs": {
           "type": "array",
-          "description": "Specifies the objects that are in this report.",
+          "description": "Specifies other top-level objects that are referred to by this Report",
           "items": { "$ref": "../common/identifier.json" }
         }
       }
     }
   ],
-  "required": ["title", "labels", "report_contains_refs"],
+  "required": ["name", "labels", "report_refs", "published"],
   "definitions": {
-    "report-labels-cv": {
+    "report-label-ov": {
       "type": "string",
-      "enum": [
-        "collective-threat-intelligence",
+      "enum": [        
         "threat-report",
-        "indicators",
-        "indicators-phishing",
-        "indicators-watchlist",
-        "indicators-malware-artifacts",
-        "indicators-network-activity",
-        "indicators-endpoint-characteristics",
-        "campaign-characterization",
-        "threat-actor-characterization",
-        "exploit-characterization",
-        "attack-pattern-characterization",
-        "malware-characterization",
-        "ttp-infrastructure",
-        "ttp-tools",
-        "courses-of-action",
-        "incident",
-        "observations",
-        "observations-email",
-        "malware-samples",
-        "other"
+        "attack-pattern-report",
+        "campaign-report",
+        "indicator-report",
+        "malware-report",
+        "observed-data-report",
+        "threat-actor-report",
+        "tool-report",
+        "victim-target-report",
+        "vulnerability-report"        
       ]
     }
   }

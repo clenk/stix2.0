@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "sighting",
-  "description": " The Sighting object describes something (an event) that the producer would like to provide or request additional context about.",
+  "description": "Sighting is a special type of Relationship (an SRO) that represent events of security interest, often detected via indicators or analytics, and are used to communicate that the indicator or analytic was sighted.",
   "type": "object",
   "allOf": [
     {
@@ -11,39 +11,50 @@
       "properties": {
         "type": {
           "type": "string",
-          "description": "The type of this object, which MUST be the literal `sighting`",
+          "description": "The type of this object, which MUST be the literal `sighting`.",
           "enum": ["sighting"]
         },
-        "sightings_of_refs": {
+		"first_seen": {
+		  "$ref": "../common/timestamp.json",
+		  "description": "The time that this sighting was first seen."
+		},
+		"first_seen_precision": {
+		  "$ref": "../common/timestamp-precision.json",
+		  "description": "The precision of the first_seen timestamp."
+		},
+		"last_seen": {
+		  "$ref": "../common/timestamp.json",
+		  "description": "The last time this sighting was seen."
+		},
+		"last_seen_precision": {
+		  "$ref": "../common/timestamp-precision.json",
+		  "description": "The precision of the last_seen timestamp."
+		},
+		"count": {
+		  "type": "integer",
+		  "description": "This is an integer between 0 and 999,999,999 inclusive and represents the number of times the object was sighted."
+		},
+        "sighting_of_ref": {
+          "$ref": "identifier.json",
+          "description": "An ID reference to the object that has been sighted."          
+        },
+        "observed_data_refs": {
           "type": "array",
-          "description": "List of indicator refs",
+          "description": "A list of ID references to the Observed Data that were seen.",
           "items": {"$ref": "../common/identifier.json"}
-        },
-        "observation_refs": {
+        },        
+        "where_sighted_refs": {
           "type": "array",
-          "description": "List of observation refs",
+          "description": "The ID of the Victim Target objects of the entities that saw the sighting.",
           "items": {"$ref": "../common/identifier.json"}
-        },
-        "count": {
-          "type": "integer",
-          "description": "Number of sightings",
-          "minimum": 0,
-          "maximum": 999999999
-        },
-        "first_seen": {
-          "$ref": "../common/timestamp.json",
-          "description": "When an Observation that matches the Indicator was first observed."
-        },
-        "last_seen": {
-          "$ref": "../common/timestamp.json",
-          "description": "When an Observation that matches the Indicator was last observed."
-        },
-        "confidence": {
-          "$ref": "../common/confidence.json",
-          "description": "?"
-        }
+		},
+		"summary": {
+		  "type": "boolean",
+		  "description": "Whether the data should be considered primary source data (and therefore considered for counts) or summary data."
+		}
       }
-    ],
-    "required": ["sighting_of_ref", "count", "first_seen", "last_seen", "confidence"]
-  }
+	}
+  ],
+  "required": ["sighting_of_ref", "first_seen", "last_seen"]
+}
         

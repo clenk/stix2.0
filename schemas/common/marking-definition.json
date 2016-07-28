@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "marking-definition",
-  "description": "Abstract set of properties applied to all top-level objects.",
+  "description": "The marking-definition object represents a specific instance of a marking, defined by an external marking system (e.g., the traffic light protocol, TLP) and contained in the definition field.",
   "type": "object",
   "allOf": [
     {
@@ -11,19 +11,46 @@
       "properties": {
         "type": {
           "type": "string",
-          "description": "The type of this object, which MUST be the literal `marking-definition`",
+          "description": "The type of this object, which MUST be the literal `marking-definition`.",
           "enum": ["marking-definition"]
-        },
-        "definition_type": {
-          "type": "string",
-          "description": "The type of marking this represents."
-        },
+        },        
         "definition": {
-          "type": "object",
-          "description": "A representation of the actual marking, which MUST conform to the type identified in the `definition_type` field."
+		  "type": "object",		            
+          "description": "The detailed information of the marking. This field SHOULD be of type: tlp-marking or statement-marking."		  		  
         }
       }
     }
   ],
-  "required": ["definition_type", "definition"]
+  "required": ["type", "definition"],
+  "definitions": {
+    "tlp-marking": {
+	  "type": "object",
+	  "properties": {
+	    "type": {
+		  "type": "string",
+		  "description": "The value of this field MUST be `tlp-marking`."
+		  },
+		"tlp": {
+		  "type": "string",
+		  "description": "The TLP level of the content marked by this marking definition.",
+		  "enum": ["white", "green", "amber", "red"]
+		  }
+		},
+	"required": ["type", "tlp"]
+	},
+	"statement-marking": {
+	  "type": "object",
+	  "properties": {
+	    "type": {
+		  "type": "string",
+		  "description": "The value of this field MUST be `statement-marking`."
+		  },
+		"statement": {
+		  "type": "string",
+		  "description": "A statement (e.g., copyright, terms of use) applied to the content marked by this marking definition."		  
+		  }
+		},
+	"required": ["type", "statement"]
+	}
+  }
 }

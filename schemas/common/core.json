@@ -6,51 +6,62 @@
   "properties": {
     "type": {
       "type": "string",
-      "description": "The exact name of the class of top-level object being represented."
+      "description": "The type property identifies the type of STIX Object (SDO, Relationship Object, etc). The value of the type field MUST be one of the types defined by a STIX Object (e.g., indicator)."
     },
     "id": {
       "$ref": "identifier.json",
-      "description": "The identifier for this object."
+      "description": "The id property uniquely identifies this object."
+    },
+	"created_by_ref": {
+      "$ref": "identifier.json",
+      "description": "The ID of the Source object that describes who created this object."
+    },
+	"labels": {
+	  "type": "array",
+	  "description": "This field specifies the type of object if known and allows for implementation dependant or trust group dependant labels or tags to also be applied to this object for further classification and sorting.",
+	  "items": "string"
     },
     "version": {
-      "type": "string",
-      "description": "The version of the CTI core specification that this object conforms to.",
-      "enum": ["2.0"]
+      "type": "number",
+      "description": "The version property indicates the version of this object."      
     },
-    "created_time": {
+    "created": {
       "$ref": "timestamp.json",
-      "description": "The time at which this object was created."
+      "description": "The created property represents the time at which the first version of this object was created."
     },
-	"modified_time": {
+	"modified": {
       "$ref": "timestamp.json",
-      "description": "The time at which this object was modified."
-    },
+      "description": "The modified property represents the time that this particular version of the object was created."
+    },	
 	"revoked": {
 	  "type": "boolean",
-	  "description": "Identifies whether or not this object has been revoked."
+	  "description": "The revoked property indicates whether the object has been revoked."
 	},
 	"version_comment": {
 	   "type": "string",
 	   "description": "A comment outlining why the new version of this object was created."
 	},
-    "created_by_ref": {
-      "$ref": "identifier.json",
-      "description": "The identifier of the identity (organization, person, etc.) that created this object."
-    },
+	"external_references": {
+	   "type": "array",
+	   "description": "A list of external references which refers to non-STIX information.",
+	   "items": {
+	     "$ref": "external-reference.json"
+	   }
+	},    
     "object_marking_refs": {
-      "type": "array",
-      "description": "A list of references to data-marking objects that apply to this object.",
-      "items": {
-        "$ref": "identifier.json"
-      }
+       "type": "array",
+       "description": "The list of marking-definition objects to be applied to this object.",
+       "items": {
+         "$ref": "identifier.json"
+       }
     },
     "granular_markings": {
-      "type": "array",
-      "description": "A list of granular markings that apply to this object.",
-      "items": {
+       "type": "array",
+       "description": "The set of granular markings that apply to this object.",
+       "items": {
         "$ref": "granular-marking.json"
-      }
+       }
     }
   },
-  "required": ["type", "id", "version", "created_time", "modified_time"]
+  "required": ["type", "id", "version", "created", "modified"]
 }
