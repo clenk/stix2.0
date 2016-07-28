@@ -12,54 +12,62 @@
       "$ref": "identifier.json",
       "description": "The id property uniquely identifies this object."
     },
-	"created_by_ref": {
+	  "created_by_ref": {
       "$ref": "identifier.json",
       "description": "The ID of the Source object that describes who created this object."
     },
-	"labels": {
-	  "type": "array",
-	  "description": "This field specifies the type of object if known and allows for implementation dependant or trust group dependant labels or tags to also be applied to this object for further classification and sorting.",
-	  "items": "string"
+  	"labels": {
+  	  "type": "array",
+  	  "description": "This field specifies the type of object if known and allows for implementation dependant or trust group dependant labels or tags to also be applied to this object for further classification and sorting.",
+  	  "items": {
+        "type": "string",
+        "minItems": 1
+      }
     },
     "version": {
-      "type": "number",
-      "description": "The version property indicates the version of this object."      
+      "type": "integer",
+      "description": "The version property indicates the version of this object.",
+      "minimum": 1,
+      "maximum": 999999999
     },
     "created": {
       "$ref": "timestamp.json",
       "description": "The created property represents the time at which the first version of this object was created."
     },
-	"modified": {
-      "$ref": "timestamp.json",
-      "description": "The modified property represents the time that this particular version of the object was created."
-    },	
-	"revoked": {
-	  "type": "boolean",
-	  "description": "The revoked property indicates whether the object has been revoked."
-	},
-	"version_comment": {
-	   "type": "string",
-	   "description": "A comment outlining why the new version of this object was created."
-	},
-	"external_references": {
-	   "type": "array",
-	   "description": "A list of external references which refers to non-STIX information.",
-	   "items": {
-	     "$ref": "external-reference.json"
-	   }
-	},    
+  	"modified": {
+        "$ref": "timestamp.json",
+        "description": "The modified property represents the time that this particular version of the object was created."
+      },
+  	"revoked": {
+  	  "type": "boolean",
+  	  "description": "The revoked property indicates whether the object has been revoked."
+  	},
+  	"version_comment": {
+  	   "type": "string",
+  	   "description": "A comment outlining why the new version of this object was created."
+  	},
+  	"external_references": {
+  	   "type": "array",
+  	   "description": "A list of external references which refers to non-STIX information.",
+  	   "items": {
+  	     "$ref": "external-reference.json",
+         "minItems": 1
+  	   }
+  	},
     "object_marking_refs": {
        "type": "array",
        "description": "The list of marking-definition objects to be applied to this object.",
        "items": {
-         "$ref": "identifier.json"
+         "$ref": "identifier.json",
+         "minItems": 1
        }
     },
     "granular_markings": {
        "type": "array",
        "description": "The set of granular markings that apply to this object.",
        "items": {
-        "$ref": "granular-marking.json"
+        "$ref": "granular-marking.json",
+        "minItems": 1
        }
     }
   },

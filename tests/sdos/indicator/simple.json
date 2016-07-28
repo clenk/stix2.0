@@ -1,0 +1,10 @@
+{
+  "type": "indicator",
+  "id": "indicator--f3c5ae03-c324-4ceb-a510-5176b78a0ee3",
+  "created": "2016-02-28T01:01:01.000Z",
+  "modified": "2016-02-28T01:01:01.000Z",
+  "version": 1,
+  "labels": ["anonymization"],
+  "pattern": "blah",
+  "valid_from": "2016-02-28T01:01:01.000Z"
+}

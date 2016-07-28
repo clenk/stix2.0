@@ -1,7 +1,0 @@
-{
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "confidence",
-  "description": "Confidence describes a confidence assertion using the default vocabulary",
-  "oneOf": [ { "type": "string" },
-             { "type": "integer" } ]
-}

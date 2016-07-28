@@ -8,14 +8,16 @@
       "type": "array",
       "description": "A list of selectors for content contained within the STIX object in which this field appears.",
       "items": {
-        "type": "string"
+        "type": "string",
+        "minItems": 1
       }
     },
     "marking_refs": {
       "type": "array",
       "description": "The list of markings that apply to the fields selected by selectors.",
       "items": {
-        "$ref": "identifier.json"
+        "$ref": "identifier.json",
+        "minItems": 1
       }
     }
   },

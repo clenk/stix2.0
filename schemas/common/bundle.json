@@ -14,34 +14,35 @@
 	  "description": "An identifier for this bundle."
 	},
 	"spec_version": {
-	   "type": { "enum": ["spec-version-enum"]},
-	   "description": "The version of the STIX specification used to represent the content in this bundle."		   
+	   "type": "string",
+     "enum": ["2.0"],
+	   "description": "The version of the STIX specification used to represent the content in this bundle."
 	},
 	"attack_patterns": {
 	  "type": "array",
 	  "description": "Specifies a set of one or more Attack Patterns.",
 	  "items": {"$ref": "../stix/attack-pattern.json"}
-	},		
+	},
 	"campaigns": {
 	  "type": "array",
 	  "description": "Specifies a set of one or more Campaigns.",
 	  "items": {"$ref": "../stix/campaign.json"}
-	},        
+	},
 	"courses_of_action": {
 	  "type": "array",
 	  "description": "Specifies a set of one or more Courses of Action that could be taken in regard to one of more cyber threats.",
 	  "items": {"$ref": "../stix/course-of-action.json"}
-	}, 
+	},
     "incidents": {
 	  "type": "array",
 	  "description": "Specifies a set of one or more cyber threat Incidents.",
 	  "items": {"$ref": "../stix/incident.json"}
-	},	
+	},
 	"indicators": {
 	  "type": "array",
 	  "description": "Specifies a set of one or more cyber threat Indicators.",
 	  "items": {"$ref": "../stix/indicator.json"}
-	},  
+	},
 	"intrusion_sets": {
 	  "type": "array",
 	  "description": "Specifies a set of one or more cyber threat Intrusion Sets.",
@@ -61,7 +62,7 @@
 	  "type": "array",
 	  "description": "Specifies a set of one or more piece of Observed Data.",
 	  "items": {"$ref": "../stix/observed-data.json"}
-	},       
+	},
 	"relationships": {
 	  "type": "array",
 	  "description": "Specifies a set of one or more relationships between SDOs.",
@@ -106,7 +107,7 @@
 	  "type": "array",
 	  "description": "Specifies a list of one or more custom objects.",
 	  "items": "object"
-	}	
+	}
   },
   "required": ["type", "id", "spec_version"]
 }

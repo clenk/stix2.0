@@ -6,22 +6,17 @@
   "properties": {
     "type": {
       "type": "string",
-      "description": "The type of this object, which MUST be the literal `cybox-container`"
+      "description": "Indicates that this object is a CybOX Container. The value of this property MUST be cybox-container.",
+      "enum": ["cybox-container"]
+    },
+    "spec_version": {
+      "type": "string",
+      "description": "Indicates the version of the CybOX specification that the entities captured in the container conform to.",
+      "enum": ["3.0"]
     },
     "objects": {
-      "type": "array",
-      "description": "List of CybOX objects",
-      "items": {"$ref": "../cybox/object.json"}
-    },
-    "actions": {
-      "type": "array",
-      "description": "List of CybOX actions",
-      "items": {"$ref": "../cybox/action.json"}
-    },
-    "relationships": {
-      "type": "array",
-      "description": "List of CybOX relationships",
-      "items": {"$ref": "../cybox/relationship.json"}
+      "type": "object",
+      "description": "Set of CybOX objects"
     }
   },
   "required": ["type"]

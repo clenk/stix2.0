@@ -1,0 +1,189 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "threat-actor",
+  "description": "A Threat Actor object is a mechanism for describing and documenting an individual, a group of individuals, a class of actors, or an organization believed to be operating with malicious intent.",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "../common/core.json"
+    },
+    {
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The type of this object, which MUST be the literal `threat-actor`.",
+          "enum": ["threat-actor"]
+        },
+        "labels": {
+          "type": "array",
+          "description": "This field specifies the type of threat actor. Open Vocab - threat-actor-label-ov",
+          "items": {
+            "type": "string",
+            "minItems": 1
+          }
+        },
+        "name": {
+          "type": "string",
+          "description": "A name used to identify this Threat Actor or Threat Actor group."
+        },
+        "description": {
+          "type": "string",
+          "description": "A description that provides more details and context about the Threat Actor."
+        },
+        "aliases": {
+          "type": "array",
+          "description": "A list of other names that this Threat Actor is believed to use.",
+          "items": {
+            "type": "string",
+            "minItems": 1
+          }
+        },
+        "classification": {
+          "type": "string",
+          "description": "The type of entity that this Threat Actor describes, e.g. an individual, organization. Open Vocab - identity-classification-ov"
+        },
+        "roles": {
+          "type": "array",
+          "description": "This is a list of roles the Threat Actor plays. Open Vocab - threat-actor-role-ov",
+          "items": "string"
+        },
+        "objectives": {
+          "type": "array",
+          "description": "This field defines the Threat Actor’s primary goal, objectives, desired outcomes, or intended effect. Open vocab - attack-objective-ov",
+          "items": {
+            "type": "string",
+            "minItems": 1
+          }
+        },
+        "sophistication": {
+          "type": "string",
+          "description": "The skill, specific knowledge, special training, or expertise a Threat Actor must have to perform the attack. Open Vocab - attack-sophistication-level-ov"
+        },
+        "resource_level": {
+          "type": "string",
+          "description": "This defines the organizational level at which this Threat Actor typically works. Open Vocab - attack-resource-level-ov"
+        },
+        "primary_motivation": {
+          "type": "string",
+          "description": "The primary reason, motivation, or purpose behind this Threat Actor. Open Vocab - attack-motivation-ov"
+        },
+        "secondary_motivations": {
+          "type": "array",
+          "description": "The secondary reasons, motivations, or purposes behind this Threat Actor. Open Vocab - attack-motivation-ov",
+          "items": {
+            "type": "string",
+            "minItems": 1
+          }
+        },
+        "personal_motivations": {
+          "type": "array",
+          "description": "The personal reasons, motivations, or purposes of the Threat Actor regardless of organizational goals. Open Vocab - attack-motivation-ov",
+          "items": {
+            "type": "string",
+            "minItems": 1
+          }
+        },
+        "nationality": {
+          "type": "string",
+          "description": "The nationality of this Threat Actor."
+        }
+      }
+    }
+  ],
+  "required": [
+    "name",
+    "labels"
+  ],
+  "definitions": {
+    "identity-classification-ov": {
+      "type": "string",
+      "enum": [
+        "individual",
+        "group",
+        "organization",
+        "class",
+        "unknown"
+      ]
+    },
+    "threat-actor-label": {
+      "type": "string",
+      "enum": [
+        "activist",
+        "competitor",
+        "crime-syndicate",
+        "cyber-warrior",
+        "employee-accidental",
+        "employee-disgruntled",
+        "sensationalist",
+        "spy",
+        "terrorist",
+        "thief"
+      ]
+    },
+    "threat-actor-role-ov": {
+      "type": "string",
+      "enum": [
+        "agent",
+        "director",
+        "financial-backer",
+        "infrastructure-operator",
+        "malware-author",
+        "perpetrator"
+      ]
+    },
+    "attack-objective-ov": {
+      "type": "string",
+      "enum": [
+        "acquisition-theft",
+        "business-advantage",
+        "damage",
+        "embarrassment",
+        "technical-advantage",
+        "account-takeover",
+        "brand-damage",
+        "credential-theft",
+        "degradation-of-service",
+        "extortion",
+        "harassment",
+        "identity-theft",
+        "intellectual-property-theft"
+      ]
+    },
+    "attack-sophistication-level-ov": {
+      "type": "string",
+      "enum": [
+        "none",
+        "novice",
+        "practitioner",
+        "expert",
+        "innovator"
+      ]
+    },
+    "attack-resource-level-ov": {
+      "type": "string",
+      "enum": [
+        "individual",
+        "club",
+        "contest",
+        "team",
+        "organization",
+        "government"
+      ]
+    },
+    "attack-motivation-ov": {
+      "type": "string",
+      "enum": [
+        "accidental",
+        "coercion",
+        "dominance",
+        "ideology",
+        "notoriety",
+        "organizational-gain",
+        "personal-gain",
+        "personal-satisfaction",
+        "revenge",
+        "unpredictable"
+      ]
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "observed-data",
+  "description": "This object document actions and objects that were observed at a specific time. The observed-data object uses CybOX objects to describe what was seen.",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "../common/core.json"
+    },
+    {
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The type of this object, which MUST be the literal `observed-data`.",
+          "enum": ["observed-data"]
+        },
+        "first_observed": {
+          "$ref": "../common/timestamp.json",
+          "description": "The starting time of this Observed Data."
+        },
+        "last-observed": {
+          "$ref": "../common/timestamp.json",
+          "description": "The ending time this Observed Data. For single point in time data, this should match the start time."
+        },
+        "count": {
+          "type": "integer",
+          "description": "This is an integer between 0 and 999,999,999 inclusive."
+        },
+        "cybox": {
+          "$ref": "../common/cybox-container.json",
+          "description": "The CybOX content that describes what was seen."
+        }
+      }
+    }
+  ],
+  "required": [
+    "first-observed",
+    "last-observed",
+    "count",
+    "cybox"
+  ]
+}
