@@ -21,37 +21,37 @@
 	"attack_patterns": {
 	  "type": "array",
 	  "description": "Specifies a set of one or more Attack Patterns.",
-	  "items": {"$ref": "../stix/attack-pattern.json"}
+	  "items": {"$ref": "../sdos/attack-pattern.json"}
 	},
 	"campaigns": {
 	  "type": "array",
 	  "description": "Specifies a set of one or more Campaigns.",
-	  "items": {"$ref": "../stix/campaign.json"}
+	  "items": {"$ref": "../sdos/campaign.json"}
 	},
 	"courses_of_action": {
 	  "type": "array",
 	  "description": "Specifies a set of one or more Courses of Action that could be taken in regard to one of more cyber threats.",
-	  "items": {"$ref": "../stix/course-of-action.json"}
+	  "items": {"$ref": "../sdos/course-of-action.json"}
 	},
     "incidents": {
 	  "type": "array",
 	  "description": "Specifies a set of one or more cyber threat Incidents.",
-	  "items": {"$ref": "../stix/incident.json"}
+	  "items": {"$ref": "../sdos/incident.json"}
 	},
 	"indicators": {
 	  "type": "array",
 	  "description": "Specifies a set of one or more cyber threat Indicators.",
-	  "items": {"$ref": "../stix/indicator.json"}
+	  "items": {"$ref": "../sdos/indicator.json"}
 	},
 	"intrusion_sets": {
 	  "type": "array",
 	  "description": "Specifies a set of one or more cyber threat Intrusion Sets.",
-	  "items": {"$ref": "../stix/intrusion-set.json"}
+	  "items": {"$ref": "../sdos/intrusion-set.json"}
 	},
 	"malware": {
 	  "type": "array",
 	  "description": "Specifies a set of one or more Malware TTPs.",
-	  "items": {"$ref": "../stix/malware.json"}
+	  "items": {"$ref": "../sdos/malware.json"}
 	},
 	"marking_definitions": {
 	  "type": "array",
@@ -61,47 +61,47 @@
 	"observed_data": {
 	  "type": "array",
 	  "description": "Specifies a set of one or more piece of Observed Data.",
-	  "items": {"$ref": "../stix/observed-data.json"}
+	  "items": {"$ref": "../sdos/observed-data.json"}
 	},
 	"relationships": {
 	  "type": "array",
 	  "description": "Specifies a set of one or more relationships between SDOs.",
-	  "items": {"$ref": "relationship.json"}
+	  "items": {"$ref": "../sros/relationship.json"}
 	},
 	"reports": {
 	  "type": "array",
 	  "description": "Specifies a set of one or more reports.",
-	  "items": {"$ref": "../stix/report.json"}
+	  "items": {"$ref": "../sdos/report.json"}
 	},
 	"sightings": {
 	  "type": "array",
 	  "description": "Specifies a set of one or more sightings.",
-	  "items": {"$ref": "../stix/sighting.json"}
+	  "items": {"$ref": "../sros/sighting.json"}
 	},
 	"sources": {
 	  "type": "array",
 	  "description": "Specifies a set of one or more individual or organizational sources.",
-	  "items": {"$ref": "../stix/source.json"}
+	  "items": {"$ref": "../sdos/source.json"}
 	},
 	"threat_actors": {
 	  "type": "array",
 	  "description": "Specifies a set of one or more Threat Actors.",
-	  "items": {"$ref": "../stix/threat-actor.json"}
+	  "items": {"$ref": "../sdos/threat-actor.json"}
 	},
     "tools": {
 	  "type": "array",
 	  "description": "Specifies a set of one or more Tools.",
-	  "items": {"$ref": "../stix/tool.json"}
+	  "items": {"$ref": "../sdos/tool.json"}
 	},
     "victim_targets": {
 	  "type": "array",
 	  "description": "Specifies a set of one or more Victim Targets.",
-	  "items": {"$ref": "../stix/victim-target.json"}
+	  "items": {"$ref": "../sdos/victim-target.json"}
 	},
     "vulnerabilities": {
 	  "type": "array",
 	  "description": "Specifies a set of one or more Vulnerabilities.",
-	  "items": {"$ref": "../stix/vulnerability.json"}
+	  "items": {"$ref": "../sdos/vulnerability.json"}
 	},
     "custom_objects": {
 	  "type": "array",
