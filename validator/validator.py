@@ -73,10 +73,10 @@ def load_validator(schema_path, schema):
     print("Schema Path:" + schema_path)
     try:
         if name == 'nt':
-            file = 'file:///'
+            file_prefix = 'file:///'
         else:
-            file = 'file:'
-        resolver = RefResolver('file:' + schemas_dir.replace("\\", "/") + '/schemas/', schema)
+            file_prefix = 'file:'
+        resolver = RefResolver(file_prefix + schemas_dir.replace("\\", "/") + '/schemas/', schema)
         validator = Draft4Validator(schema, resolver=resolver)
     except schema_exceptions.RefResolutionError:
         raise StixValidatorException('invalid JSON schema')
