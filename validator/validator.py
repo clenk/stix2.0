@@ -62,10 +62,19 @@ def load_schema(schema_path):
         raise StixValidatorException('invalid JSON in schema or included schema: ' + schema_file.name + "\n" + str(e))
 
     return schema
+	
 
 def load_validator(schema_path, schema):
-    try:
-        resolver = RefResolver(schema_path, schema, {}, True, {"": default_handler})
+    print("Schema Path:" + schema_path)
+    #schema_path = "file:\\C:\\Users\\atweed\\Documents\\GitHub\\stix2.0\\schemas" + schema_path
+    #print ("SCHEMA PATH:" + schema_path)
+    try:	    
+        #resolver = RefResolver(schema_path, schema, {}, True, {"": default_handler})
+		
+        #resolver = RefResolver.from_schema(schema, base_uri=schema_path, handlers={"": default_handler})
+        #resolver = RefResolver.from_schema(schema, base_uri='file://'+schema_path)
+		
+        resolver = RefResolver('file:///' + schemas_dir.replace("\\", "/") + '/schemas/', schema)
         validator = Draft4Validator(schema, resolver=resolver)
     except schema_exceptions.RefResolutionError:
         raise StixValidatorException('invalid JSON schema')

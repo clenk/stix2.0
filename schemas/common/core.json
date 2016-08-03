@@ -12,7 +12,7 @@
       "$ref": "identifier.json",
       "description": "The id property uniquely identifies this object."
     },
-	  "created_by_ref": {
+	"created_by_ref": {
       "$ref": "identifier.json",
       "description": "The ID of the Source object that describes who created this object."
     },
