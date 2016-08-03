@@ -1,8 +1,13 @@
 import glob, os, fnmatch, json
 from jsonschema import Draft4Validator, RefResolver
 from jsonschema import exceptions as schema_exceptions
-from urllib.request import urlopen
 import argparse
+from six import PY2
+if PY2:
+    from urllib import urlopen
+else:
+    from urllib.request import urlopen
+from os import name
 
 parser = argparse.ArgumentParser(description='Validate STIX 2.0 against the schemas')
 parser.add_argument('docs', type=str, help="Documents to validate. Leave blank to validate everything in tests.", nargs='?')
@@ -66,15 +71,12 @@ def load_schema(schema_path):
 
 def load_validator(schema_path, schema):
     print("Schema Path:" + schema_path)
-    #schema_path = "file:\\C:\\Users\\atweed\\Documents\\GitHub\\stix2.0\\schemas" + schema_path
-    #print ("SCHEMA PATH:" + schema_path)
-    try:	    
-        #resolver = RefResolver(schema_path, schema, {}, True, {"": default_handler})
-		
-        #resolver = RefResolver.from_schema(schema, base_uri=schema_path, handlers={"": default_handler})
-        #resolver = RefResolver.from_schema(schema, base_uri='file://'+schema_path)
-		
-        resolver = RefResolver('file:///' + schemas_dir.replace("\\", "/") + '/schemas/', schema)
+    try:
+        if name == 'nt':
+            file = 'file:///'
+        else:
+            file = 'file:'
+        resolver = RefResolver('file:' + schemas_dir.replace("\\", "/") + '/schemas/', schema)
         validator = Draft4Validator(schema, resolver=resolver)
     except schema_exceptions.RefResolutionError:
         raise StixValidatorException('invalid JSON schema')
