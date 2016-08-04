@@ -1,14 +1,19 @@
 import glob, os, fnmatch, json
 from jsonschema import Draft4Validator, RefResolver
 from jsonschema import exceptions as schema_exceptions
-from urllib import urlopen
 import argparse
+from six import PY2
+if PY2:
+    from urllib import urlopen
+else:
+    from urllib.request import urlopen
+from os import name
 
 parser = argparse.ArgumentParser(description='Validate STIX 2.0 against the schemas')
 parser.add_argument('docs', type=str, help="Documents to validate. Leave blank to validate everything in tests.", nargs='?')
 args = parser.parse_args()
 
-print ""
+print("\n")
 
 schemas_dir = os.path.abspath(os.path.dirname(__file__) + '/../schemas/')
 examples_dir = os.path.abspath(os.path.dirname(__file__) + '/../tests/')
@@ -46,13 +51,13 @@ def run_tests():
 
         results = run_test(schema, test_case, schemas_dir + '/' + schema_path)
         if results == True:
-            print ".",
+            print("."),
         else:
-            print "E",
+            print("E"),
             all_errors.append({'file': test_case, 'errors': results})
 
     print_results(all_errors)
-    print "\n\n{0} passed, {1} errors\n".format(len(matches) - len(all_errors), len(all_errors))
+    print("\n\n{0} passed, {1} errors\n".format(len(matches) - len(all_errors), len(all_errors)))
 
 def load_schema(schema_path):
     try:
@@ -62,10 +67,16 @@ def load_schema(schema_path):
         raise StixValidatorException('invalid JSON in schema or included schema: ' + schema_file.name + "\n" + str(e))
 
     return schema
+	
 
 def load_validator(schema_path, schema):
+    print("Schema Path:" + schema_path)
     try:
-        resolver = RefResolver(schema_path, schema, {}, True, {"": default_handler})
+        if name == 'nt':
+            file_prefix = 'file:///'
+        else:
+            file_prefix = 'file:'
+        resolver = RefResolver(file_prefix + schemas_dir.replace("\\", "/") + '/schemas/', schema)
         validator = Draft4Validator(schema, resolver=resolver)
     except schema_exceptions.RefResolutionError:
         raise StixValidatorException('invalid JSON schema')
@@ -74,9 +85,9 @@ def load_validator(schema_path, schema):
 def print_results(all_errors):
     # Print results
     for errors in all_errors:
-        print "\n\nFile: {0}".format(errors['file'])
-        print "----------------------------"
-        print ("\n").join(errors['errors'])
+        print("\n\nFile: {0}".format(errors['file']))
+        print("----------------------------")
+        print(("\n").join(errors['errors']))
 
 def run_validation(doc):
 
@@ -85,22 +96,23 @@ def run_validation(doc):
         instance = json.load(instance_file)
 
     # Load the schema corresponding to its type
-    schema_filename = instance['type']
+    schema_filename = instance[0]['type']
 
     matches = []
     for root, dirnames, filenames in os.walk(schemas_dir):
         for filename in fnmatch.filter(filenames, schema_filename + '.json'):
             matches.append(os.path.join(root, filename))
     if len(matches) > 0:
+        print(matches)
         schema_path = matches[0]
         schema = load_schema(schema_path)
         results = run_test(schema, doc, schema_path)
         if results == True:
-            print "Passed schema validation!"
+            print("Passed schema validation!")
         else:
             print_results([{'file': doc, 'errors': results}])
     else:
-        print "Unable to find schema for " + schema_filename
+        print("Unable to find schema for " + schema_filename)
 
 class StixValidatorException(Exception):
     def __init__(self,*args,**kwargs):
@@ -113,4 +125,4 @@ else:
     try:
         run_validation(args.docs)
     except ValueError:
-        print "Invalid JSON: " + args.docs
+        print("Invalid JSON: " + args.docs)
