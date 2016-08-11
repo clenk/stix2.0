@@ -1,24 +1,32 @@
 {
-  "type": "package",
-  "id": "package--44af6c39-c09b-49c5-9de2-394224b04982",
+  "type": "bundle",
+  "id": "bundle--44af6c39-c09b-49c5-9de2-394224b04982",
+  "spec_version": "2.0",
   
   "incidents": [
       {
        "type": "incident",
        "id": "incident--84d86106-d801-489b-87b6-d56bac58e6c1",
-       "spec_version": "2.0",
-       "created_time": "2014-09-15T14:37:54.297669Z",
-       "title":  "Malicious files detected"
+       "version": 1,
+       "created": "2014-09-15T14:37:54.297669Z",
+	   "modified": "2014-09-15T14:37:54.297669Z",
+       "name":  "Malicious files detected"	   
       }
   ],
   
-  "observations": [
+  "observed-data": [
     {
-       "type": "observation",
-       "id": "observation--0fd77202-c962-41c7-b90f-a906ab3b5392",
-       "spec_version": "2.0",
-       "created_time": "2014-09-15T14:37:54.297669Z", 
+       "type": "observed-data",
+       "id": "observed-data--0fd77202-c962-41c7-b90f-a906ab3b5392",
+       "version": 1,
+       "created": "2014-09-18T16:39:56.297123Z",
+	   "modified": "2014-09-18T16:39:56.297123Z",
+	   "first_observed": "2014-09-15T14:37:54.297669Z",
+	   "last_observed": "2014-09-15T14:37:54.297669Z",
+	   "number_observed": 1,
        "cybox": {
+	      "type": "cybox-container",
+		  "spec_version": "3.0",
           "objects": [
             {
               "type": "file-object",
@@ -34,11 +42,17 @@
     },
     
     {
-       "type": "observation",
-       "id": "observation--b74949f0-cf41-4094-9b80-240201a96b60",
-       "spec_version": "2.0",
-       "created_time": "2014-09-15T14:37:54.297669Z", 
+       "type": "observed-data",
+       "id": "observed-data--b74949f0-cf41-4094-9b80-240201a96b60",
+       "version": 1,
+       "created": "2014-09-18T16:39:56.297123Z",
+	   "modified": "2014-09-18T16:39:56.297123Z",
+	   "first_observed": "2014-09-15T14:37:54.297669Z",
+	   "last_observed": "2014-09-15T14:37:54.297669Z",
+	   "number_observed": 1, 
        "cybox": {
+	      "type": "cybox-container",
+		  "spec_version": "3.0",
           "objects": [
             {
               "type": "file-object",
@@ -58,28 +72,24 @@
     {
         "type": "relationship",
         "id": "relationship--489f7188-84db-4dd1-b9d7-25498149a126",
-        "spec_version": "2.0",
-        "created_time": "2014-09-15T14:37:54.297669Z", 
-        "kinds_of_relationships": [ 
-            "evidenced-by"
-        ],
-        "source_ref": "incident--84d86106-d801-489b-87b6-d56bac58e6c1",
-        "target_ref": "observation--0fd77202-c962-41c7-b90f-a906ab3b5392",
-        "is_directional": "true"
+        "version": 1,
+        "created": "2014-09-19T14:37:54.297669Z",
+		"modified": "2014-09-19T14:37:54.297669Z",
+        "name": "part-of",
+		"source_ref": "observed-data--0fd77202-c962-41c7-b90f-a906ab3b5392",
+        "target_ref": "incident--84d86106-d801-489b-87b6-d56bac58e6c1"       
     },
     
     {
         "type": "relationship",
         "id": "relationship--88b0b03a-6097-4d01-abf7-8854a5ee75bd",
-        "spec_version": "2.0",
-        "created_time": "2014-09-15T14:37:54.297669Z", 
-        "kinds_of_relationships": [ 
-            "evidenced-by"
-        ],
-        "source_ref": "incident--84d86106-d801-489b-87b6-d56bac58e6c1",
-        "target_ref": "observation--b74949f0-cf41-4094-9b80-240201a96b60",
-        "is_directional": "true"
-    },
+        "version": 1,
+        "created": "2014-09-19T14:37:54.297669Z",
+		"modified": "2014-09-19T14:37:54.297669Z",
+        "name": "part-of",
+		"source_ref": "observed-data--b74949f0-cf41-4094-9b80-240201a96b60",
+        "target_ref": "incident--84d86106-d801-489b-87b6-d56bac58e6c1"                
+    }
   ]
 }
   

@@ -1,16 +1,19 @@
 {
-  "type": "package",
-  "id": "package--44af6c39-c09b-49c5-9de2-394224b04982",
-  
+  "type": "bundle",
+  "id": "bundle--44af6c39-c09b-49c5-9de2-394224b04982",
+  "spec_version": "2.0",
+    
   "indicators:": [
     {
       "type": "indicator",
       "id": "indicator--0756a255-6623-4226-8356-015396918b38",
-      "spec_version": "2.0",
-      "created_time": "2014-08-22T20:17:38.959000Z",
-      "kinds_of_indicator": [ "watchlist" ],
-      "title": "192.168.1.1",
-      "pattern": "ipv4addr-object:value = '192.168.1.1'"
+      "version": 1,
+      "created": "2014-08-22T20:17:38.959000Z",
+	  "modified": "2014-08-22T20:17:38.959000Z",
+      "labels": ["malicious-activity"],      
+      "name": "Malicious Activity from: 192.168.1.1",
+      "pattern": "ipv4addr-object:value = 192.168.1.1",
+	  "valid_from": "2014-08-25T15:55:45.338000Z"
     }
   ],
   
@@ -18,25 +21,24 @@
     {
       "type": "malware",
       "id": "malware--d6b60324-a1b8-4d51-8c26-3aef6351371d",
-      "spec_version": "2.0",
-      "created_time": "2014-08-22T20:17:38.959000Z",
-      "title": "zbot",
-      "kind_of_malware": [ "Bot" ] 
+      "version": 1,
+      "created": "2014-08-25T15:55:45.338000Z",
+	  "modified": "2014-08-25T15:55:45.338000Z",
+      "name": "zbot",
+      "labels": ["bot"] 
     }
   ],
     
   "relationships": [
     {
-       "type": "relationship",
-        "id": "relationship--d56d54c4-a25f-4147-9cf7-5187f2c42024",
-        "spec_version": "2.0",
-        "created_time": "2014-08-22T20:17:38.959000Z", 
-        "kinds_of_relationships": [ 
-            "indicates"
-        ],
-        "source_ref": "indicator--0756a255-6623-4226-8356-015396918b38",
-        "target_ref": "malware--d6b60324-a1b8-4d51-8c26-3aef6351371d",
-        "is_directional": "true"
+      "type": "relationship",
+      "id": "relationship--d56d54c4-a25f-4147-9cf7-5187f2c42024",
+      "version": 1,
+      "created": "2014-08-22T20:17:38.959000Z", 
+      "modified": "2014-08-22T20:17:38.959000Z",
+      "name": "indicates",
+      "source_ref": "indicator--0756a255-6623-4226-8356-015396918b38",
+      "target_ref": "malware--d6b60324-a1b8-4d51-8c26-3aef6351371d"        
     }    
   ]
 }

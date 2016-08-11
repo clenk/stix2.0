@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "attack-pattern",
-  "description": "An Attack Pattern is a mechanism for describing and documenting how an attack against one or more targets may be executed.",
+  "description": "Attack Patterns are a type of TTP that describe ways that adversaries attempt to compromise targets. ",
   "type": "object",
   "allOf": [
     {
@@ -15,21 +15,21 @@
           "enum": ["attack-pattern"]
         },
         "name": {
-		      "type": "string",
-		      "description": "The name used to identify the Attack Pattern."
-		    },
-		    "description": {
-		      "type": "string",
-		      "description": "A description that provides more details and context about the Attack Pattern, potentially including its purpose and its key characteristics."
-		    },
-		    "kill_chain_phases": {
-		      "type": "array",
-		      "description": "The list of kill chain phases for which this attack pattern is used.",
-		      "items": {
-		        "$ref": "../common/kill-chain-phase.json",
-            "minItems": 1
-		      }
-		    }
+		  "type": "string",
+		  "description": "The name used to identify the Attack Pattern."
+		},
+		"description": {
+		  "type": "string",
+		  "description": "A description that provides more details and context about the Attack Pattern, potentially including its purpose and its key characteristics."
+		},
+		"kill_chain_phases": {
+		  "type": "array",
+		  "description": "The list of kill chain phases for which this attack pattern is used.",
+		  "items": {
+			"$ref": "../common/kill-chain-phase.json",
+		    "minItems": 1
+		  }
+		}
       }
     }
   ],

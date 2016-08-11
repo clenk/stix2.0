@@ -57,8 +57,9 @@
       "enum": [
         "denial-of-service",
         "exploitation",
+        "information-gathering",
         "network-capture",
-        "password-cracking",
+        "credential-exploitation",
         "remote-access",
         "vulnerability-scanning"
       ]

@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "report",
-  "description": "The Report object is used to relay related cyber threat intelligence via a set of related STIX objects which provide context and details.",
+  "description": "Reports are collections of threat intelligence focused on one or more topics, such as a description of a threat actor, malware, or attack technique, including context and related details.",
   "type": "object",
   "allOf": [
     {
@@ -33,11 +33,7 @@
         "published": {
           "$ref": "../common/timestamp.json",
           "description": "The date that this report object was officially published by the creator of this report."
-        },
-        "published_precision": {
-          "$ref": "../common/timestamp-precision.json",
-          "description": "The precision of the published field."
-        },
+        },        
         "report_refs": {
           "type": "array",
           "description": "Specifies other top-level objects that are referred to by this Report",
@@ -60,15 +56,15 @@
       "type": "string",
       "enum": [
         "threat-report",
-        "attack-pattern-report",
-        "campaign-report",
-        "indicator-report",
-        "malware-report",
-        "observed-data-report",
-        "threat-actor-report",
-        "tool-report",
-        "victim-target-report",
-        "vulnerability-report"
+        "attack-pattern",
+        "campaign",
+        "indicator",
+        "malware",
+        "observed-data",
+        "threat-actor",
+        "tool",
+        "victim-target",
+        "vulnerability"
       ]
     }
   }
