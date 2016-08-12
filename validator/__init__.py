@@ -328,11 +328,13 @@ def load_validator(schema_path, schema):
             file_prefix = 'file:///'
         else:
             file_prefix = 'file:'
-        resolver = RefResolver(file_prefix + SCHEMAS_DIR.replace("\\", "/") + '/schemas/', schema)
+
+        resolver = RefResolver(file_prefix + schema_path.replace("\\", "/"), schema)
         validator = Draft4Validator(schema, resolver=resolver)
 
     except schema_exceptions.RefResolutionError:
         raise SchemaInvalidError('Invalid JSON schema')
+
     return validator
 
 
@@ -348,6 +350,7 @@ def load_schema(schema_path):
 
 def schema_validate(fn, options):
     """Performs STIX JSON Schema validation against the input filename.
+    Finds the correct schema by looking at what folder the input file is in.
 
     Args:
         fn: A filename for a STIX JSON document
@@ -365,9 +368,8 @@ def schema_validate(fn, options):
         slash = '\\'
     else:
         slash = '/'
-    schema_path = ('/').join(fn.split('tests'+slash)[1].split(slash)[0:-1]) + '.json'
-    schema = load_schema(SCHEMAS_DIR + slash + schema_path)
-
+    schema_path = SCHEMAS_DIR + slash + ('/').join(fn.split('tests'+slash)[1].split(slash)[0:-1]) + '.json'
+    schema = load_schema(schema_path)
     validator = load_validator(schema_path, schema)
 
     with open(fn) as instance_file:
