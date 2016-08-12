@@ -196,7 +196,7 @@ class ValidationErrorResults(BaseResults):
 
 
 def is_json(fn):
-    """Returns ``True`` if the input filename `fn` ends with an JSON extension.
+    """Returns ``True`` if the input filename `fn` ends with a JSON extension.
     """
     return os.path.isfile(fn) and fn.lower().endswith('.json')
 
@@ -268,6 +268,10 @@ def run_validation(options):
             this validation run.
 
     """
+    # If validating the tests directory, look in its subdirectories
+    if options.files == [EXAMPLES_DIR]:
+        options.recursive = True
+
     # The JSON files to validate
     files = get_json_files(options.files, options.recursive)
 

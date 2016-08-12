@@ -25,8 +25,10 @@ def _get_arg_parser():
         "files",
         metavar="FILES",
         nargs="*",
+        default=[EXAMPLES_DIR],
         help="A whitespace separated list of STIX files or directories of "
-             "STIX files to validate."
+             "STIX files to validate. If none given, the tests/ directory "
+             "will be recursively validated."
     )
 
     parser.add_argument(
