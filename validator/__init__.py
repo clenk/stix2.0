@@ -15,10 +15,6 @@ from six import python_2_unicode_compatible
 from . import output
 
 
-SCHEMAS_DIR = os.path.abspath(os.path.dirname(__file__) + '/../schemas/')
-EXAMPLES_DIR = os.path.abspath(os.path.dirname(__file__) + '/../tests/')
-
-
 class ValidationError(Exception):
     """Base Exception for all validator-specific exceptions. This can be used
     directly as a generic Exception.
@@ -268,10 +264,6 @@ def run_validation(options):
             this validation run.
 
     """
-    # If validating the tests directory, look in its subdirectories
-    if options.files == [EXAMPLES_DIR]:
-        options.recursive = True
-
     # The JSON files to validate
     files = get_json_files(options.files, options.recursive)
 
@@ -371,7 +363,7 @@ def schema_validate(fn, options):
         slash = '\\'
     else:
         slash = '/'
-    schema_path = SCHEMAS_DIR + slash + ('/').join(fn.split('tests'+slash)[1].split(slash)[0:-1]) + '.json'
+    schema_path = options.schema_dir + slash + ('/').join(fn.split('tests'+slash)[1].split(slash)[0:-1]) + '.json'
     schema = load_schema(schema_path)
     validator = load_validator(schema_path, schema)
 

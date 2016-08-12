@@ -9,6 +9,9 @@ from validator import *
 from validator import codes
 
 
+EXAMPLES_DIR = os.path.abspath(os.path.dirname(__file__) + '/tests/')
+
+
 def _get_arg_parser():
     """Initializes and returns an argparse.ArgumentParser instance for this
     application.
@@ -27,11 +30,12 @@ def _get_arg_parser():
         nargs="*",
         default=[EXAMPLES_DIR],
         help="A whitespace separated list of STIX files or directories of "
-             "STIX files to validate. If none given, the tests/ directory "
+             "STIX files to validate. If none is given, the tests/ directory "
              "will be recursively validated."
     )
 
     parser.add_argument(
+        "-r",
         "--recursive",
         dest="recursive",
         action="store_true",
@@ -39,14 +43,13 @@ def _get_arg_parser():
         help="Recursively descend into input directories."
     )
 
-    # TODO
-    # parser.add_argument(
-    #     "--schema-dir",
-    #     dest="schema_dir",
-    #     default=os.path.abspath(os.path.dirname(__file__) + '/schemas/'),
-    #     help="Schema directory. If not provided, the STIX schemas bundled "
-    #          "with this script will be used."
-    # )
+    parser.add_argument(
+        "--schemas",
+        dest="schema_dir",
+        default='schemas/',
+        help="Schema directory. If not provided, the STIX schemas bundled "
+             "with this script will be used."
+    )
 
     # TODO
     # parser.add_argument(
@@ -58,6 +61,7 @@ def _get_arg_parser():
     # )
 
     parser.add_argument(
+        "-q",
         "--quiet",
         dest="quiet",
         action="store_true",
@@ -72,7 +76,12 @@ def main():
     # Parse command line arguments
     parser = _get_arg_parser()
     args = parser.parse_args()
+    args.schema_dir = os.path.abspath(os.path.dirname(__file__) + args.schema_dir)
     
+    # If validating the tests directory, look in its subdirectories
+    if args.files == [EXAMPLES_DIR]:
+        args.recursive = True
+
     try:
         # Set the output level (e.g., quiet vs. verbose)
         output.set_level(args.quiet)
