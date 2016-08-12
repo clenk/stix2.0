@@ -17,9 +17,11 @@ def set_level(quiet_output=False):
 def error(msg, status=codes.EXIT_FAILURE):
     """Prints a message to the stderr prepended by '[!]' and calls
     ```sys.exit(status)``.
+
     Args:
         msg: The error message to print.
         status: The exit status code. Defaults to ``EXIT_FAILURE`` (1).
+
     """
     sys.stderr.write("[!] %s\n" % str(msg))
     sys.exit(status)
@@ -27,12 +29,15 @@ def error(msg, status=codes.EXIT_FAILURE):
 
 def info(msg):
     """Prints a message to stdout, prepended by '[-]'.
+
     Note:
         If the application is running in "Quiet Mode"
         (i.e., ``_QUIET == True``), this function will return
         immediately and no message will be printed.
+
     Args:
         msg: The message to print.
+
     """
     if _QUIET:
         return
@@ -43,12 +48,14 @@ def info(msg):
 def print_level(fmt, level, *args):
     """Prints a formatted message to stdout prepended by spaces. Useful for
     printing hierarchical information, like bullet lists.
+
     Args:
         fmt (str): A Python formatted string.
         level (int): Used to determing how many spaces to print. The formula
             is ``'    ' * level ``.
         *args: Variable length list of arguments. Values are plugged into the
             format string.
+
     Examples:
         >>> print_level("%s %d", 0, "TEST", 0)
         TEST 0
@@ -56,6 +63,7 @@ def print_level(fmt, level, *args):
             TEST 1
         >>> print_level("%s %d", 2, "TEST", 2)
                 TEST 2
+
     """
     msg = fmt % args
     spaces = '    ' * level
@@ -63,15 +71,18 @@ def print_level(fmt, level, *args):
 
 
 def print_fatal_results(results, level=0):
-    """Prints fatal errors that occurred during validation runs."""
+    """Prints fatal errors that occurred during validation runs.
+    """
     print_level("[!] Fatal Error: %s", level, results.error)
 
 
 def print_schema_results(results, level=0):
-    """Prints XML Schema validation results to stdout.
+    """Prints JSON Schema validation results to stdout.
+
     Args:
-        results: An instance of sdv.validators.XmlSchemaResults.
-        level: The level to print the results.
+        results: An instance of ValidationResults.
+        level: The level at which to print the results.
+
     """
     marker = "+" if results.is_valid else "!"
     print_level("[%s] JSON Schema: %s", level, marker, results.is_valid)
@@ -86,11 +97,13 @@ def print_schema_results(results, level=0):
 def print_results(results, options):
     """Prints `results` to stdout. If ``options.json_output`` is set, the
     results are printed in JSON format.
+
     Args:
         results: A dictionary of ValidationResults instances. The key is the
             file path to the validated document.
         options: An instance of ``ValidationOptions`` which contains output
             options.
+
     """
     level = 0
     for fn, result in sorted(iteritems(results)):

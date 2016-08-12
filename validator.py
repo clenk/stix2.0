@@ -37,13 +37,14 @@ def _get_arg_parser():
         help="Recursively descend into input directories."
     )
 
-    parser.add_argument(
-        "--schema-dir",
-        dest="schema_dir",
-        default=os.path.abspath(os.path.dirname(__file__) + '/schemas/'),
-        help="Schema directory. If not provided, the STIX schemas bundled "
-             "with this script will be used."
-    )
+    # TODO
+    # parser.add_argument(
+    #     "--schema-dir",
+    #     dest="schema_dir",
+    #     default=os.path.abspath(os.path.dirname(__file__) + '/schemas/'),
+    #     help="Schema directory. If not provided, the STIX schemas bundled "
+    #          "with this script will be used."
+    # )
 
     # TODO
     # parser.add_argument(

@@ -72,7 +72,7 @@ class FileResults(object):
     Attributes:
 
         fn: The filename/path for the file that was validated.
-        schema_results: XML schema validation results.
+        schema_results: JSON schema validation results.
         best_practice_results: STIX Best Practice validation results.
         profile_resutls: STIX Profile validation results.
         fatal: Fatal error
@@ -120,8 +120,7 @@ class BaseResults(object):
 
 
 class ValidationResults(BaseResults):
-    """Results of JSON schema validation. Returned from
-    :meth:`XmlSchemaValidator.validate`.
+    """Results of JSON schema validation.
 
     Args:
         is_valid: The validation result.
