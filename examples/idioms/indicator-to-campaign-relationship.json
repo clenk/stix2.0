@@ -1,14 +1,16 @@
 {
-  "type": "package",
-  "id": "package--44af6c39-c09b-49c5-9de2-394224b04982",
+  "type": "bundle",
+  "id": "bundle--44af6c39-c09b-49c5-9de2-394224b04982",
+  "spec_version": "2.0",
 
   "campaigns": [
     {
         "type": "campaign",
         "id": "campaign--b549a58c-afd9-4847-85c3-5be13d56d3cc",
-        "spec_version": "2.0",
-        "created_time": "2014-09-09T19:58:39.609000Z",
-        "title": "Operation Omega"
+        "version": 1,
+        "created": "2014-09-09T19:58:39.609000Z",
+		"modified": "2014-09-09T19:58:39.609000Z",
+        "name": "Operation Omega"
     }
   ],
 
@@ -16,10 +18,12 @@
     {
         "type": "indicator",
         "id": "indicator--c43a0a05-e8d2-4f64-ae37-3f3fb153f8d9",
-        "spec_version": "2.0",
-        "created_time": "2014-09-09T19:58:39.609000Z",
-        "kinds_of_indicator": ["watchlist"],
-        "pattern": "ipv4addr-object.value = '10.0.0.0'"
+        "version": 1,
+        "created": "2014-09-09T19:58:39.609000Z",
+		"modified": "2014-09-09T19:58:39.609000Z",
+        "labels": ["malicious-activity"],
+        "pattern": "ipv4addr-object.value = '10.0.0.0'",
+		"valid_from": "2014-09-09T19:58:39.609000Z"
     }
   ],
   
@@ -27,14 +31,12 @@
     {
         "type": "relationship",
         "id": "relationship--eca24e47-2259-4850-9705-fd1065c77236",
-        "spec_version": "2.0",
-        "kinds_of_relationships": [ 
-            "indicates"
-         ],
-        "created_time": "2014-09-09T19:58:39.609000Z",
+        "version": 1,
+        "name": "indicates",
+        "created": "2014-09-09T19:58:39.609000Z",
+		"modified": "2014-09-09T19:58:39.609000Z",
         "source_ref": "indicator--c43a0a05-e8d2-4f64-ae37-3f3fb153f8d9",
-        "target_ref": "campaign--b549a58c-afd9-4847-85c3-5be13d56d3cc",
-        "is_directional": "true"
+        "target_ref": "campaign--b549a58c-afd9-4847-85c3-5be13d56d3cc"        
     }
   ]
 }

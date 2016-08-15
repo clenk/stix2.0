@@ -38,18 +38,21 @@
             "minItems": 1
           }
         },
-        "classification": {
+        "entity_class": {
           "type": "string",
-          "description": "The type of entity that this Threat Actor describes, e.g. an individual, organization. Open Vocab - identity-classification-ov"
+          "description": "The type of entity that this Threat Actor describes, e.g. an individual, organization. Open Vocab - entity-class-ov"
         },
         "roles": {
           "type": "array",
           "description": "This is a list of roles the Threat Actor plays. Open Vocab - threat-actor-role-ov",
-          "items": "string"
+          "items": {
+            "type": "string",
+            "minItems": 1
+          }
         },
-        "objectives": {
+        "goals": {
           "type": "array",
-          "description": "This field defines the Threat Actor’s primary goal, objectives, desired outcomes, or intended effect. Open vocab - attack-objective-ov",
+          "description": "The high level goals of this Threat Actor, namely, what are they trying to do.",
           "items": {
             "type": "string",
             "minItems": 1
@@ -83,19 +86,30 @@
             "minItems": 1
           }
         },
-        "nationality": {
+        "regions": {
+          "type": "array",
+          "description": "The regions or geographic locations they are known to operate in.",
           "type": "string",
-          "description": "The nationality of this Threat Actor."
+          "minItems": 1
+        },
+        "nationalities": {
+          "type": "array",
+          "description": "The nationalities of this Threat Actor.",
+		  "items": {
+            "type": "string",
+            "minItems": 1
+          }
         }
       }
     }
   ],
   "required": [
     "name",
-    "labels"
+    "labels",
+	"entity_class"
   ],
   "definitions": {
-    "identity-classification-ov": {
+    "entity-class-ov": {
       "type": "string",
       "enum": [
         "individual",
@@ -105,15 +119,16 @@
         "unknown"
       ]
     },
-    "threat-actor-label": {
+    "threat-actor-label-ov": {
       "type": "string",
       "enum": [
         "activist",
         "competitor",
         "crime-syndicate",
-        "cyber-warrior",
-        "employee-accidental",
-        "employee-disgruntled",
+        "hacker",
+        "insider-accidental",
+        "insider-disgruntled",
+        "nation-state",
         "sensationalist",
         "spy",
         "terrorist",
@@ -123,38 +138,23 @@
     "threat-actor-role-ov": {
       "type": "string",
       "enum": [
-        "agent",
+        "independent-agent",
         "director",
-        "financial-backer",
+		"sponsor",        
         "infrastructure-operator",
+        "infrastructure-architect",
         "malware-author",
         "perpetrator"
-      ]
-    },
-    "attack-objective-ov": {
-      "type": "string",
-      "enum": [
-        "acquisition-theft",
-        "business-advantage",
-        "damage",
-        "embarrassment",
-        "technical-advantage",
-        "account-takeover",
-        "brand-damage",
-        "credential-theft",
-        "degradation-of-service",
-        "extortion",
-        "harassment",
-        "identity-theft",
-        "intellectual-property-theft"
       ]
     },
     "attack-sophistication-level-ov": {
       "type": "string",
       "enum": [
         "none",
-        "novice",
-        "practitioner",
+        "minimal",
+        "intermediate",
+        "advanced",
+        "strategic",
         "expert",
         "innovator"
       ]

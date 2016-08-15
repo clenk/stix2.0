@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "sighting",
-  "description": "Sighting is a special type of Relationship (an SRO) that represent events of security interest, often detected via indicators or analytics, and are used to communicate that the indicator or analytic was sighted.",
+  "description": "A sighting denotes the fact that some entity in cyber threat intelligence (e.g., an indicator, malware, tool, threat actor, etc.) was seen.",
   "type": "object",
   "allOf": [
     {
@@ -16,7 +16,7 @@
         },
         "first_seen": {
           "$ref": "../common/timestamp.json",
-          "description": "The time that this sighting was first seen."
+          "description": "The beginning of the time window during which the SDO referenced by the sighting_of_ref property was sighted."
         },
         "first_seen_precision": {
           "$ref": "../common/timestamp-precision.json",
@@ -24,7 +24,7 @@
         },
         "last_seen": {
           "$ref": "../common/timestamp.json",
-          "description": "The last time this sighting was seen."
+          "description": "The end of the time window during which the SDO referenced by the sighting_of_ref property was sighted."
         },
         "last_seen_precision": {
           "$ref": "../common/timestamp-precision.json",
@@ -35,12 +35,12 @@
           "description": "This is an integer between 0 and 999,999,999 inclusive and represents the number of times the object was sighted."
         },
         "sighting_of_ref": {
-          "$ref": "identifier.json",
+          "$ref": "../common/identifier.json",
           "description": "An ID reference to the object that has been sighted."
         },
         "observed_data_refs": {
           "type": "array",
-          "description": "A list of ID references to the Observed Data that were seen.",
+          "description": "A list of ID references to the Observed Data objects that contain the raw cyber data for this Sighting.",
           "items": {
             "$ref": "../common/identifier.json",
             "minItems": 1
@@ -62,8 +62,6 @@
     }
   ],
   "required": [
-    "sighting_of_ref",
-    "first_seen",
-    "last_seen"
+    "sighting_of_ref"    
   ]
 }

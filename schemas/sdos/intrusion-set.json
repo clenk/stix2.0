@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "intrusion-set",
-  "description": "A grouped set of activity or infrastructure with common properties that is believed to be orchestrated by a single organization.",
+  "description": "An Intrusion Set is a grouped set of adversary behavior and resources with common properties that is believed to be orchestrated by a single organization.",
   "type": "object",
   "allOf": [
     {
@@ -38,9 +38,9 @@
           "$ref": "../common/timestamp-precision.json",
           "description": "The precision value for the first_seen field."
         },
-        "objectives": {
+        "goals": {
           "type": "array",
-          "description": "This field defines the Intrusion Set's primary goal, objectives, desired outcomes, or intended effect. Open Vocab - attack-objectives-ov",
+          "description": "The high level goals of this Intrusion Set, namely, what are they trying to do.",
           "items": {
             "type": "string",
             "minItems": 1
@@ -50,9 +50,13 @@
           "type": "string",
           "description": "This defines the organizational level at which this Intrusion Set typically works. Open Vocab - attack-resource-level-ov"
         },
-        "origin": {
+        "region": {
           "type": "string",
-          "description": "The country of origin for this Intrusion Set."
+          "description": "The primary region of origin for this Intrusion Set, if the actual country is not yet known."
+        },
+        "country": {
+          "type": "string",
+          "description": "The primary country of origin for this Intrusion Set."
         },
         "primary_motivation": {
           "type": "string",
@@ -97,24 +101,6 @@
         "personal-satisfaction",
         "revenge",
         "unpredictable"
-      ]
-    },
-    "attack-objective-ov": {
-      "type": "string",
-      "enum": [
-        "acquisition-theft",
-        "business-advantage",
-        "damage",
-        "embarrassment",
-        "technical-advantage",
-        "account-takeover",
-        "brand-damage",
-        "credential-theft",
-        "degradation-of-service",
-        "extortion",
-        "harassment",
-        "identity-theft",
-        "intellectual-property-theft"
       ]
     }
   }

@@ -22,17 +22,13 @@
           "type": "string",
           "description": "A description that provides more details and context about the Source."
         },
-        "classification": {
+        "entity_class": {
           "type": "string",
-          "description": "The type of entity that this Source describes, e.g. an individual, organization. Open Vocab - identity-classification-ov"
+          "description": "The type of entity that this Source describes, e.g. an individual, organization. Open Vocab - entity-classification-ov"
         },
         "sector": {
           "type": "string",
-          "description": "The sector of this Source. Open Vocab - industry-sector-ov",
-          "items": {
-            "type": "string",
-            "minItems": 1
-          }
+          "description": "The industry sector of this Source. Open Vocab - industry-sector-ov",          
         },
         "contact_information": {
           "type": "string",
@@ -43,10 +39,10 @@
   ],
   "required": [
     "name",
-    "classification"
+    "entity_class"
   ],
   "definitions": {
-    "identity-classification-ov": {
+    "entity-classification-ov": {
       "type": "string",
       "enum": [
         "individual",

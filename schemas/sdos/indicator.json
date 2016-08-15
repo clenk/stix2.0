@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "indicator",
-  "description": "An Indicator is used to detect activities of interest and for conveying specific patterns combined with their contextual information.",
+  "description": "Indicators describe evidence of suspicious or malicious cyber activity. ",
   "type": "object",
   "allOf": [
     {
@@ -46,11 +46,11 @@
           "$ref": "../common/timestamp-precision.json",
           "description": "The precision of the start timestamp."
         },
-        "valid_to": {
+        "valid_until": {
           "$ref": "../common/timestamp.json",
           "description": "The time at which this indicator should no longer be considered valuable intelligence."
         },
-        "valid_to_precision": {
+        "valid_until_precision": {
           "$ref": "../common/timestamp-precision.json",
           "description": "The precision of the end timestamp."
         },
@@ -86,6 +86,7 @@
       "type": "string",
       "enum": [
         "cybox",
+        "openioc",
         "snort",
         "yara"
       ]

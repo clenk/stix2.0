@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "observed-data",
-  "description": "This object document actions and objects that were observed at a specific time. The observed-data object uses CybOX objects to describe what was seen.",
+  "description": "Observed data conveys information that was observed on systems and networks, such as log data or network traffic, using the CybOX specification.",
   "type": "object",
   "allOf": [
     {
@@ -18,11 +18,11 @@
           "$ref": "../common/timestamp.json",
           "description": "The starting time of this Observed Data."
         },
-        "last-observed": {
+        "last_observed": {
           "$ref": "../common/timestamp.json",
           "description": "The ending time this Observed Data. For single point in time data, this should match the start time."
         },
-        "count": {
+        "number_observed": {
           "type": "integer",
           "description": "This is an integer between 0 and 999,999,999 inclusive."
         },
@@ -34,9 +34,9 @@
     }
   ],
   "required": [
-    "first-observed",
-    "last-observed",
-    "count",
+    "first_observed",
+    "last_observed",
+    "number_observed",
     "cybox"
   ]
 }

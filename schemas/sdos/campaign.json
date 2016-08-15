@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "campaign",
-  "description": "A Campaign is a set of related instances of a threat actor or group of threat actors pursuing a specific objective or result.",
+  "description": "A Campaign is a grouping of adversary behavior that describes a set of malicious activities or attacks that occur over a period of time against a specific set of targets.",
   "type": "object",
   "allOf": [
     {
@@ -38,92 +38,14 @@
           "$ref": "../common/timestamp-precision.json",
           "description": "The precision of the first_seen timestamp."
         },
-        "objectives": {
-          "type": "array",
-          "description": "This field defines the Campaign’s primary goal, objectives, desired outcomes, or intended effect. Open Vocab - attack-objectives-ov",
-          "items": {
-            "type": "string",
-            "minItems": 1
-          }
-        },
-        "resource_level": {
+        "objective": {
           "type": "string",
-          "description": "This defines the organizational level at which this Campaign typically works. Open Vocab - attack-resource-level-ov"
-        },
-        "primary_motivation": {
-          "type": "string",
-          "description": "The primary reason, motivation, or purpose behind this Campaign. Open Vocab - attack-motivation-ov"
-        },
-        "secondary_motivations": {
-          "type": "array",
-          "description": "The secondary reasons, motivations, or purposes behind this Campaign. Open Vocab - attack-motivation-ov",
-          "items": {
-            "type": "string",
-            "minItems": 1
-          }
-        },
-        "regions": {
-          "type": "array",
-          "description": "The list of regions (localities, nationalities) for this Campaign.",
-          "items": {
-            "type": "string",
-            "minItems": 1
-          }
-        },
-        "origin": {
-          "type": "string",
-          "description": "The country of origin for this Campaign."
-        }
+          "description": "This field defines the Campaign’s primary goal, objective, desired outcome, or intended effect. Open Vocab - attack-objectives-ov"         
+        }        
       }
     }
   ],
   "required": [
     "name"
-  ],
-  "definitions": {
-    "attack-motivation-ov": {
-      "type": "string",
-      "enum": [
-        "accidental",
-        "coercion",
-        "dominance",
-        "ideology",
-        "notoriety",
-        "organizational-gain",
-        "personal-gain",
-        "personal-satisfaction",
-        "revenge",
-        "unpredictable"
-      ]
-    },
-    "attack-objectives-ov": {
-      "type": "string",
-      "enum": [
-        "acquisition-theft",
-        "business-advantage",
-        "damage",
-        "embarrassment",
-        "technical-advantage",
-        "account-takeover",
-        "brand-damage",
-        "credential-theft",
-        "degradation-of-service",
-        "extortion",
-        "harassment",
-        "identity-theft",
-        "intellectual-property-theft"
-      ]
-    },
-    "attack-resource-level-ov": {
-      "type": "string",
-      "enum": [
-        "individual",
-        "club",
-        "contest",
-        "team",
-        "organization",
-        "government"
-      ]
-    }
-  }
+  ]
 }

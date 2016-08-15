@@ -15,7 +15,7 @@
 	},
 	"spec_version": {
 	   "type": "string",
-     "enum": ["2.0"],
+       "enum": ["2.0"],
 	   "description": "The version of the STIX specification used to represent the content in this bundle."
 	},
 	"attack_patterns": {
@@ -42,6 +42,11 @@
 	  "type": "array",
 	  "description": "Specifies a set of one or more cyber threat Indicators.",
 	  "items": {"$ref": "../sdos/indicator.json"}
+	},
+	"infrastructures": {
+	  "type": "array",
+	  "description": "Specifies a set of one or more cyber threat malicious infrastructure.",
+	  "items": {"$ref": "../sdos/infrastructure.json"}
 	},
 	"intrusion_sets": {
 	  "type": "array",
@@ -106,7 +111,9 @@
     "custom_objects": {
 	  "type": "array",
 	  "description": "Specifies a list of one or more custom objects.",
-	  "items": "object"
+	  "items": {
+        "type": "object"
+      }
 	}
   },
   "required": ["type", "id", "spec_version"]
