@@ -28,7 +28,10 @@ class SchemaInvalidError(Exception):
     """
     def __init__(self, msg=None, results=None):
         super(SchemaInvalidError, self).__init__(msg)
-        self.results = results
+        if not results:
+            self.results = ValidationErrorResults(self)
+        else:
+            self.results = results
 
 
 @python_2_unicode_compatible
@@ -36,7 +39,7 @@ class SchemaError(ValidationError):
     """Represents a JSON Schema validation error.
 
     Args:
-        error: An error returned from JSON Schema validation
+        error: An error returned from JSON Schema validation.
 
     Attributes:
         message: The JSON validation error message.
@@ -71,7 +74,7 @@ class FileResults(object):
         schema_results: JSON schema validation results.
         best_practice_results: STIX Best Practice validation results.
         profile_resutls: STIX Profile validation results.
-        fatal: Fatal error
+        fatal: Fatal error.
 
     """
     def __init__(self, fn=None):
@@ -120,7 +123,8 @@ class ValidationResults(BaseResults):
 
     Args:
         is_valid: The validation result.
-        errors: A list of strings reported from the JSON validation engine.
+        errors: A list of exception strings reported from the JSON validation
+            engine.
 
     Attributes:
         is_valid: ``True`` if the validation was successful and ``False``
@@ -167,7 +171,7 @@ class ValidationResults(BaseResults):
 
 
 class ValidationErrorResults(BaseResults):
-    """Can be used to communicate a failed validation due to a raised Exception.
+    """Results of a failed validation due to a raised Exception.
 
     Args:
         error: An ``Exception`` instance raised by validation code.
@@ -198,7 +202,7 @@ def is_json(fn):
 
 
 def list_json_files(directory, recursive=False):
-    """Returns a list of file paths for JSON files contained within `directory`.
+    """Returns a list of file paths for JSON files within `directory`.
 
     Args:
         directory: A path to a directory.
@@ -275,17 +279,13 @@ def run_validation(options):
 
 
 def validate_file(fn, options):
-    """Validates the input document `fn` with the validators that are passed
-    in.
+    """Validates the input document `fn` according to the options passed in.
 
     If any exceptions are raised during validation, no further validation
     will take place.
 
     Args:
-        schema_validator: An instance of STIXSchemaValidator (optional)
-        profile_validator: An instance of STIXProfileValidator (optional)
-        best_practice_validator: An instance of STIXBestPracticeValidator
-            (optional).
+        fn: The filename of the JSON file to be validated.
         options: An instance of ``argparse.Namespace``.
 
     Returns:
@@ -301,12 +301,10 @@ def validate_file(fn, options):
         # if options.best_practice_validate:
         #     results.best_practice_results = best_practice_validate(fn, options)
     except SchemaInvalidError as ex:
-        results.schema_results = ex.results
-        # TODO
-        # if options.best_practice_validate:
-        #     msg = ("File '{fn}' was schema-invalid. No further validation "
-        #            "will be performed.")
-        #    output.info(msg.format(fn=fn))
+        results.fatal = ValidationErrorResults(ex)
+        msg = ("File '{fn}' was schema-invalid. No further validation "
+               "will be performed.")
+        output.info(msg.format(fn=fn))
     except Exception as ex:
         results.fatal = ValidationErrorResults(ex)
         msg = ("Unexpected error occurred with file '{fn}'. No further "
@@ -317,23 +315,38 @@ def validate_file(fn, options):
 
 
 def load_validator(schema_path, schema):
-    try:
-    	# Get correct prefix based on OS
-        if os.name == 'nt':
-            file_prefix = 'file:///'
-        else:
-            file_prefix = 'file:'
+    """Creates a JSON schema validator for the given schema.
 
-        resolver = RefResolver(file_prefix + schema_path.replace("\\", "/"), schema)
-        validator = Draft4Validator(schema, resolver=resolver)
+    Args:
+        schema_path: The filename of the JSON schema.
+        schema: A Python object representation of the same schema.
 
-    except schema_exceptions.RefResolutionError:
-        raise SchemaInvalidError('Invalid JSON schema')
+    Returns:
+        An instance of Draft4Validator.
+
+    """
+	# Get correct prefix based on OS
+    if os.name == 'nt':
+        file_prefix = 'file:///'
+    else:
+        file_prefix = 'file:'
+
+    resolver = RefResolver(file_prefix + schema_path.replace("\\", "/"), schema)
+    validator = Draft4Validator(schema, resolver=resolver)
 
     return validator
 
 
 def load_schema(schema_path):
+    """Loads the JSON schema at the given path as a Python object.
+
+    Args:
+        schema_path: A filename for a JSON schema.
+
+    Returns:
+        A Python object representation of the schema.
+
+    """
     try:
         with open(schema_path) as schema_file:
             schema = json.load(schema_file)
@@ -348,7 +361,7 @@ def schema_validate(fn, options):
     Finds the correct schema by looking at what folder the input file is in.
 
     Args:
-        fn: A filename for a STIX JSON document
+        fn: A filename for a STIX JSON document.
         options: ValidationOptions instance with validation options for this
             validation run.
 
@@ -365,13 +378,24 @@ def schema_validate(fn, options):
         slash = '/'
     schema_path = options.schema_dir + slash + ('/').join(fn.split('tests'+slash)[1].split(slash)[0:-1]) + '.json'
     schema = load_schema(schema_path)
+
+    # Validate the schema first
+    try:
+        Draft4Validator.check_schema(schema)
+    except schema_exceptions.SchemaError as e:
+        raise SchemaInvalidError('Invalid JSON schema: ' + str(e))
+
     validator = load_validator(schema_path, schema)
 
     with open(fn) as instance_file:
         instance = json.load(instance_file)
 
-    # Actual validation
-    errors = sorted(validator.iter_errors(instance), key=lambda e: e.path)
+    # Actual validation of JSON document
+    try:
+        errors = sorted(validator.iter_errors(instance), key=lambda e: e.path)
+    except schema_exceptions.RefResolutionError:
+        raise SchemaInvalidError('Invalid JSON schema: a JSON reference failed to resolve')
+
     error_list = [SchemaError(error.message) for error in errors]
 
     if len(errors) == 0:
