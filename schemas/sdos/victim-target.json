@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "victim-target",
-  "description": "The Victim Target object describes the target of an attack.",
+  "description": "Victim Targets refer to the targets of potential or actual attacks.",
   "type": "object",
   "allOf": [
     {
@@ -22,9 +22,9 @@
           "type": "string",
           "description": "A description that provides more details and context about the Victim Target."
         },
-        "classification": {
+        "entity_class": {
           "type": "string",
-          "description": "The type of entity that this Source describes, e.g. an individual, organization. Open Vocab - identity-classification-ov"
+          "description": "The type of entity that this Victim Target describes, e.g. an individual, organization. Open Vocab - entity-class-ov"
         },
         "roles": {
           "type": "array",
@@ -55,10 +55,10 @@
   ],
   "required": [
     "name",
-    "classification"
+    "entity_class"
   ],
   "definitions": {
-    "identity-classification-ov": {
+    "entity-class-ov": {
       "type": "string",
       "enum": [
         "individual",

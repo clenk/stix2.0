@@ -4,11 +4,11 @@
   "description": "External references are used to describe pointers to information represented outside of STIX.",
   "type": "object",
   "properties": {
-    "source": {
+    "source_name": {
       "type": "string",
       "description": "The source within which the external-reference is defined (system, registry, organization, etc.)"
     },
-	  "description": {
+	"description": {
   	  "type": "string",
   	  "description": "A human readable description"
 	  },
@@ -21,5 +21,5 @@
   	  "description": "An identifier for the external reference content."
     }
   },
-  "required": ["source"]
+  "required": ["source_name"]
 }

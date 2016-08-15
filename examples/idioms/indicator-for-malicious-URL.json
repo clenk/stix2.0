@@ -1,16 +1,19 @@
 {
-  "type": "package",
-  "id": "package--44af6c39-c09b-49c5-9de2-394224b04982",
+  "type": "bundle",
+  "id": "bundle--44af6c39-c09b-49c5-9de2-394224b04982",
+  "spec_version": "2.0",
 
   "indicators": [
     {
       "type": "indicator",
       "id": "indicator--d81f86b9-975b-bc0b-775e-810c5ad45a4f",
-      "spec_version": "2.0",
-      "created_time": "?",
-      "kinds_of_indicator": [ "watchlist" ],
-      "title": "Malicious site hosting downloader",
-      "pattern": "url-object:value = 'http://x4z9arb.cn/4712'"
+      "version": 1,
+      "created": "2014-06-29T13:49:37.079000Z",
+	  "modified": "2014-06-29T13:49:37.079000Z",
+      "labels": ["malicious-activity"],
+      "name": "Malicious site hosting downloader",
+      "pattern": "url-object:value = 'http://x4z9arb.cn/4712'",
+	  "valid_from": "2014-06-29T13:49:37.079000Z"
     }
   ]
 }

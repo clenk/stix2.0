@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "course-of-action",
-  "description": "A Course of Action is used to describe a course of action to taken either to prevent an attack or to respond to an attack that is already occurring.",
+  "description": "A Course of Action is an action taken either to prevent an attack or to respond to an attack that is in progress. ",
   "type": "object",
   "allOf": [
     {
@@ -13,15 +13,7 @@
           "type": "string",
           "description": "The type of this object, which MUST be the literal `course-of-action`.",
           "enum": ["course-of-action"]
-        },
-        "labels": {
-          "type": "array",
-          "description": "This field is an Open Vocabulary that specifies the type of course of action. Open Vocabulary - course-of-action-label-ov",
-          "items": {
-            "type": "string",
-            "minItems": 1
-          }
-        },
+        },        
         "name": {
           "type": "string",
           "description": "The name used to identify the Course of Action."
@@ -33,29 +25,7 @@
       }
     }
   ],
-  "required": [
-    "labels",
+  "required": [    
     "name"
-  ],
-  "definitions": {
-    "course-of-action-label-ov": {
-      "type": "string",
-      "enum": [
-        "perimeter-blocking",
-        "internal-blocking",
-        "redirection",
-        "hardening",
-        "patching",
-        "eradication",
-        "rebuilding",
-        "training",
-        "monitoring",
-        "physical-access-restrictions",
-        "logical-access-restrictions",
-        "public-disclosure",
-        "diplomatic-actions",
-        "policy-actions"
-      ]
-    }
-  }
+  ]
 }
