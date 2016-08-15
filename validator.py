@@ -9,7 +9,7 @@ from validator import *
 from validator import codes
 
 
-EXAMPLES_DIR = os.path.abspath(os.path.dirname(__file__) + '/tests/')
+EXAMPLES_DIR = os.path.abspath(os.path.dirname(__file__)) + '/tests/'
 
 
 def _get_arg_parser():
