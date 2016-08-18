@@ -1,7 +1,9 @@
+from colorama import init, Fore
 from six import iteritems
 from . import codes
 
 _QUIET = False
+init(autoreset=True)
 
 
 def set_level(quiet_output=False):
@@ -84,14 +86,14 @@ def print_schema_results(results, level=0):
         level: The level at which to print the results.
 
     """
-    marker = "+" if results.is_valid else "!"
-    print_level("[%s] JSON Schema: %s", level, marker, results.is_valid)
+    marker = Fore.GREEN + "[+]" if results.is_valid else Fore.RED + "[!]"
+    print_level("%s JSON Schema: %s", level, marker, results.is_valid)
 
     if results.is_valid:
         return
 
     for error in results.errors:
-        print_level("[!] %s", level+1, error)
+        print_level(Fore.RED + "[!] %s", level+1, error)
 
 
 def print_results(results, options):
