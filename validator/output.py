@@ -1,9 +1,11 @@
-from colorama import init, Fore
+from colorama import init, Fore, Style
 from six import iteritems
 from . import codes
 
-_QUIET = False
 init(autoreset=True)
+_GREEN = Fore.GREEN
+_RED = Fore.RED + Style.BRIGHT
+_QUIET = False
 
 
 def set_level(quiet_output=False):
@@ -75,7 +77,7 @@ def print_level(fmt, level, *args):
 def print_fatal_results(results, level=0):
     """Prints fatal errors that occurred during validation runs.
     """
-    print_level("[!] Fatal Error: %s", level, results.error)
+    print_level(_RED + "[!] Fatal Error: %s", level, results.error)
 
 
 def print_schema_results(results, level=0):
@@ -86,14 +88,14 @@ def print_schema_results(results, level=0):
         level: The level at which to print the results.
 
     """
-    marker = Fore.GREEN + "[+]" if results.is_valid else Fore.RED + "[!]"
+    marker = _GREEN + "[+]" if results.is_valid else _RED + "[!]"
     print_level("%s JSON Schema: %s", level, marker, results.is_valid)
 
     if results.is_valid:
         return
 
     for error in results.errors:
-        print_level(Fore.RED + "[!] %s", level+1, error)
+        print_level(_RED + "[!] %s", level+1, error)
 
 
 def print_results(results, options):

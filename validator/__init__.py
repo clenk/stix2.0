@@ -371,12 +371,8 @@ def schema_validate(fn, options):
     """
     output.info("Performing JSON schema validation on %s" % fn)
 
-    # Use correct slashes for OS
-    if os.name == 'nt':
-        slash = '\\'
-    else:
-        slash = '/'
-    schema_path = options.schema_dir + slash + ('/').join(fn.split('tests'+slash)[1].split(slash)[0:-1]) + '.json'
+    slash = os.sep
+    schema_path = options.schema_dir + slash + slash.join(fn.split('tests'+slash)[1].split(slash)[0:-1]) + '.json'
     schema = load_schema(schema_path)
 
     # Validate the schema first
