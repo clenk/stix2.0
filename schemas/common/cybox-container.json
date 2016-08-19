@@ -18,6 +18,5 @@
       "type": "object",
       "description": "Set of CybOX objects"
     }
-  },
-  "required": ["type"]
+  }  
 }

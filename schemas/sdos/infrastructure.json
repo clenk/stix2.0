@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "infrastructure",
+  "description": "Malicious infrastructures are a type of TTP that describes the backend services and resources used by attackers to carry out attacks.",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "../common/core.json"
+    },
+    {
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The type of this object, which MUST be the literal `infrastructure`.",
+          "enum": ["infrastructure"]
+        },        
+        "name": {
+          "type": "string",
+          "description": "The name used to identify the infrastructure."
+        },
+        "description": {
+          "type": "string",
+          "description": "A description that provides the recipient with context about this infrastructure potentially including its purpose and its key characteristics."
+        },
+		"first_seen": {
+		  "$ref": "../common/timestamp.json",
+          "description": "The time that this malicious Infrastructure was first seen."
+		},
+		"first_seen_precision": {
+		  "$ref": "../common/timestamp-precision.json",
+          "description": "The precision of the first_seen timestamp."
+		},	
+		"kill_chain_phases": {
+          "type": "array",
+          "description": "The list of Kill Chain phases for which this Infrastructure is used.",
+          "items": {
+            "$ref": "../common/kill-chain-phase.json",
+            "minItems": 1
+          }
+        }		
+	  }
+	}
+  ],
+  "required": [    
+	"first_seen"
+  ]
+}
+		

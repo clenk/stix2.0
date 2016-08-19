@@ -1,49 +1,42 @@
 {
-  "type": "package",
-  "id": "package--44af6c39-c09b-49c5-9de2-394224b04982",
+  "type": "bundle",
+  "id": "bundle--44af6c39-c09b-49c5-9de2-394224b04982",
+  "spec_version": "2.0",
   
   "campaigns": [
-      {
+    {
         "type": "campaign",
         "id": "campaign--c831ab93-ff84-9cda-2bd8-b094004da969",
-        "spec_version": "2.0",
-        "created_time": "2014-02-20T09:00:00.000000Z",
-        "title": "Operation Alpha"
+        "version": 1,
+        "created": "2014-02-20T09:00:00.000000Z",
+        "modified": "2014-02-20T09:00:00.000000Z",
+        "name": "Operation Alpha"
     }
   ],
   
   "relationships": [
-      {
+    {
         "type": "relationship",
         "id": "relationship--81c279d9-c30e-4d12-8412-39192384efe7",
-        "spec_version": "2.0",
-        "created_time": "2014-02-20T09:00:00.000000Z", 
-        "kinds_of_relationships": [ 
-            "related-to"
-        ],
+        "version": 1,
+        "created": "2014-02-20T09:00:00.000000Z", 
+        "modified": "2014-02-20T09:00:00.000000Z",
+        "name": "targets",
         "source_ref": "campaign--c831ab93-ff84-9cda-2bd8-b094004da969",
-        "target_ref": "victim-targeting--4fde045a-b25f-f035-e8d0-29c9d5130cd9",
-        "is_directional": "true"
+        "target_ref": "victim-target--4fde045a-b25f-f035-e8d0-29c9d5130cd9"        
     }
   ],
   
-  "victim-targetings": [
-     {
-        "type": "victim-targeting",
-        "id": "victim-targeting--4fde045a-b25f-f035-e8d0-29c9d5130cd9",
-        "spec_version": "2.0",
-        "created_time": "2014-02-20T09:00:00.000000Z", 
-        "targets": [
-            {
-                "type": "information-type",
-                "title": "Customer PII"
-            },
-            
-             {
-                "type": "information-type",
-                "title": "Financial Data"
-            }
-         ]
+  "victim-targets": [
+    {
+        "type": "victim-target",
+        "id": "victim-target--4fde045a-b25f-f035-e8d0-29c9d5130cd9",
+        "version": 1,
+        "created": "2014-02-20T09:00:00.000000Z", 
+        "modified": "2014-02-20T09:00:00.000000Z",
+        "name": "Financial Service Customers",
+        "entity_class": "group",
+        "sectors": ["financial-services"]        
     }
-  ],
+  ]
 }

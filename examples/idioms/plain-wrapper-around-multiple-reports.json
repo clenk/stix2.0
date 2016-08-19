@@ -1,24 +1,29 @@
 {
-  "type": "package",
-  "id": "package--50578bc7-bb17-4f31-abf2-d5827d131368",
-  "created_time": "2015-05-07T14:22:14.761012Z",
+  "type": "bundle",
+  "id": "bundle--50578bc7-bb17-4f31-abf2-d5827d131368",
+  "spec_version": "2.0",
   
   "campaigns": [
     {
-        "type": "campaign",
-        "id": "campaign--1855cb8a-d96c-4859-a450-abb1e7c061f2",
-        "spec_version": "2.0",
-        "created_time": "2015-05-07T14:22:14.760144Z",    
-        "title": "Campaign against ICS"
+      "type": "campaign",
+      "id": "campaign--1855cb8a-d96c-4859-a450-abb1e7c061f2",
+      "version": 1,
+      "created": "2015-05-07T14:22:14.760144Z",  
+	  "modified": "2015-05-07T14:22:14.760144Z",
+      "name": "Campaign against ICS"
     }
   ],
   
-  "identities": [
+  "sources": [
     {
-          "type": "identity",
-          "id": "identity--d7ae33db-0111-45e7-9adb-75a7b081859a",
-          "name": "Government Sharing Program - GSP",
-          "created_time": "?"
+      "type": "source",
+      "id": "source--d7ae33db-0111-45e7-9adb-75a7b081859a",
+	  "version": 1,
+	  "created": "2015-03-02T13:15:18.793213Z",
+	  "modified": "2015-03-02T13:15:18.793213Z",
+      "name": "Government Sharing Program - GSP",
+	  "entity_class": "organization",
+	  "sector": "government-national"
     }
   ],
   
@@ -26,40 +31,48 @@
     {
       "type": "malware",
       "id": "malware--66647c79-5766-4ca7-ab8a-a579056e3c83",
-      "spec_version": "2.0",
-      "created_time": "2015-05-07T14:22:14.760302Z",
-      "title": "DrownedRat",
-      "kind_of_malware": [ "remote-access-trojan" ] 
+      "version": 1,
+      "created": "2015-05-07T14:22:14.760302Z",
+	  "modified": "2015-05-07T14:22:14.760302Z",
+      "name": "DrownedRat",
+      "labels": ["remote-access-trojan"] 
     }
   ],
   
   "reports": [
-  {
+   {
       "type": "report",   
       "id": "report--41e59083-e2d9-4e4b-9095-ebd1eb2f9350",
-      "spec_version": "2.0",
-      "created_time": "2015-05-07T14:22:14.760467Z",
-      "created_by_ref": "identity--d7ae33db-0111-45e7-9adb-75a7b081859a",
-      "title": "Report on Adversary Alpha's Campaign against the Industrial Control Sector",
-      "descriptions": ["Adversary Alpha has a campaign against the ICS sector!"],
-      "intents": ["campaign-characterization"],
-      "report_contains_refs": [
-        "campaign--1855cb8a-d96c-4859-a450-abb1e7c061f2"
-      ]
+      "version": 1,
+      "created": "2015-05-07T14:22:14.760467Z",
+	  "modified": "2015-05-07T14:22:14.760467Z",
+      "report_refs": [
+		"source--d7ae33db-0111-45e7-9adb-75a7b081859a",
+		"campaign--1855cb8a-d96c-4859-a450-abb1e7c061f2"
+	  ],
+      "name": "Report on Adversary Alpha's Campaign against the Industrial Control Sector",
+      "description": "Adversary Alpha has a campaign against the ICS sector!",
+      "labels": ["campaign"],
+      "published": "2015-01-01T12:42:16.157317Z"      
     },
     
     {
       "type": "report",   
       "id": "report--bd9cdb35-16a3-4b20-927a-3ae97d5ec4b9",
-      "spec_version": "2.0",
-      "created_time": "2015-05-07T14:22:14.760756Z",
-      "created_by_ref": "identity--d7ae33db-0111-45e7-9adb-75a7b081859a",
-      "title": "Indicators for Malware DrownedRat",
-      "descriptions": ["Adversary Alpha has a campaign against the ICS sector!"],
-      "intents": ["indicators-malware-artifacts"],
-      "report_contains_refs": [
-        "malware--66647c79-5766-4ca7-ab8a-a579056e3c83"
-      ]
+      "version": 1,
+      "created": "2015-05-07T14:22:14.760756Z",
+	  "modified": "2015-05-07T14:22:14.760756Z",
+      "report_refs": [
+		"source--d7ae33db-0111-45e7-9adb-75a7b081859a",
+		"malware--66647c79-5766-4ca7-ab8a-a579056e3c83"
+	  ],
+      "name": "Indicators for Malware DrownedRat",
+      "description": "Adversary Alpha has a campaign against the ICS sector!",
+      "labels": [
+		"indicator",
+		"malware"
+	  ],
+	  "published": "2015-01-01T12:42:16.157317Z"      
     }
   ]
 }
