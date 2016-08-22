@@ -5,17 +5,17 @@ from . import codes
 init(autoreset=True)
 _GREEN = Fore.GREEN
 _RED = Fore.RED + Style.BRIGHT
-_QUIET = False
+_VERBOSE = False
 
 
-def set_level(quiet_output=False):
+def set_level(verbose_output=False):
     """Set the output level for the application.
-    If ``quiet_output`` is True then the application does not print
+    If ``verbose_output`` is False then the application does not print
     informational messages to stdout; only results or fatal errors are printed
     to stdout.
     """
-    global _QUIET
-    _QUIET = quiet_output
+    global _VERBOSE
+    _VERBOSE = verbose_output
 
 
 def error(msg, status=codes.EXIT_FAILURE):
@@ -36,14 +36,14 @@ def info(msg):
 
     Note:
         If the application is running in "Quiet Mode"
-        (i.e., ``_QUIET == True``), this function will return
+        (i.e., ``_VERBOSE == False``), this function will return
         immediately and no message will be printed.
 
     Args:
         msg: The message to print.
 
     """
-    if _QUIET:
+    if not _VERBOSE:
         return
 
     print("[-] %s" % msg)

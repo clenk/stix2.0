@@ -61,12 +61,12 @@ def _get_arg_parser():
     # )
 
     parser.add_argument(
-        "-q",
-        "--quiet",
-        dest="quiet",
+        "-v",
+        "--verbose",
+        dest="verbose",
         action="store_true",
         default=False,
-        help="Only print results and errors if they occur."
+        help="Print informational notes and more verbose error messages."
     )
 
     return parser
@@ -84,7 +84,7 @@ def main():
 
     try:
         # Set the output level (e.g., quiet vs. verbose)
-        output.set_level(args.quiet)
+        output.set_level(args.verbose)
 
         # Validate input documents
         results = run_validation(args)

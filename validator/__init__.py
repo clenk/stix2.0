@@ -392,7 +392,10 @@ def schema_validate(fn, options):
     except schema_exceptions.RefResolutionError:
         raise SchemaInvalidError('Invalid JSON schema: a JSON reference failed to resolve')
 
-    error_list = [SchemaError(error.message) for error in errors]
+    if options.verbose:
+        error_list = [SchemaError(str(error)) for error in errors]
+    else:
+        error_list = [SchemaError(error.message) for error in errors]
 
     if len(errors) == 0:
         return ValidationResults(True)
