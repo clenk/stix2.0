@@ -32,7 +32,9 @@
         },
         "count": {
           "type": "integer",
-          "description": "This is an integer between 0 and 999,999,999 inclusive and represents the number of times the object was sighted."
+          "description": "This is an integer between 0 and 999,999,999 inclusive and represents the number of times the object was sighted.",
+          "minimum": 0,
+          "maximum": 999999999
         },
         "sighting_of_ref": {
           "$ref": "../common/identifier.json",

@@ -24,7 +24,9 @@
         },
         "number_observed": {
           "type": "integer",
-          "description": "This is an integer between 0 and 999,999,999 inclusive."
+          "description": "This is an integer between 0 and 999,999,999 inclusive.",
+          "minimum": 1,
+          "maximum": 999999999
         },
         "cybox": {
           "$ref": "../common/cybox-container.json",
