@@ -16,21 +16,21 @@
         },
         "first_observed": {
           "$ref": "../common/timestamp.json",
-          "description": "The starting time of this Observed Data."
+          "description": "The beginning of the time window that the data was observed during."
         },
         "last_observed": {
           "$ref": "../common/timestamp.json",
-          "description": "The ending time this Observed Data. For single point in time data, this should match the start time."
+          "description": "The end of the time window that the data was observed during."
         },
         "number_observed": {
           "type": "integer",
-          "description": "This is an integer between 0 and 999,999,999 inclusive.",
+          "description": "The number of times the data represented in the cybox property was observed. This MUST be an integer between 1 and 999,999,999 inclusive.",
           "minimum": 1,
           "maximum": 999999999
         },
         "cybox": {
           "$ref": "../common/cybox-container.json",
-          "description": "The CybOX content that describes what was seen."
+          "description": "The CybOX content that describes a single `fact` that was observed."
         }
       }
     }

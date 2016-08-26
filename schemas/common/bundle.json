@@ -30,24 +30,19 @@
 	},
 	"courses_of_action": {
 	  "type": "array",
-	  "description": "Specifies a set of one or more Courses of Action that could be taken in regard to one of more cyber threats.",
+	  "description": "Specifies a set of one or more Courses of Action.",
 	  "items": {"$ref": "../sdos/course-of-action.json"}
 	},
-    "incidents": {
+    "identities": {
 	  "type": "array",
-	  "description": "Specifies a set of one or more cyber threat Incidents.",
-	  "items": {"$ref": "../sdos/incident.json"}
+	  "description": "Specifies a set of one or more Identities.",
+	  "items": {"$ref": "../sdos/identity.json"}
 	},
 	"indicators": {
 	  "type": "array",
 	  "description": "Specifies a set of one or more cyber threat Indicators.",
 	  "items": {"$ref": "../sdos/indicator.json"}
-	},
-	"infrastructures": {
-	  "type": "array",
-	  "description": "Specifies a set of one or more cyber threat malicious infrastructure.",
-	  "items": {"$ref": "../sdos/infrastructure.json"}
-	},
+	},	
 	"intrusion_sets": {
 	  "type": "array",
 	  "description": "Specifies a set of one or more cyber threat Intrusion Sets.",
@@ -82,12 +77,7 @@
 	  "type": "array",
 	  "description": "Specifies a set of one or more sightings.",
 	  "items": {"$ref": "../sros/sighting.json"}
-	},
-	"sources": {
-	  "type": "array",
-	  "description": "Specifies a set of one or more individual or organizational sources.",
-	  "items": {"$ref": "../sdos/source.json"}
-	},
+	},	
 	"threat_actors": {
 	  "type": "array",
 	  "description": "Specifies a set of one or more Threat Actors.",
@@ -97,12 +87,7 @@
 	  "type": "array",
 	  "description": "Specifies a set of one or more Tools.",
 	  "items": {"$ref": "../sdos/tool.json"}
-	},
-    "victim_targets": {
-	  "type": "array",
-	  "description": "Specifies a set of one or more Victim Targets.",
-	  "items": {"$ref": "../sdos/victim-target.json"}
-	},
+	},    
     "vulnerabilities": {
 	  "type": "array",
 	  "description": "Specifies a set of one or more Vulnerabilities.",

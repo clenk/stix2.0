@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "core",
-  "description": "Abstract set of properties applied to all top-level objects.",
+  "description": "Common properties and behavior across all STIX Domain Objects and STIX Relationship Objects.",
   "type": "object",
   "properties": {
     "type": {
@@ -71,5 +71,21 @@
        }
     }
   },
-  "required": ["type", "id", "version", "created", "modified"]
+  "not": {
+    "anyOf": [
+	  {"required": ["confidence"]},
+	  {"required": ["severity"]},
+	  {"required": ["action"]},
+	  {"required": ["usernames"]},
+	  {"required": ["phone_numbers"]},
+	  {"required": ["addresses"]}	  
+	]
+  },
+  "required": [
+    "type", 
+	"id", 
+	"version", 
+	"created", 
+	"modified"
+  ]
 }
