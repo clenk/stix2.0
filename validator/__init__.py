@@ -5,13 +5,15 @@ import sys
 import argparse
 import json
 import logging
+from itertools import chain
+from collections import deque
 
 # external
-from jsonschema import Draft4Validator, RefResolver
+from jsonschema import Draft4Validator, RefResolver, validators
 from jsonschema import exceptions as schema_exceptions
-from six import python_2_unicode_compatible
+from six import python_2_unicode_compatible, iteritems
 
-#internal
+# internal
 from . import output
 
 
@@ -23,8 +25,8 @@ class ValidationError(Exception):
 
 
 class SchemaInvalidError(Exception):
-    """Exception to be raised when schema validation fails for a given
-    document.
+    """Represents an error with the JSON Schema file itself.
+
     """
     def __init__(self, msg=None, results=None):
         super(SchemaInvalidError, self).__init__(msg)
@@ -49,7 +51,10 @@ class SchemaError(ValidationError):
         super(SchemaError, self).__init__()
 
         if error:
-            self.message = str(error)
+            if type(error) is SchemaError:
+                self.message = str(error)
+            elif type(error) is tuple:
+                self.message = error[0].popleft() + ": " + error[1]
         else:
             self.message = None
 
@@ -314,6 +319,52 @@ def validate_file(fn, options):
     return results
 
 
+class CustomDraft4Validator(Draft4Validator):
+    """Custom validator class for JSON Schema Draft 4.
+
+    """
+    def iter_errors_more(self, instance, _schema=None):
+        """Adds a custom function to perform additional validation not possible
+        merely with JSON schemas.
+
+        """
+        # Ensure `instance` is a whole STIX object, not just a property of one
+        if not (type(instance) is dict and 'id' in instance):
+            return
+
+        if _schema is None:
+            _schema = self.schema
+
+        # `modified` property must be later or equal to `created` property
+        if 'modified' in instance and 'created' in instance and \
+                instance['modified'] < instance['created']:
+            yield schema_exceptions.ValidationError(
+                "'modified' (%s) must be later or equal to 'created' (%s)"\
+                % (instance['modified'], instance['created']),
+                path=deque([instance['type']]))
+
+        # Check constraints on 'version' property
+        if 'version' in instance and 'modified' in instance and \
+                'created' in instance:
+            if instance['version'] == 1 and instance['modified'] != instance['created']:
+                yield schema_exceptions.ValidationError("'version' is 1, "\
+                    "but 'created' (%s) is not equal to 'modified' (%s)" \
+                    % (instance['created'], instance['modified']),
+                    path=deque([instance['type']]))
+            elif instance['version'] > 1 and instance['modified'] <= instance['created']:
+                yield schema_exceptions.ValidationError("'version' is greater than 1, "\
+                    "but 'modified' (%s) is not greater than 'created' (%s)" \
+                    % (instance['modified'], instance['created']),
+                    path=deque([instance['type']]))
+
+        # Validate any child STIX objects
+        for field in instance:
+            if type(instance[field]) is list:
+                for obj in instance[field]:
+                    for err in self.iter_errors_more(obj, _schema):
+                        yield err
+
+
 def load_validator(schema_path, schema):
     """Creates a JSON schema validator for the given schema.
 
@@ -332,7 +383,7 @@ def load_validator(schema_path, schema):
         file_prefix = 'file:'
 
     resolver = RefResolver(file_prefix + schema_path.replace("\\", "/"), schema)
-    validator = Draft4Validator(schema, resolver=resolver)
+    validator = CustomDraft4Validator(schema, resolver=resolver)
 
     return validator
 
@@ -388,14 +439,17 @@ def schema_validate(fn, options):
 
     # Actual validation of JSON document
     try:
-        errors = sorted(validator.iter_errors(instance), key=lambda e: e.path)
+        some_errors = validator.iter_errors(instance)
+        more_errors = validator.iter_errors_more(instance)
+        chained_errors = chain(some_errors, more_errors)
+        errors = sorted(chained_errors, key=lambda e: e.path)
     except schema_exceptions.RefResolutionError:
         raise SchemaInvalidError('Invalid JSON schema: a JSON reference failed to resolve')
 
     if options.verbose:
         error_list = [SchemaError(str(error)) for error in errors]
     else:
-        error_list = [SchemaError(error.message) for error in errors]
+        error_list = [SchemaError((error.path, error.message)) for error in errors]
 
     if len(errors) == 0:
         return ValidationResults(True)
