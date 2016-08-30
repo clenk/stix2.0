@@ -51,10 +51,7 @@ class SchemaError(ValidationError):
         super(SchemaError, self).__init__()
 
         if error:
-            if type(error) is SchemaError:
-                self.message = str(error)
-            elif type(error) is tuple:
-                self.message = error[0].popleft() + ": " + error[1]
+            self.message = str(error)
         else:
             self.message = None
 
@@ -449,7 +446,7 @@ def schema_validate(fn, options):
     if options.verbose:
         error_list = [SchemaError(str(error)) for error in errors]
     else:
-        error_list = [SchemaError((error.path, error.message)) for error in errors]
+        error_list = [SchemaError(error.path.popleft() + ": " + error.message) for error in errors]
 
     if len(errors) == 0:
         return ValidationResults(True)
