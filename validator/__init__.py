@@ -5,6 +5,7 @@ import sys
 import argparse
 import json
 import logging
+import re
 from itertools import chain
 from collections import deque
 
@@ -17,6 +18,52 @@ from six import python_2_unicode_compatible, iteritems
 from . import output
 
 
+class ValidationOptions(object):
+    """Collection of validation options which can be set via command line or
+    programmatically in a script.
+
+    It can be initialized either by passing in the result of parse_args() from
+    argparse, or by specifying individual options.
+
+    Args:
+        cmd_args: An instance of ``argparse.Namespace`` containing options
+            supplied on the command line.
+        verbose: True if informational notes and more verbose error messages
+            should be printed to stdout/stderr.
+        files: A list of input files and directories of files to be
+            validated.
+        recursive: Recursively descend into input directories.
+        schema_dir: A user-defined schema directory to validate against.
+
+    Attributes:
+        verbose: True if informational notes and more verbose error messages
+            should be printed to stdout/stderr.
+        files: A list of input files and directories of files to be
+            validated.
+        recursive: Recursively descend into input directories.
+        schema_dir: A user-defined schema directory to validate against.
+
+    """
+    def __init__(self, cmd_args=None, verbose=False, files=None, recursive=False, schema_dir=None):
+        if cmd_args is not None:
+            self.verbose = cmd_args.verbose
+            self.files = cmd_args.files
+            self.recursive = cmd_args.recursive
+            self.schema_dir = cmd_args.schema_dir
+        else:
+            # SHOULD requirements
+            # TODO
+            # self.best_practice_validate = False
+
+            # output options
+            self.verbose = verbose
+
+            # input options
+            self.files = files
+            self.recursive = recursive
+            self.schema_dir = schema_dir
+
+
 class ValidationError(Exception):
     """Base Exception for all validator-specific exceptions. This can be used
     directly as a generic Exception.
@@ -24,7 +71,7 @@ class ValidationError(Exception):
     pass
 
 
-class SchemaInvalidError(Exception):
+class SchemaInvalidError(ValidationError):
     """Represents an error with the JSON Schema file itself.
 
     """
@@ -64,14 +111,21 @@ class SchemaError(ValidationError):
         return str(self.message)
 
 
+class JSONError(schema_exceptions.ValidationError):
+    """Wrapper for errors originating from iter_errors() in the jsonschema module.
+    """
+    def __init__(self, msg=None, instance_type=None):
+        super(JSONError, self).__init__(msg, path=deque([instance_type]))
+
+
 
 class FileResults(object):
     """Stores all validation results for given file.
 
     Args:
         fn: The filename/path for the file that was validated.
-    Attributes:
 
+    Attributes:
         fn: The filename/path for the file that was validated.
         schema_results: JSON schema validation results.
         best_practice_results: STIX Best Practice validation results.
@@ -311,7 +365,7 @@ def validate_file(fn, options):
         results.fatal = ValidationErrorResults(ex)
         msg = ("Unexpected error occurred with file '{fn}'. No further "
                "validation will be performed: {error}")
-        logging.info(msg.format(fn=fn, error=str(ex)))
+        output.info(msg.format(fn=fn, error=str(ex)))
 
     return results
 
@@ -326,7 +380,7 @@ class CustomDraft4Validator(Draft4Validator):
 
         """
         # Ensure `instance` is a whole STIX object, not just a property of one
-        if not (type(instance) is dict and 'id' in instance):
+        if not (type(instance) is dict and 'id' in instance and 'type' in instance):
             return
 
         if _schema is None:
@@ -335,24 +389,37 @@ class CustomDraft4Validator(Draft4Validator):
         # `modified` property must be later or equal to `created` property
         if 'modified' in instance and 'created' in instance and \
                 instance['modified'] < instance['created']:
-            yield schema_exceptions.ValidationError(
-                "'modified' (%s) must be later or equal to 'created' (%s)"\
-                % (instance['modified'], instance['created']),
-                path=deque([instance['type']]))
+            yield JSONError("'modified' (%s) must be later or equal to 'created' (%s)"\
+                % (instance['modified'], instance['created']), instance['type'])
 
         # Check constraints on 'version' property
         if 'version' in instance and 'modified' in instance and \
                 'created' in instance:
             if instance['version'] == 1 and instance['modified'] != instance['created']:
-                yield schema_exceptions.ValidationError("'version' is 1, "\
-                    "but 'created' (%s) is not equal to 'modified' (%s)" \
-                    % (instance['created'], instance['modified']),
-                    path=deque([instance['type']]))
+                yield JSONError("'version' is 1, but 'created' (%s) is not "\
+                    "equal to 'modified' (%s)" \
+                    % (instance['created'], instance['modified']), instance['type'])
             elif instance['version'] > 1 and instance['modified'] <= instance['created']:
-                yield schema_exceptions.ValidationError("'version' is greater than 1, "\
-                    "but 'modified' (%s) is not greater than 'created' (%s)" \
-                    % (instance['modified'], instance['created']),
-                    path=deque([instance['type']]))
+                yield JSONError("'version' is greater than 1, but 'modified'"\
+                    " (%s) is not greater than 'created' (%s)" \
+                    % (instance['modified'], instance['created']), instance['type'])
+
+        # Ensure that if CybOX is used, version 1.0 of the patterning language is used.
+        if instance['type'] == 'indicator' and 'pattern_lang' in instance and \
+                instance['pattern_lang'] == 'cybox':
+            if 'pattern_lang_version' in instance and instance['pattern_lang_version'] != '1.0':
+                yield JSONError("'pattern_lang' is 'cybox' but" \
+                     "'pattern_lang_version' is not '1.0'!", instance['type'])
+
+        # If CAPEC is used in an attack pattern's external reference,
+        # ensure a CAPEC id is also used.
+        if instance['type'] == 'attack-pattern' and 'external_references' in instance:
+            for ref in instance['external_references']:
+                if ref['source_name'] == 'capec'and ('external_id' not in \
+                        instance['external_references']) or \
+                        re.match('CAPEC-\d+', instance['external_references']['external_id']):
+                    yield JSONError("A CAPEC 'external_reference' must have an "\
+                            "'external_id' formatted as CAPEC-[id]", 'external_reference')
 
         # Validate any child STIX objects
         for field in instance:
@@ -444,7 +511,7 @@ def schema_validate(fn, options):
         raise SchemaInvalidError('Invalid JSON schema: a JSON reference failed to resolve')
 
     if options.verbose:
-        error_list = [SchemaError(str(error)) for error in errors]
+        error_list = [SchemaError(error.path.popleft() + ": " + str(error)) for error in errors]
     else:
         error_list = [SchemaError(error.path.popleft() + ": " + error.message) for error in errors]
 

@@ -24,6 +24,7 @@ def _get_arg_parser():
         description=__doc__
     )
 
+    # Input options
     parser.add_argument(
         "files",
         metavar="FILES",
@@ -33,7 +34,6 @@ def _get_arg_parser():
              "STIX files to validate. If none is given, the tests/ directory "
              "will be recursively validated."
     )
-
     parser.add_argument(
         "-r",
         "--recursive",
@@ -42,7 +42,6 @@ def _get_arg_parser():
         default=False,
         help="Recursively descend into input directories."
     )
-
     parser.add_argument(
         "--schemas",
         dest="schema_dir",
@@ -50,6 +49,8 @@ def _get_arg_parser():
         help="Schema directory. If not provided, the STIX schemas bundled "
              "with this script will be used."
     )
+
+    # SHOULD requirements
 
     # TODO
     # parser.add_argument(
@@ -60,6 +61,7 @@ def _get_arg_parser():
     #     help="Check that the document follows authoring best practices."
     # )
 
+    # Output options
     parser.add_argument(
         "-v",
         "--verbose",
