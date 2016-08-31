@@ -5,17 +5,16 @@ import sys
 import argparse
 import json
 import logging
-import re
 from itertools import chain
-from collections import deque
 
 # external
-from jsonschema import Draft4Validator, RefResolver, validators
+from jsonschema import RefResolver, validators
 from jsonschema import exceptions as schema_exceptions
 from six import python_2_unicode_compatible, iteritems
 
 # internal
 from . import output
+from .validators import CustomDraft4Validator
 
 
 class ValidationOptions(object):
@@ -109,13 +108,6 @@ class SchemaError(ValidationError):
 
     def __str__(self):
         return str(self.message)
-
-
-class JSONError(schema_exceptions.ValidationError):
-    """Wrapper for errors originating from iter_errors() in the jsonschema module.
-    """
-    def __init__(self, msg=None, instance_type=None):
-        super(JSONError, self).__init__(msg, path=deque([instance_type]))
 
 
 
@@ -370,65 +362,6 @@ def validate_file(fn, options):
     return results
 
 
-class CustomDraft4Validator(Draft4Validator):
-    """Custom validator class for JSON Schema Draft 4.
-
-    """
-    def iter_errors_more(self, instance, _schema=None):
-        """Adds a custom function to perform additional validation not possible
-        merely with JSON schemas.
-
-        """
-        # Ensure `instance` is a whole STIX object, not just a property of one
-        if not (type(instance) is dict and 'id' in instance and 'type' in instance):
-            return
-
-        if _schema is None:
-            _schema = self.schema
-
-        # `modified` property must be later or equal to `created` property
-        if 'modified' in instance and 'created' in instance and \
-                instance['modified'] < instance['created']:
-            yield JSONError("'modified' (%s) must be later or equal to 'created' (%s)"\
-                % (instance['modified'], instance['created']), instance['type'])
-
-        # Check constraints on 'version' property
-        if 'version' in instance and 'modified' in instance and \
-                'created' in instance:
-            if instance['version'] == 1 and instance['modified'] != instance['created']:
-                yield JSONError("'version' is 1, but 'created' (%s) is not "\
-                    "equal to 'modified' (%s)" \
-                    % (instance['created'], instance['modified']), instance['type'])
-            elif instance['version'] > 1 and instance['modified'] <= instance['created']:
-                yield JSONError("'version' is greater than 1, but 'modified'"\
-                    " (%s) is not greater than 'created' (%s)" \
-                    % (instance['modified'], instance['created']), instance['type'])
-
-        # Ensure that if CybOX is used, version 1.0 of the patterning language is used.
-        if instance['type'] == 'indicator' and 'pattern_lang' in instance and \
-                instance['pattern_lang'] == 'cybox':
-            if 'pattern_lang_version' in instance and instance['pattern_lang_version'] != '1.0':
-                yield JSONError("'pattern_lang' is 'cybox' but" \
-                     "'pattern_lang_version' is not '1.0'!", instance['type'])
-
-        # If CAPEC is used in an attack pattern's external reference,
-        # ensure a CAPEC id is also used.
-        if instance['type'] == 'attack-pattern' and 'external_references' in instance:
-            for ref in instance['external_references']:
-                if ref['source_name'] == 'capec'and ('external_id' not in \
-                        instance['external_references']) or \
-                        re.match('CAPEC-\d+', instance['external_references']['external_id']):
-                    yield JSONError("A CAPEC 'external_reference' must have an "\
-                            "'external_id' formatted as CAPEC-[id]", 'external_reference')
-
-        # Validate any child STIX objects
-        for field in instance:
-            if type(instance[field]) is list:
-                for obj in instance[field]:
-                    for err in self.iter_errors_more(obj, _schema):
-                        yield err
-
-
 def load_validator(schema_path, schema):
     """Creates a JSON schema validator for the given schema.
 
@@ -492,7 +425,7 @@ def schema_validate(fn, options):
 
     # Validate the schema first
     try:
-        Draft4Validator.check_schema(schema)
+        CustomDraft4Validator.check_schema(schema)
     except schema_exceptions.SchemaError as e:
         raise SchemaInvalidError('Invalid JSON schema: ' + str(e))
 
