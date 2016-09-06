@@ -6,7 +6,16 @@
   "properties": {
     "type": {
       "type": "string",
-      "description": "The type property identifies the type of STIX Object (SDO, Relationship Object, etc). The value of the type field MUST be one of the types defined by a STIX Object (e.g., indicator)."
+	  "pattern": "^\\-?[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*\\-?$",
+	  "minLength": 3,
+      "maxLength": 250,
+      "description": "The type property identifies the type of STIX Object (SDO, Relationship Object, etc). The value of the type field MUST be one of the types defined by a STIX Object (e.g., indicator).",
+	  "not": {
+	    "enum": [
+	      "incident", 
+		  "infrastructure"
+		]
+	  }
     },
     "id": {
       "$ref": "identifier.json",
