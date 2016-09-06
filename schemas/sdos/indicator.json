@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "indicator",
-  "description": "Indicators describe evidence of suspicious or malicious cyber activity. ",
+  "description": "Indicators contain a pattern that can be used to detect suspicious or malicious cyber activity.",
   "type": "object",
   "allOf": [
     {
@@ -37,6 +37,10 @@
         "pattern_lang": {
           "type": "string",
           "description": "The language used to define the pattern (in the pattern field). The default is cybox if the field is omitted. Open Vocabulary - pattern-lang-ov"
+        },
+		"pattern_lang_version": {
+          "type": "string",
+          "description": "The version of the language used to define the pattern (in the pattern field)."
         },
         "valid_from": {
           "$ref": "../common/timestamp.json",

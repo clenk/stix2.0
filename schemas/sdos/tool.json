@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "tool",
-  "description": "A Tool object represents legitimate software (or in some cases grayware) that is used by threat actors to perform attacks.",
+  "description": "Tools are legitimate software that can be used by threat actors to perform attacks.",
   "type": "object",
   "allOf": [
     {
@@ -28,7 +28,7 @@
           "type": "string",
           "description": "The name used to identify the Tool."
         },
-        "descripton": {
+        "description": {
           "type": "string",
           "description": "Provides more context and details about the Tool object."
         },

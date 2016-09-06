@@ -12,7 +12,8 @@
 	  "modified": "2014-05-08T09:00:00.000000Z",
       "name": "IP Address for known C2 channel",
       "labels": ["malicious-activity"],
-      "pattern": "ipv4addr-object.value = '10.0.0.0'",
+      "pattern": "ipv4addr-object:value EQ '10.0.0.0'",
+	  "pattern_lang": "cybox",
 	  "valid_from": "2014-05-08T09:00:00.000000Z"
     }
    ]  

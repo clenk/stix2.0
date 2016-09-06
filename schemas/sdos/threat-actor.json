@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "threat-actor",
-  "description": "A Threat Actor object is a mechanism for describing and documenting an individual, a group of individuals, a class of actors, or an organization believed to be operating with malicious intent.",
+  "description": "Threat Actors are actual individuals, groups, or organizations believed to be operating with malicious intent.",
   "type": "object",
   "allOf": [
     {
@@ -37,11 +37,7 @@
             "type": "string",
             "minItems": 1
           }
-        },
-        "entity_class": {
-          "type": "string",
-          "description": "The type of entity that this Threat Actor describes, e.g. an individual, organization. Open Vocab - entity-class-ov"
-        },
+        },        
         "roles": {
           "type": "array",
           "description": "This is a list of roles the Threat Actor plays. Open Vocab - threat-actor-role-ov",
@@ -60,7 +56,7 @@
         },
         "sophistication": {
           "type": "string",
-          "description": "The skill, specific knowledge, special training, or expertise a Threat Actor must have to perform the attack. Open Vocab - attack-sophistication-level-ov"
+          "description": "The skill, specific knowledge, special training, or expertise a Threat Actor must have to perform the attack. Open Vocab - threat-actor-sophistication-ov"
         },
         "resource_level": {
           "type": "string",
@@ -85,69 +81,44 @@
             "type": "string",
             "minItems": 1
           }
-        },
-        "regions": {
-          "type": "array",
-          "description": "The regions or geographic locations they are known to operate in.",
-          "type": "string",
-          "minItems": 1
-        },
-        "nationalities": {
-          "type": "array",
-          "description": "The nationalities of this Threat Actor.",
-		  "items": {
-            "type": "string",
-            "minItems": 1
-          }
-        }
+        }        
       }
     }
   ],
   "required": [
     "name",
-    "labels",
-	"entity_class"
+    "labels"	
   ],
-  "definitions": {
-    "entity-class-ov": {
-      "type": "string",
-      "enum": [
-        "individual",
-        "group",
-        "organization",
-        "class",
-        "unknown"
-      ]
-    },
+  "definitions": {    
     "threat-actor-label-ov": {
       "type": "string",
       "enum": [
         "activist",
         "competitor",
         "crime-syndicate",
+		"criminal",
         "hacker",
         "insider-accidental",
         "insider-disgruntled",
         "nation-state",
         "sensationalist",
         "spy",
-        "terrorist",
-        "thief"
+        "terrorist"        
       ]
     },
     "threat-actor-role-ov": {
       "type": "string",
       "enum": [
-        "independent-agent",
+        "agent",
         "director",
+		"independent",
 		"sponsor",        
         "infrastructure-operator",
         "infrastructure-architect",
-        "malware-author",
-        "perpetrator"
+        "malware-author"        
       ]
     },
-    "attack-sophistication-level-ov": {
+    "threat-actor-sophistication-ov": {
       "type": "string",
       "enum": [
         "none",

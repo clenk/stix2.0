@@ -18,7 +18,7 @@
           "type": "string",
           "description": "The name used to identify the Intrusion Set."
         },
-        "descripton": {
+        "description": {
           "type": "string",
           "description": "Provides more context and details about the Intrusion Set object."
         },
@@ -55,8 +55,8 @@
           "description": "The primary region of origin for this Intrusion Set, if the actual country is not yet known."
         },
         "country": {
-          "type": "string",
-          "description": "The primary country of origin for this Intrusion Set."
+          "$ref": "../common/country-code.json",
+          "description": "The primary country of origin for this Intrusion Set. The value MUST be from the ISO 3166-1 Alpha-2 codes and represented in lowercase."
         },
         "primary_motivation": {
           "type": "string",

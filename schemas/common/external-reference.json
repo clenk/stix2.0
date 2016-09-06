@@ -21,5 +21,18 @@
   	  "description": "An identifier for the external reference content."
     }
   },
-  "required": ["source_name"]
+  "required": [
+		"source_name"
+	],
+	"anyOf":[
+		{
+			"required" : ["external_id"]
+		},
+		{
+			"required" : ["description"]
+		},
+		{
+			"required" : ["url"]
+		},
+	]
 }

@@ -46,7 +46,7 @@
         "version": 1,
         "created": "2016-08-03T16:30:17Z",
         "modified": "2016-08-03T16:30:17Z",
-		"name": "related-to",        
+		"relationship_type": "related-to",        
         "source_ref": "course-of-action--55f57cc7-ddd5-467b-a3a2-6fd602549d9e",
         "target_ref": "observed-data--e04425e4-60a2-4d91-a9f9-0ca956f19edb"        
     }
