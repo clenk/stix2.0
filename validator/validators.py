@@ -47,7 +47,7 @@ def cybox(instance):
     if instance['type'] == 'indicator' and 'pattern_lang' in instance and \
             instance['pattern_lang'] == 'cybox':
         if 'pattern_lang_version' in instance and instance['pattern_lang_version'] != '1.0':
-            return JSONError("'pattern_lang' is 'cybox' but" \
+            return JSONError("'pattern_lang' is 'cybox' but " \
                  "'pattern_lang_version' is not '1.0'!", instance['type'])
 
 def capec(instance):
@@ -60,6 +60,14 @@ def capec(instance):
                     re.match('^CAPEC-\d+$', ref['external_id']) is None:
                 return JSONError("A CAPEC 'external_reference' must have an "\
                         "'external_id' formatted as CAPEC-[id]", 'external_reference')
+
+def custom_property_names(instance):
+    """Ensure the names of custom properties are valid.
+    """
+    for prop_name in instance.keys():
+        if not re.match('[a-z0-9_]{3,250}', prop_name):
+            return JSONError("Custom property names must only contain the" \
+                "lowercase ASCII letters a-z, 0-9, and underscore(_).", 'custom property')
 
 
 

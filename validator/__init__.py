@@ -6,6 +6,7 @@ import argparse
 import json
 import logging
 from itertools import chain
+import fnmatch
 
 # external
 from jsonschema import RefResolver, validators
@@ -341,10 +342,14 @@ def validate_file(fn, options):
 
     """
     results = FileResults(fn)
+    output.info("Performing JSON schema validation on %s" % fn)
+
+    with open(fn) as instance_file:
+        instance = json.load(instance_file)
 
     try:
         if options.files:
-            results.schema_results = schema_validate(fn, options)
+            results.schema_results = schema_validate(instance, options)
         # TODO
         # if options.best_practice_validate:
         #     results.best_practice_results = best_practice_validate(fn, options)
@@ -358,6 +363,39 @@ def validate_file(fn, options):
         msg = ("Unexpected error occurred with file '{fn}'. No further "
                "validation will be performed: {error}")
         output.info(msg.format(fn=fn, error=str(ex)))
+
+    return results
+
+
+def validate_string(string, options):
+    """Validates the input `string` according to the options passed in.
+
+    If any exceptions are raised during validation, no further validation
+    will take place.
+
+    Args:
+        string: The string containing the JSON to be validated.
+        options: An instance of ``argparse.Namespace``.
+
+    Returns:
+        An instance of FileResults.
+
+    """
+    results = FileResults("input string")
+    output.info("Performing JSON schema validation on ipnut string: " % string)
+    instance = json.loads(string)
+
+    try:
+        if options.files:
+            results.schema_results = schema_validate(instance, options)
+        # TODO
+        # if options.best_practice_validate:
+        #     results.best_practice_results = best_practice_validate(fn, options)
+    except SchemaInvalidError as ex:
+        results.fatal = ValidationErrorResults(ex)
+        msg = ("File '{fn}' was schema-invalid. No further validation "
+               "will be performed.")
+        output.info(msg.format(fn=fn))
 
     return results
 
@@ -385,6 +423,15 @@ def load_validator(schema_path, schema):
     return validator
 
 
+def find_schema(schema_dir, obj_type):
+    """Searches the `schema_dir` directory for a schema called `obj_type`.json.
+    Returns the file path of the first match it finds.
+    """
+    for root, dirnames, filenames in os.walk(schema_dir):
+        for filename in fnmatch.filter(filenames, obj_type+'.json'):
+            return os.path.join(root, filename)
+
+
 def load_schema(schema_path):
     """Loads the JSON schema at the given path as a Python object.
 
@@ -404,12 +451,13 @@ def load_schema(schema_path):
     return schema
 
 
-def schema_validate(fn, options):
-    """Performs STIX JSON Schema validation against the input filename.
-    Finds the correct schema by looking at what folder the input file is in.
+def schema_validate(instance, options):
+    """Performs STIX JSON Schema validation against the input JSON.
+    Finds the correct schema by looking at the 'type' property of the
+    `instance` JSON object.
 
     Args:
-        fn: A filename for a STIX JSON document.
+        instance: A STIX JSON string.
         options: ValidationOptions instance with validation options for this
             validation run.
 
@@ -417,11 +465,13 @@ def schema_validate(fn, options):
         A dictionary of validation results
 
     """
-    output.info("Performing JSON schema validation on %s" % fn)
+    try:
+        schema_path = find_schema(options.schema_dir, instance['type'])
+        schema = load_schema(schema_path)
+    except TypeError as e:
+        raise ValidationError("Input must be an object with a 'type' property"\
+                " that matches one of the schema files.")
 
-    slash = os.sep
-    schema_path = options.schema_dir + slash + slash.join(fn.split('tests'+slash)[1].split(slash)[0:-1]) + '.json'
-    schema = load_schema(schema_path)
 
     # Validate the schema first
     try:
@@ -430,9 +480,6 @@ def schema_validate(fn, options):
         raise SchemaInvalidError('Invalid JSON schema: ' + str(e))
 
     validator = load_validator(schema_path, schema)
-
-    with open(fn) as instance_file:
-        instance = json.load(instance_file)
 
     # Actual validation of JSON document
     try:
