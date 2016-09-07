@@ -1,4 +1,5 @@
 import unittest
+import json
 from . import *
 
 VALID_INDICATOR = """
@@ -14,21 +15,47 @@ VALID_INDICATOR = """
     "description": "This file is part of Poison Ivy",
     "pattern": "file-object.hashes.md5 = '3773a88f65a5e780c8dff9cdc3a056f3'",
     "pattern_lang": "cybox",
-    "pattern_lang_version": "2.0",
+    "pattern_lang_version": "1.0",
     "valid_from": "2016-01-01T00:00:00Z"
 }
 """
 
 
 class IndicatorTestCases(unittest.TestCase):
+    valid_indicator = json.loads(VALID_INDICATOR)
+    options = ValidationOptions(schema_dir=SCHEMA_DIR)
+
     def test_wellformed_indicator(self):
-        options = ValidationOptions(schema_dir=SCHEMA_DIR)
-        results = validate_string(VALID_INDICATOR, options).schema_results
+        results = validate_string(VALID_INDICATOR, self.options).schema_results
         self.assertTrue(results.is_valid)
 
+    def test_modified_before_created(self):
+        indicator = self.valid_indicator
+        indicator['modified'] = "2001-04-06T20:03:48Z"
+        indicator = json.dumps(indicator)
+        results = validate_string(indicator, self.options).schema_results
+        self.assertEqual(results.is_valid, False)
 
+    def test_version_equal_created_and_modified(self):
+        indicator = self.valid_indicator
+        indicator['version'] = 2
+        indicator = json.dumps(indicator)
+        results = validate_string(indicator, self.options).schema_results
+        self.assertEqual(results.is_valid, False)
 
+    def test_version_unequal_created_and_modified(self):
+        indicator = self.valid_indicator
+        indicator['created'] = "2001-04-06T20:03:48Z"
+        indicator = json.dumps(indicator)
+        results = validate_string(indicator, self.options).schema_results
+        self.assertEqual(results.is_valid, False)
 
+    def test_cybox_version(self):
+        indicator = self.valid_indicator
+        indicator['pattern_lang_version'] = "2.0"
+        indicator = json.dumps(indicator)
+        results = validate_string(indicator, self.options).schema_results
+        self.assertEqual(results.is_valid, False)
 
 
 if __name__ == "__main__":

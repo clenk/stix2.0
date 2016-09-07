@@ -112,7 +112,7 @@ class SchemaError(ValidationError):
 
 
 
-class FileResults(BaseResults):
+class FileResults(object):
     """Stores all validation results for given file.
 
     Args:
