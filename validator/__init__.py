@@ -112,7 +112,7 @@ class SchemaError(ValidationError):
 
 
 
-class FileResults(object):
+class FileResults(BaseResults):
     """Stores all validation results for given file.
 
     Args:
@@ -382,12 +382,11 @@ def validate_string(string, options):
 
     """
     results = FileResults("input string")
-    output.info("Performing JSON schema validation on ipnut string: " % string)
+    output.info("Performing JSON schema validation on input string: " + string)
     instance = json.loads(string)
 
     try:
-        if options.files:
-            results.schema_results = schema_validate(instance, options)
+        results.schema_results = schema_validate(instance, options)
         # TODO
         # if options.best_practice_validate:
         #     results.best_practice_results = best_practice_validate(fn, options)
@@ -411,7 +410,7 @@ def load_validator(schema_path, schema):
         An instance of Draft4Validator.
 
     """
-	# Get correct prefix based on OS
+    # Get correct prefix based on OS
     if os.name == 'nt':
         file_prefix = 'file:///'
     else:
@@ -468,8 +467,8 @@ def schema_validate(instance, options):
     try:
         schema_path = find_schema(options.schema_dir, instance['type'])
         schema = load_schema(schema_path)
-    except TypeError as e:
-        raise ValidationError("Input must be an object with a 'type' property"\
+    except (KeyError, TypeError) as e:
+        raise ValidationError("Input must be an object with a 'type' property"
                 " that matches one of the schema files.")
 
 

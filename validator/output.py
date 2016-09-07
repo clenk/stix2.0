@@ -109,6 +109,10 @@ def print_results(results, options):
             options.
 
     """
+    if not hasattr(results, 'items'):
+        results_arr = {'result': results}
+        results = results_arr
+
     level = 0
     for fn, result in sorted(iteritems(results)):
         print("=" * 80)
