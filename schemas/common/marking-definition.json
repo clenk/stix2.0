@@ -10,17 +10,16 @@
       "enum": ["marking-definition"]
     },
     "id": {
-    "$ref": "identifier.json",
-    "description": "The id property universally and uniquely identifies this Marking Definition object."
+      "$ref": "identifier.json",
+      "description": "The id property universally and uniquely identifies this Marking Definition object."
     },
     "definition_type": {
       "type": "string",
       "description": "The definition_type property identifies the type of Marking Definition.",
-      "enum": ["iep", "statement", "tlp"]
+      "enum": ["statement", "tlp"]
     },
     "definition": {
       "oneOf": [
-        {"$ref": "#/definitions/iep"},
         {"$ref": "#/definitions/statement"},
         {"$ref": "#/definitions/tlp"}
       ],
@@ -28,7 +27,7 @@
     },
     "created_by_ref": {
       "$ref": "identifier.json",
-      "description": "The created_by_ref property specifies the ID of the source object that describes the entity that created this Marking Definition object."
+      "description": "The created_by_ref property specifies the ID of the identity object that describes the entity that created this Marking Definition."
     },
     "created": {
       "$ref": "timestamp.json",
@@ -64,85 +63,10 @@
     "id", 
     "type", 
     "definition", 
-    "definition_type", 
+    "definition_type",
     "created"
   ],
   "definitions": {
-    "iep": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "The id property provides a unique ID to identify a specific IEP implementation."
-        },
-        "version": {
-          "type": "number",
-          "description": "The version property states the version of the IEP framework that has been used, e.g. 1.0."
-        },
-        "name": {
-          "type": "string",
-          "description": "The name property provides a name for an IEP implementation."
-        },
-        "start_date": {
-          "$ref": "timestamp.json",
-          "description": "The start_date property states the UTC date that the IEP is effective from."
-        },
-        "end_date": {
-          "$ref": "timestamp.json",
-          "description": "The end_date property states the UTC date that the IEP is effective until."
-        },
-        "reference": {
-          "$ref": "url.json",
-          "description": "The reference property can be used to provide a URL reference to the specific IEP implementation."
-        },
-        "encrypt_in_transit": {
-          "type": "string",
-          "description": "The encrypt_in_transit property states whether the received information has to be encrypted when it is retransmitted by the recipient. The value MUST be must or may.",
-          "enum": ["must", "may"]
-        },
-        "encrypt_at_rest": {
-          "type": "string",
-          "description": "The encrypt_at_rest property states whether the received information has to be encrypted when it is retransmitted by the recipient. The value MUST be must or may.",
-          "enum": ["must", "may"]
-        },
-        "permitted_actions": {
-          "type": "string",
-          "description": "The permitted_actions property states the permitted actions that recipients can take upon information received.",
-          "enum": ["none", "contact-for-instruction", "internally-visible-actions", "externally-visible-indirect-actions", "externally-visible-direct-actions"]
-        },
-        "affected_party_notifications": {
-          "type": "string",
-          "description": "The affected_party_notifications property states whether recipients are permitted to notify affected third parties of a potential compromise or threat. The value MUST be may or must-not.",
-          "enum": ["may", "must-not"]
-        },
-        "tlp": {
-          "type": "string",
-          "description": "The tlp property states how recipients are permitted to redistribute the information received within the redistribution scope as defined by the enumerations. The value MUST be red, amber, green, or white.",
-          "enum": ["red", "amber", "green", "white"]
-        },
-        "attribution": {
-          "type": "string",
-          "description": "The attribution property states whether recipients are required to attribute the provider. The value MUST be may, must, or must-not.",
-          "enum": ["may", "must", "must-not"]
-        },
-        "obfuscate_affected_parties": {
-          "type": "string",
-          "description": "The obfuscate_affected_parties property states whether recipients are required to obfuscate or anonymize information that could identify affected parties. The value MUST be may, must, or must-not.",
-          "enum": ["may", "must", "must-not"]
-        },
-        "external_reference": {
-          "type": "string",
-          "description": "The external_reference property is used to convey a description or reference to any applicable licenses, agreements, or conditions between the producer and receiver."
-        },
-        "unmodified_resale": {
-          "type": "string",
-          "description": "The unmodified_resale property states whether the recipient may or must not resell the information received unmodified or in a semantically equivalent format. The value MUST be may or must-not.",
-          "enum": ["may", "must-not"]
-        }
-      },
-      "required": ["id"]
-    },
-    
     "statement": {
       "type": "object",
       "properties": {
@@ -153,7 +77,6 @@
       },
       "required": ["statement"]
     },
-    
     "tlp": {
       "type": "object",
       "properties": {

@@ -14,16 +14,16 @@
     }
   ],
   
-  "sources": [
+  "identities": [
     {
-      "type": "source",
-      "id": "source--d7ae33db-0111-45e7-9adb-75a7b081859a",
+      "type": "identity",
+      "id": "identity--d7ae33db-0111-45e7-9adb-75a7b081859a",
 	  "version": 1,
 	  "created": "2015-03-02T13:15:18.793213Z",
 	  "modified": "2015-03-02T13:15:18.793213Z",
       "name": "Government Sharing Program - GSP",
-	  "entity_class": "organization",
-	  "sector": "government-national"
+	  "identity_class": "organization",
+	  "sectors": ["government-national"]
     }
   ],
   
@@ -46,8 +46,8 @@
       "version": 1,
       "created": "2015-05-07T14:22:14.760467Z",
 	  "modified": "2015-05-07T14:22:14.760467Z",
-      "report_refs": [
-		"source--d7ae33db-0111-45e7-9adb-75a7b081859a",
+	  "created_by_ref": "identity--d7ae33db-0111-45e7-9adb-75a7b081859a",
+      "object_refs": [		
 		"campaign--1855cb8a-d96c-4859-a450-abb1e7c061f2"
 	  ],
       "name": "Report on Adversary Alpha's Campaign against the Industrial Control Sector",
@@ -62,8 +62,8 @@
       "version": 1,
       "created": "2015-05-07T14:22:14.760756Z",
 	  "modified": "2015-05-07T14:22:14.760756Z",
-      "report_refs": [
-		"source--d7ae33db-0111-45e7-9adb-75a7b081859a",
+	  "created_by_ref": "identity--d7ae33db-0111-45e7-9adb-75a7b081859a",
+      "object_refs": [		
 		"malware--66647c79-5766-4ca7-ab8a-a579056e3c83"
 	  ],
       "name": "Indicators for Malware DrownedRat",

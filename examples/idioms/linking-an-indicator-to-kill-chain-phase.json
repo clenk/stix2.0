@@ -19,10 +19,6 @@
         {
             "kill_chain_name": "Organization-specific Kill Chain",
             "phase_name": "Infect Machine"
-        },
-        {
-            "kill_chain_name": "Organization-specific Kill Chain",
-            "phase_name": "Exfiltrate Data"
         }
         ]        
     }

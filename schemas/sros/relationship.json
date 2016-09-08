@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "relationship",
-  "description": "This object is used to link together other SDOs, such as Indicator, Observed Data, and Threat Actor in order to describe how those SDOs are related to each other.",
+  "description": "The Relationship object is used to link together two SDOs in order to describe how they are related to each other.",
   "type": "object",
   "allOf": [
     {
@@ -14,9 +14,10 @@
           "description": "The type of this object, which MUST be the literal `relationship`.",
           "enum": ["relationship"]
         },
-        "name": {
+        "relationship_type": {
           "type": "string",
-          "description": "The name used to identify the relationship."
+          "description": "The name used to identify the type of relationship.",
+		  "pattern": "^[a-z0-9\\-]+$"
         },
         "description": {
           "type": "string",
@@ -24,17 +25,23 @@
         },
         "source_ref": {
           "$ref": "../common/identifier.json",
-          "description": "The ID of the source (from) object."
+          "description": "The ID of the source (from) object.",
+		  "not": {
+			"pattern": "^(relationship|sighting|bundle|marking-definition)--.+$"
+		  }
         },
         "target_ref": {
           "$ref": "../common/identifier.json",
-          "description": "The ID of the target (to) object."
+          "description": "The ID of the target (to) object.",
+		  "not": {
+			"pattern": "^(relationship|sighting|bundle|marking-definition)--.+$"
+		  }
         }
       }
     }
   ],
   "required": [
-    "name",
+    "relationship_type",
     "source_ref",
     "target_ref"
   ]
