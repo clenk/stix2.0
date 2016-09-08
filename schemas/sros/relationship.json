@@ -17,25 +17,37 @@
         "relationship_type": {
           "type": "string",
           "description": "The name used to identify the type of relationship.",
-		  "pattern": "^[a-z0-9\\-]+$"
+          "pattern": "^[a-z0-9\\-]+$"
         },
         "description": {
           "type": "string",
           "description": "A description that helps provide context about the relationship."
         },
         "source_ref": {
-          "$ref": "../common/identifier.json",
           "description": "The ID of the source (from) object.",
-		  "not": {
-			"pattern": "^(relationship|sighting|bundle|marking-definition)--.+$"
-		  }
+          "allOf": [
+            {
+              "$ref": "../common/identifier.json"
+            },
+            {
+              "not": {
+                "pattern": "^(relationship|sighting|bundle|marking-definition)--.+$"
+              }
+            }
+          ]
         },
         "target_ref": {
-          "$ref": "../common/identifier.json",
           "description": "The ID of the target (to) object.",
-		  "not": {
-			"pattern": "^(relationship|sighting|bundle|marking-definition)--.+$"
-		  }
+          "allOf": [
+            {
+              "$ref": "../common/identifier.json"
+            },
+            {
+              "not": {
+                "pattern": "^(relationship|sighting|bundle|marking-definition)--.+$"
+              }
+            }
+          ]
         }
       }
     }
