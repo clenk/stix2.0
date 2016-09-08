@@ -65,9 +65,25 @@ def custom_property_names(instance):
     """Ensure the names of custom properties are valid.
     """
     for prop_name in instance.keys():
-        if not re.match('[a-z0-9_]{3,250}', prop_name):
-            return JSONError("Custom property names must only contain the" \
-                "lowercase ASCII letters a-z, 0-9, and underscore(_).", 'custom property')
+        if not re.match('^[a-z0-9_]{3,250}$|id', prop_name):
+            return JSONError("Custom property names must be between 3 and 250 "
+                             "characters long and only contain the lowercase "
+                             "ASCII letters a-z, 0-9, and underscore(_).",
+                             'custom property (' + prop_name + ')')
+def cve(instance):
+    """If CAPEC is used in an attack pattern's external reference,
+    ensure a CAPEC id is also used.
+    """
+    if instance['type'] == 'vulnerability' and 'external_references' in instance:
+        for ref in instance['external_references']:
+            if ref['source_name'] == 'cve' and 'external_id' not in ref or \
+                    re.match('^CVE-\d{4}-(0\d{3}|[1-9]\d{3,})$', ref['external_id']) is None:
+                return JSONError("A CVE 'external_reference' must have an "
+                        "'external_id' formatted as CAPEC-[id]", 'external_reference (CVE)')
+            elif 'external_id' in ref and re.match('^CVE-\d{4}-(0\d{3}|[1-9]\d{3,})$', ref['external_id']) \
+                    and ref['source_name'] != 'cve':
+                return JSONError("A CVE 'external_reference' must have a "
+                        "'source_name' of 'cve'", 'external_reference (CVE)')
 
 
 
@@ -88,6 +104,8 @@ class CustomDraft4Validator(Draft4Validator):
             version,
             cybox,
             capec,
+            custom_property_names,
+            cve,
         ]
 
     def iter_errors_more(self, instance, options=None, _schema=None):

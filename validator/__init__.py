@@ -389,12 +389,12 @@ def validate_string(string, options):
         results.schema_results = schema_validate(instance, options)
         # TODO
         # if options.best_practice_validate:
-        #     results.best_practice_results = best_practice_validate(fn, options)
+        #     results.best_practice_results = best_practice_validate(string, options)
     except SchemaInvalidError as ex:
         results.fatal = ValidationErrorResults(ex)
-        msg = ("File '{fn}' was schema-invalid. No further validation "
+        msg = ("String was schema-invalid. No further validation "
                "will be performed.")
-        output.info(msg.format(fn=fn))
+        output.info(msg.format(string=string))
 
     return results
 
@@ -468,9 +468,14 @@ def schema_validate(instance, options):
         schema_path = find_schema(options.schema_dir, instance['type'])
         schema = load_schema(schema_path)
     except (KeyError, TypeError) as e:
-        raise ValidationError("Input must be an object with a 'type' property"
-                " that matches one of the schema files.")
-
+        # raise ValidationError("Input must be an object with a 'type' property"
+        #         " that matches one of the schema files.")
+        # Assume a custom object with no schema
+        try:
+            schema_path = find_schema(options.schema_dir, 'core')
+            schema = load_schema(schema_path)
+        except (KeyError, TypeError) as e:
+            raise SchemaInvalidError("Cannot locate base schema (core.json).")
 
     # Validate the schema first
     try:
@@ -489,12 +494,19 @@ def schema_validate(instance, options):
     except schema_exceptions.RefResolutionError:
         raise SchemaInvalidError('Invalid JSON schema: a JSON reference failed to resolve')
 
-    if options.verbose:
-        error_list = [SchemaError(error.path.popleft() + ": " + str(error)) for error in errors]
-    else:
-        error_list = [SchemaError(error.path.popleft() + ": " + error.message) for error in errors]
-
     if len(errors) == 0:
         return ValidationResults(True)
-    else:
-        return ValidationResults(False, error_list)
+
+    error_list = []
+    for error in errors:
+        if error.path:
+            error_path = error.path.popleft() + ": "
+        else:
+            error_path = ""
+
+        if options.verbose:
+            error_list.append(SchemaError(error_path + str(error)))
+        else:
+            error_list.append(SchemaError(error_path + error.message))
+
+    return ValidationResults(False, error_list)

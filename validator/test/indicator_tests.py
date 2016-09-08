@@ -1,6 +1,7 @@
 import unittest
 import json
-from . import *
+from . import SCHEMA_DIR
+from .. import ValidationOptions, validate_string
 
 VALID_INDICATOR = """
 {
@@ -53,6 +54,28 @@ class IndicatorTestCases(unittest.TestCase):
     def test_cybox_version(self):
         indicator = self.valid_indicator
         indicator['pattern_lang_version'] = "2.0"
+        indicator = json.dumps(indicator)
+        results = validate_string(indicator, self.options).schema_results
+        self.assertEqual(results.is_valid, False)
+
+    def test_custom_property_name_invalid_character(self):
+        indicator = self.valid_indicator
+        indicator['my_new_property!'] = "abc123"
+        indicator = json.dumps(indicator)
+        results = validate_string(indicator, self.options).schema_results
+        self.assertEqual(results.is_valid, False)
+
+    def test_custom_property_name_short(self):
+        indicator = self.valid_indicator
+        indicator['mp'] = "abc123"
+        indicator = json.dumps(indicator)
+        results = validate_string(indicator, self.options).schema_results
+        self.assertEqual(results.is_valid, False)
+
+    def test_custom_property_name_long(self):
+        indicator = self.valid_indicator
+        long_property_name = 'my_new_property_' * 16
+        indicator[long_property_name] = "abc123"
         indicator = json.dumps(indicator)
         results = validate_string(indicator, self.options).schema_results
         self.assertEqual(results.is_valid, False)
