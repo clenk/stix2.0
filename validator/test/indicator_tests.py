@@ -171,6 +171,62 @@ class IndicatorTestCases(unittest.TestCase):
         results = validate_string(indicator, self.options).schema_results
         self.assertTrue(results.is_valid)
 
+    def test_reserved_property_confidence(self):
+        indicator = dict(self.valid_indicator)
+        indicator['confidence'] = "Something"
+        indicator = json.dumps(indicator)
+        results = validate_string(indicator, self.options).schema_results
+        self.assertEqual(results.is_valid, False)
+
+    def test_reserved_property_severity(self):
+        indicator = dict(self.valid_indicator)
+        indicator['severity'] = "Something"
+        indicator = json.dumps(indicator)
+        results = validate_string(indicator, self.options).schema_results
+        self.assertEqual(results.is_valid, False)
+
+    def test_reserved_property_action(self):
+        indicator = dict(self.valid_indicator)
+        indicator['action'] = "Something"
+        indicator = json.dumps(indicator)
+        results = validate_string(indicator, self.options).schema_results
+        self.assertEqual(results.is_valid, False)
+
+    def test_reserved_property_usernames(self):
+        indicator = dict(self.valid_indicator)
+        indicator['usernames'] = "Something"
+        indicator = json.dumps(indicator)
+        results = validate_string(indicator, self.options).schema_results
+        self.assertEqual(results.is_valid, False)
+
+    def test_reserved_property_phone_numbers(self):
+        indicator = dict(self.valid_indicator)
+        indicator['phone_numbers'] = "Something"
+        indicator = json.dumps(indicator)
+        results = validate_string(indicator, self.options).schema_results
+        self.assertEqual(results.is_valid, False)
+
+    def test_reserved_property_addresses(self):
+        indicator = dict(self.valid_indicator)
+        indicator['addresses'] = "Something"
+        indicator = json.dumps(indicator)
+        results = validate_string(indicator, self.options).schema_results
+        self.assertEqual(results.is_valid, False)
+
+    def test_reserved_object_type_incident(self):
+        indicator = dict(self.valid_indicator)
+        indicator['type'] = "incident"
+        indicator = json.dumps(indicator)
+        results = validate_string(indicator, self.options).schema_results
+        self.assertEqual(results.is_valid, False)
+
+    def test_reserved_object_type_infrastructure(self):
+        indicator = dict(self.valid_indicator)
+        indicator['type'] = "infrastructure"
+        indicator = json.dumps(indicator)
+        results = validate_string(indicator, self.options).schema_results
+        self.assertEqual(results.is_valid, False)
+
 
 if __name__ == "__main__":
     unittest.main()

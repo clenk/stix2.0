@@ -38,6 +38,14 @@ class AttackPatternTestCases(unittest.TestCase):
         results = validate_string(attack_pattern, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
+    def test_external_reference_no_external_id(self):
+        attack_pattern = dict(self.valid_attack_pattern)
+        ext_refs = attack_pattern['external_references']
+        del ext_refs[0]['external_id']
+        attack_pattern = json.dumps(attack_pattern)
+        results = validate_string(attack_pattern, self.options).schema_results
+        self.assertEqual(results.is_valid, False)
+
 
 if __name__ == "__main__":
     unittest.main()
