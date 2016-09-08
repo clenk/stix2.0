@@ -464,18 +464,21 @@ def schema_validate(instance, options):
         A dictionary of validation results
 
     """
+    if 'type' not in instance:
+        raise ValidationError("Input must be an object with a 'type' property.")
+
+    # Find and load the schema
     try:
         schema_path = find_schema(options.schema_dir, instance['type'])
         schema = load_schema(schema_path)
     except (KeyError, TypeError) as e:
-        # raise ValidationError("Input must be an object with a 'type' property"
-        #         " that matches one of the schema files.")
         # Assume a custom object with no schema
         try:
             schema_path = find_schema(options.schema_dir, 'core')
             schema = load_schema(schema_path)
         except (KeyError, TypeError) as e:
-            raise SchemaInvalidError("Cannot locate base schema (core.json).")
+            raise SchemaInvalidError("Cannot locate a schema for the object's "
+                                     "type, nor the base schema (core.json).")
 
     # Validate the schema first
     try:
@@ -497,6 +500,7 @@ def schema_validate(instance, options):
     if len(errors) == 0:
         return ValidationResults(True)
 
+    # Prepare the list of errors 
     error_list = []
     for error in errors:
         if error.path:

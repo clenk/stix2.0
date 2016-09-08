@@ -31,7 +31,7 @@ class AttackPatternTestCases(unittest.TestCase):
         self.assertTrue(results.is_valid)
 
     def test_valid_capec_id(self):
-        attack_pattern = self.valid_attack_pattern
+        attack_pattern = dict(self.valid_attack_pattern)
         ext_refs = attack_pattern['external_references']
         ext_refs[0]['external_id'] = "CAPEC-abc"
         attack_pattern = json.dumps(attack_pattern)
