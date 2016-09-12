@@ -1,3 +1,4 @@
+import sys
 from colorama import init, Fore, Style
 from six import iteritems
 from . import codes
@@ -95,7 +96,7 @@ def print_schema_results(results, level=0):
         return
 
     for error in results.errors:
-        print_level(_RED + "[!] %s", level+1, error)
+        print_level(_RED + "[!] %s", level + 1, error)
 
 
 def print_results(results, options):

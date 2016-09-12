@@ -1,17 +1,15 @@
 
 # builtin
 import os
-import sys
-import argparse
 import json
 import logging
 from itertools import chain
 import fnmatch
 
 # external
-from jsonschema import RefResolver, validators
+from jsonschema import RefResolver
 from jsonschema import exceptions as schema_exceptions
-from six import python_2_unicode_compatible, iteritems
+from six import python_2_unicode_compatible
 
 # internal
 from . import output
@@ -105,7 +103,7 @@ class SchemaError(ValidationError):
     def as_dict(self):
         """Returns a dictionary representation.
         """
-        return {'message':self.message}
+        return {'message': self.message}
 
     def __str__(self):
         return str(self.message)
@@ -500,7 +498,7 @@ def schema_validate(instance, options):
     if len(errors) == 0:
         return ValidationResults(True)
 
-    # Prepare the list of errors 
+    # Prepare the list of errors
     error_list = []
     for error in errors:
         if error.path:

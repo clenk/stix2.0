@@ -11,7 +11,7 @@ from jsonschema import exceptions as schema_exceptions
 
 
 class JSONError(schema_exceptions.ValidationError):
-    """Wrapper for errors originating from iter_errors() in the jsonschema module.
+    """Wrapper for errors thrown by iter_errors() in the jsonschema module.
     """
     def __init__(self, msg=None, instance_type=None):
         super(JSONError, self).__init__(msg, path=deque([instance_type]))
@@ -27,6 +27,7 @@ def modified_created(instance):
         return JSONError("'modified' (%s) must be later or equal to 'created' (%s)"
             % (instance['modified'], instance['created']), instance['type'])
 
+
 def version(instance):
     """Check constraints on 'version' property
     """
@@ -41,14 +42,16 @@ def version(instance):
                 " (%s) is not greater than 'created' (%s)" 
                 % (instance['modified'], instance['created']), instance['type'])
 
+
 def cybox(instance):
-    """Ensure that if CybOX is used, version 1.0 of the patterning language is used.
+    """Ensure that if CybOX is used, it is CybOX version 1.0.
     """
     if instance['type'] == 'indicator' and 'pattern_lang' in instance and \
             instance['pattern_lang'] == 'cybox':
         if 'pattern_lang_version' in instance and instance['pattern_lang_version'] != '1.0':
             return JSONError("'pattern_lang' is 'cybox' but " 
                  "'pattern_lang_version' is not '1.0'!", instance['type'])
+
 
 def capec(instance):
     """If CAPEC is used in an attack pattern's external reference,
@@ -61,6 +64,7 @@ def capec(instance):
                 return JSONError("A CAPEC 'external_reference' must have an "
                         "'external_id' formatted as CAPEC-[id]", 'external_reference')
 
+
 def custom_property_names(instance):
     """Ensure the names of custom properties are valid.
     """
@@ -70,6 +74,7 @@ def custom_property_names(instance):
                              "characters long and only contain the lowercase "
                              "ASCII letters a-z, 0-9, and underscore(_)",
                              'custom property (' + prop_name + ')')
+
 
 def cve(instance):
     """If CAPEC is used in an attack pattern's external reference,
@@ -86,6 +91,7 @@ def cve(instance):
                 return JSONError("A CVE 'external_reference' must have a "
                         "'source_name' of 'cve'", 'external_reference (CVE)')
 
+
 def empty_lists(instance):
     """Ensure that all lists are non-empty.
     Schemas won't check custom objects.
@@ -94,32 +100,32 @@ def empty_lists(instance):
         if type(instance[prop_name]) is list and len(instance[prop_name]) == 0:
             return JSONError("Empty lists are not permitted", prop_name)
 
+
 def timestamp_precision(instance):
     for prop_name in instance.keys():
         precision_matches = re.match("^(.*)_precision$", prop_name)
         if not precision_matches:
             continue
 
-        # print(precision_matches.group(1))
         ts_field = precision_matches.group(1)
         if ts_field not in instance:
             return JSONError("There is no corresponding %s field" % ts_field, prop_name)
 
-        if instance[prop_name] == 'year' and not re.match("^[0-9]{4}-01-01T00:00:00(\\.0+)?Z$""", instance[ts_field]):
-            return JSONError("Timestamp is not the correct format for '%s' precision."
-                             % instance[prop_name], ts_field)
-        elif instance[prop_name] == 'month' and not re.match("^[0-9]{4}-[0-9]{2}-01T00:00:00(\\.0+)?Z$""", instance[ts_field]):
-            return JSONError("Timestamp is not the correct format for '%s' precision."
-                             % instance[prop_name], ts_field)
-        elif instance[prop_name] == 'day' and not re.match("^[0-9]{4}-[0-9]{2}-[0-9]{2}T00:00:00(\\.0+)?Z$""", instance[ts_field]):
-            return JSONError("Timestamp is not the correct format for '%s' precision."
-                             % instance[prop_name], ts_field)
-        elif instance[prop_name] == 'hour' and not re.match("^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:00:00(\\.0+)?Z$""", instance[ts_field]):
-            return JSONError("Timestamp is not the correct format for '%s' precision."
-                             % instance[prop_name], ts_field)
-        elif instance[prop_name] == 'minute' and not re.match("^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:00(\\.0+)?Z$""", instance[ts_field]):
-            return JSONError("Timestamp is not the correct format for '%s' precision."
-                             % instance[prop_name], ts_field)
+        pattern = ""
+        if instance[prop_name] == 'year':
+            pattern = "^[0-9]{4}-01-01T00:00:00(\\.0+)?Z$"
+        elif instance[prop_name] == 'month':
+            pattern = "^[0-9]{4}-[0-9]{2}-01T00:00:00(\\.0+)?Z$"
+        elif instance[prop_name] == 'day':
+            pattern = "^[0-9]{4}-[0-9]{2}-[0-9]{2}T00:00:00(\\.0+)?Z$"
+        elif instance[prop_name] == 'hour':
+            pattern = "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:00:00(\\.0+)?Z$"
+        elif instance[prop_name] == 'minute':
+            pattern = "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:00(\\.0+)?Z$"
+
+        if not re.match(pattern, instance[ts_field]):
+            return JSONError("Timestamp is not the correct format for '%s' "
+                             "precision." % instance[prop_name], ts_field)
 
 
 # Checks for SHOULD Requirements
