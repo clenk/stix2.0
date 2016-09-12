@@ -32,6 +32,20 @@ class IdentityTestCases(unittest.TestCase):
         results = validate_string(identity, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
+    def test_vocab_identity_class(self):
+        identity = dict(self.valid_identity)
+        identity['identity_class'] = "corporation"
+        identity = json.dumps(identity)
+        results = validate_string(identity, self.options).schema_results
+        self.assertEqual(results.is_valid, False)
+
+    def test_vocab_industry_sector(self):
+        identity = dict(self.valid_identity)
+        identity['sectors'] = ["something"]
+        identity = json.dumps(identity)
+        results = validate_string(identity, self.options).schema_results
+        self.assertEqual(results.is_valid, False)
+
 
 if __name__ == "__main__":
     unittest.main()

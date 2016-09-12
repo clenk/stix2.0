@@ -397,7 +397,7 @@ def validate_string(string, options):
     return results
 
 
-def load_validator(schema_path, schema):
+def load_validator(schema_path, schema, options):
     """Creates a JSON schema validator for the given schema.
 
     Args:
@@ -415,7 +415,7 @@ def load_validator(schema_path, schema):
         file_prefix = 'file:'
 
     resolver = RefResolver(file_prefix + schema_path.replace("\\", "/"), schema)
-    validator = CustomDraft4Validator(schema, resolver=resolver)
+    validator = CustomDraft4Validator(schema, resolver=resolver, options=options)
 
     return validator
 
@@ -425,7 +425,7 @@ def find_schema(schema_dir, obj_type):
     Returns the file path of the first match it finds.
     """
     for root, dirnames, filenames in os.walk(schema_dir):
-        for filename in fnmatch.filter(filenames, obj_type+'.json'):
+        for filename in fnmatch.filter(filenames, obj_type + '.json'):
             return os.path.join(root, filename)
 
 
@@ -484,7 +484,7 @@ def schema_validate(instance, options):
     except schema_exceptions.SchemaError as e:
         raise SchemaInvalidError('Invalid JSON schema: ' + str(e))
 
-    validator = load_validator(schema_path, schema)
+    validator = load_validator(schema_path, schema, options)
 
     # Actual validation of JSON document
     try:

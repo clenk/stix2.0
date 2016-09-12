@@ -34,6 +34,20 @@ class IntrusionSetTestCases(unittest.TestCase):
         results = validate_string(intrusion_set, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
+    def test_vocab_attack_motivation(self):
+        intrusion_set = dict(self.valid_intrusion_set)
+        intrusion_set['primary_motivation'] = "selfishness"
+        intrusion_set = json.dumps(intrusion_set)
+        results = validate_string(intrusion_set, self.options).schema_results
+        self.assertEqual(results.is_valid, False)
+
+    def test_vocab_attack_resource_level(self):
+        intrusion_set = dict(self.valid_intrusion_set)
+        intrusion_set['resource_level'] = "high"
+        intrusion_set = json.dumps(intrusion_set)
+        results = validate_string(intrusion_set, self.options).schema_results
+        self.assertEqual(results.is_valid, False)
+
 
 if __name__ == "__main__":
     unittest.main()

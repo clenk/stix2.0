@@ -227,6 +227,20 @@ class IndicatorTestCases(unittest.TestCase):
         results = validate_string(indicator, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
+    def test_vocab_indicator_label(self):
+        indicator = dict(self.valid_indicator)
+        indicator['labels'] = ["suspicious"]
+        indicator = json.dumps(indicator)
+        results = validate_string(indicator, self.options).schema_results
+        self.assertEqual(results.is_valid, False)
+
+    def test_vocab_pattern_lang(self):
+        indicator = dict(self.valid_indicator)
+        indicator['pattern_lang'] = "something"
+        indicator = json.dumps(indicator)
+        results = validate_string(indicator, self.options).schema_results
+        self.assertEqual(results.is_valid, False)
+
 
 if __name__ == "__main__":
     unittest.main()

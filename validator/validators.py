@@ -9,6 +9,9 @@ from collections import deque
 from jsonschema import Draft4Validator
 from jsonschema import exceptions as schema_exceptions
 
+# internal
+from . import vocabs
+
 
 class JSONError(schema_exceptions.ValidationError):
     """Wrapper for errors thrown by iter_errors() in the jsonschema module.
@@ -94,7 +97,7 @@ def cve(instance):
 
 def empty_lists(instance):
     """Ensure that all lists are non-empty.
-    Schemas won't check custom objects.
+    This function is necesary because schemas won't check custom objects.
     """
     for prop_name in instance.keys():
         if type(instance[prop_name]) is list and len(instance[prop_name]) == 0:
@@ -102,6 +105,9 @@ def empty_lists(instance):
 
 
 def timestamp_precision(instance):
+    """Ensure that for every precision property there is a matching timestamp
+    property that uses the proper timestamp format for the given precision.
+    """
     for prop_name in instance.keys():
         precision_matches = re.match("^(.*)_precision$", prop_name)
         if not precision_matches:
@@ -131,6 +137,79 @@ def timestamp_precision(instance):
 # Checks for SHOULD Requirements
 # TODO
 
+def check_vocab(instance, vocab):
+    """Ensure that the open vocabulary specified by `vocab` is used properly.
+
+    It checks properties of objects specified in the appropriate `_USES`
+    dictionary to determine which properties SHOULD use the given vocabulary,
+    then checks that the values in those properties are from the vocabulary.
+    """
+    vocab_uses = getattr(vocabs, vocab + "_USES")
+    for k in vocab_uses.keys():
+        if instance['type'] == k:
+            for prop in vocab_uses[k]:
+                if prop not in instance:
+                    continue
+
+                vocab_ov = getattr(vocabs, vocab + "_OV")
+                if type(instance[prop]) is list:
+                    is_in = set(instance[prop]).issubset(set(vocab_ov))
+                else:
+                    is_in = instance[prop] in vocab_ov
+
+                if not is_in:
+                    vocab_name = vocab.replace('_', '-').lower()
+                    return JSONError("%s contains a value not in the %s-ov "
+                                     "vocabulary." % (prop, vocab_name), prop)
+
+
+def vocab_attack_motivation(instance):
+    return check_vocab(instance, "ATTACK_MOTIVATION")
+
+
+def vocab_attack_resource_level(instance):
+    return check_vocab(instance, "ATTACK_RESOURCE_LEVEL")
+
+
+def vocab_identity_class(instance):
+    return check_vocab(instance, "IDENTITY_CLASS")
+
+
+def vocab_indicator_label(instance):
+    return check_vocab(instance, "INDICATOR_LABEL")
+
+
+def vocab_industry_sector(instance):
+    return check_vocab(instance, "INDUSTRY_SECTOR")
+
+
+def vocab_malware_label(instance):
+    return check_vocab(instance, "MALWARE_LABEL")
+
+
+def vocab_pattern_lang(instance):
+    return check_vocab(instance, "PATTERN_LANG")
+
+
+def vocab_report_label(instance):
+    return check_vocab(instance, "REPORT_LABEL")
+
+
+def vocab_threat_actor_label(instance):
+    return check_vocab(instance, "THREAT_ACTOR_LABEL")
+
+
+def vocab_threat_actor_role(instance):
+    return check_vocab(instance, "THREAT_ACTOR_ROLE")
+
+
+def vocab_threat_actor_sophistication_level(instance):
+    return check_vocab(instance, "THREAT_ACTOR_SOPHISTICATION_LEVEL")
+
+
+def vocab_tool_label(instance):
+    return check_vocab(instance, "TOOL_LABEL")
+
 
 class CustomDraft4Validator(Draft4Validator):
     """Custom validator class for JSON Schema Draft 4.
@@ -147,11 +226,44 @@ class CustomDraft4Validator(Draft4Validator):
             custom_property_names,
             cve,
             empty_lists,
-            timestamp_precision,
+            timestamp_precision
         ]
 
+        if not options or not options.ignored_errors:
+            return
+
+        ignored = options.ignored_errors.split(",")
+
+        # Ignore vocabulary value checks
+        if '110' not in ignored:
+            if '111' not in ignored:
+                self.validator_list.append(vocab_attack_motivation)
+            if '112' not in ignored:
+                self.validator_list.append(vocab_attack_resource_level)
+            if '113' not in ignored:
+                self.validator_list.append(vocab_identity_class)
+            if '114' not in ignored:
+                self.validator_list.append(vocab_indicator_label)
+            if '115' not in ignored:
+                self.validator_list.append(vocab_industry_sector)
+            if '116' not in ignored:
+                self.validator_list.append(vocab_malware_label)
+            if '117' not in ignored:
+                self.validator_list.append(vocab_pattern_lang)
+            if '118' not in ignored:
+                self.validator_list.append(vocab_report_label)
+            if '119' not in ignored:
+                self.validator_list.append(vocab_threat_actor_label)
+            if '120' not in ignored:
+                self.validator_list.append(vocab_threat_actor_sophistication_level)
+            if '121' not in ignored:
+                self.validator_list.append(vocab_attack_motivation)
+            if '122' not in ignored:
+                self.validator_list.append(vocab_tool_label)
+
+
     def iter_errors_more(self, instance, options=None, _schema=None):
-        """Adds a custom function to perform additional validation not possible
+        """Custom function to perform additional validation not possible
         merely with JSON schemas.
 
         """

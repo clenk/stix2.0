@@ -52,7 +52,27 @@ def _get_arg_parser():
              "with this script will be used."
     )
 
-    # SHOULD requirements
+    # 110: All open vocabulary value checks
+    # 111: Legitimate attack-motivation open vocab values
+    # 112: Legitimate attack-resource-level open vocab values
+    # 113: Legitimate identity-class open vocab values
+    # 114: Legitimate indicator-label open vocab values
+    # 115: Legitimate industry-sector open vocab values
+    # 116: Legitimate malware-label open vocab values
+    # 117: Legitimate pattern-lang open vocab values
+    # 118: Legitimate report-label open vocab values
+    # 119: Legitimate threat-actor-label open vocab values
+    # 120: Legitimate threat-actor-role open vocab values
+    # 121: Legitimate threat-actor-sophistication-level open vocab values
+    # 122: Legitimate tool-label open vocab values
+
+    parser.add_argument(
+        "-i",
+        "--ignore",
+        dest="ignored_errors",
+        help="A comma-separated list of validation errors to skip. "
+             "Example: ``--ignore 112,120``"
+    )
 
     # TODO
     # parser.add_argument(
@@ -81,7 +101,7 @@ def main():
     parser = _get_arg_parser()
     args = parser.parse_args()
     args.schema_dir = os.path.abspath(os.path.dirname(__file__) + args.schema_dir)
-    
+
     # If validating the tests directory, look in its subdirectories
     if args.files == [EXAMPLES_DIR]:
         args.recursive = True
