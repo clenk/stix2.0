@@ -1,7 +1,9 @@
 import unittest
-import json 
+import copy
+import json
 from . import SCHEMA_DIR
-from .. import ValidationOptions, validate_string, ValidationError
+from .. import validate_string, ValidationError
+from ..validators import ValidationOptions
 
 VALID_CUSTOM_OBJECT = """
 {
@@ -25,34 +27,34 @@ class CustomObjectTestCases(unittest.TestCase):
         self.assertTrue(results.is_valid)
 
     def test_no_type(self):
-        custom_obj = dict(self.valid_custom_object)
+        custom_obj = copy.deepcopy(self.valid_custom_object)
         del custom_obj['type']
         custom_obj = json.dumps(custom_obj)
         self.assertRaises(ValidationError, validate_string, custom_obj, self.options)
 
     def test_no_id(self):
-        custom_obj = dict(self.valid_custom_object)
+        custom_obj = copy.deepcopy(self.valid_custom_object)
         del custom_obj['id']
         custom_obj = json.dumps(custom_obj)
         results = validate_string(custom_obj, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
     def test_no_created(self):
-        custom_obj = dict(self.valid_custom_object)
+        custom_obj = copy.deepcopy(self.valid_custom_object)
         del custom_obj['created']
         custom_obj = json.dumps(custom_obj)
         results = validate_string(custom_obj, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
     def test_no_modified(self):
-        custom_obj = dict(self.valid_custom_object)
+        custom_obj = copy.deepcopy(self.valid_custom_object)
         del custom_obj['modified']
         custom_obj = json.dumps(custom_obj)
         results = validate_string(custom_obj, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
     def test_no_version(self):
-        custom_obj = dict(self.valid_custom_object)
+        custom_obj = copy.deepcopy(self.valid_custom_object)
         del custom_obj['version']
         custom_obj = json.dumps(custom_obj)
         results = validate_string(custom_obj, self.options).schema_results

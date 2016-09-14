@@ -1,7 +1,9 @@
 import unittest
+import copy
 import json
 from . import SCHEMA_DIR
-from .. import ValidationOptions, validate_string
+from .. import validate_string
+from ..validators import ValidationOptions
 
 VALID_INTRUSION_SET = """
 {
@@ -28,21 +30,21 @@ class IntrusionSetTestCases(unittest.TestCase):
         self.assertTrue(results.is_valid)
 
     def test_country(self):
-        intrusion_set = dict(self.valid_intrusion_set)
+        intrusion_set = copy.deepcopy(self.valid_intrusion_set)
         intrusion_set['country'] = "USA"
         intrusion_set = json.dumps(intrusion_set)
         results = validate_string(intrusion_set, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
     def test_vocab_attack_motivation(self):
-        intrusion_set = dict(self.valid_intrusion_set)
+        intrusion_set = copy.deepcopy(self.valid_intrusion_set)
         intrusion_set['primary_motivation'] = "selfishness"
         intrusion_set = json.dumps(intrusion_set)
         results = validate_string(intrusion_set, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
     def test_vocab_attack_resource_level(self):
-        intrusion_set = dict(self.valid_intrusion_set)
+        intrusion_set = copy.deepcopy(self.valid_intrusion_set)
         intrusion_set['resource_level'] = "high"
         intrusion_set = json.dumps(intrusion_set)
         results = validate_string(intrusion_set, self.options).schema_results

@@ -1,7 +1,9 @@
 import unittest
+import copy
 import json
 from . import SCHEMA_DIR
-from .. import ValidationOptions, validate_string
+from .. import validate_string
+from ..validators import ValidationOptions
 
 VALID_ATTACK_PATTERN = """
 {
@@ -31,7 +33,7 @@ class AttackPatternTestCases(unittest.TestCase):
         self.assertTrue(results.is_valid)
 
     def test_valid_capec_id(self):
-        attack_pattern = dict(self.valid_attack_pattern)
+        attack_pattern = copy.deepcopy(self.valid_attack_pattern)
         ext_refs = attack_pattern['external_references']
         ext_refs[0]['external_id'] = "CAPEC-abc"
         attack_pattern = json.dumps(attack_pattern)
@@ -39,7 +41,7 @@ class AttackPatternTestCases(unittest.TestCase):
         self.assertEqual(results.is_valid, False)
 
     def test_external_reference_no_external_id(self):
-        attack_pattern = dict(self.valid_attack_pattern)
+        attack_pattern = copy.deepcopy(self.valid_attack_pattern)
         ext_refs = attack_pattern['external_references']
         del ext_refs[0]['external_id']
         attack_pattern = json.dumps(attack_pattern)

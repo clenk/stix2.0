@@ -16,52 +16,6 @@ from . import output
 from .validators import CustomDraft4Validator
 
 
-class ValidationOptions(object):
-    """Collection of validation options which can be set via command line or
-    programmatically in a script.
-
-    It can be initialized either by passing in the result of parse_args() from
-    argparse, or by specifying individual options.
-
-    Args:
-        cmd_args: An instance of ``argparse.Namespace`` containing options
-            supplied on the command line.
-        verbose: True if informational notes and more verbose error messages
-            should be printed to stdout/stderr.
-        files: A list of input files and directories of files to be
-            validated.
-        recursive: Recursively descend into input directories.
-        schema_dir: A user-defined schema directory to validate against.
-
-    Attributes:
-        verbose: True if informational notes and more verbose error messages
-            should be printed to stdout/stderr.
-        files: A list of input files and directories of files to be
-            validated.
-        recursive: Recursively descend into input directories.
-        schema_dir: A user-defined schema directory to validate against.
-
-    """
-    def __init__(self, cmd_args=None, verbose=False, files=None, recursive=False, schema_dir=None):
-        if cmd_args is not None:
-            self.verbose = cmd_args.verbose
-            self.files = cmd_args.files
-            self.recursive = cmd_args.recursive
-            self.schema_dir = cmd_args.schema_dir
-        else:
-            # SHOULD requirements
-            # TODO
-            # self.best_practice_validate = False
-
-            # output options
-            self.verbose = verbose
-
-            # input options
-            self.files = files
-            self.recursive = recursive
-            self.schema_dir = schema_dir
-
-
 class ValidationError(Exception):
     """Base Exception for all validator-specific exceptions. This can be used
     directly as a generic Exception.

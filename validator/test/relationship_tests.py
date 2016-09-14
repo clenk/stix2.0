@@ -1,7 +1,9 @@
 import unittest
+import copy
 import json
 from . import SCHEMA_DIR
-from .. import ValidationOptions, validate_string
+from .. import validate_string
+from ..validators import ValidationOptions
 
 VALID_RELATIONSHIP = """
 {
@@ -27,35 +29,35 @@ class RelationshipTestCases(unittest.TestCase):
         self.assertTrue(results.is_valid)
 
     def test_relationship_type(self):
-        relationship = dict(self.valid_relationship)
+        relationship = copy.deepcopy(self.valid_relationship)
         relationship['relationship_type'] = "SOMETHING"
         relationship = json.dumps(relationship)
         results = validate_string(relationship, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
     def test_source_relationship(self):
-        relationship = dict(self.valid_relationship)
+        relationship = copy.deepcopy(self.valid_relationship)
         relationship['source_ref'] = "relationship--31b940d4-6f7f-459a-80ea-9c1f17b5891b"
         relationship = json.dumps(relationship)
         results = validate_string(relationship, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
     def test_source_sighting(self):
-        relationship = dict(self.valid_relationship)
+        relationship = copy.deepcopy(self.valid_relationship)
         relationship['source_ref'] = "sighting--31b940d4-6f7f-459a-80ea-9c1f17b5891b"
         relationship = json.dumps(relationship)
         results = validate_string(relationship, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
     def test_target_bundle(self):
-        relationship = dict(self.valid_relationship)
+        relationship = copy.deepcopy(self.valid_relationship)
         relationship['target_ref'] = "bundle--31b940d4-6f7f-459a-80ea-9c1f17b5891b"
         relationship = json.dumps(relationship)
         results = validate_string(relationship, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
     def test_target_marking_definition(self):
-        relationship = dict(self.valid_relationship)
+        relationship = copy.deepcopy(self.valid_relationship)
         relationship['target_ref'] = "marking-definition--31b940d4-6f7f-459a-80ea-9c1f17b5891b"
         relationship = json.dumps(relationship)
         results = validate_string(relationship, self.options).schema_results

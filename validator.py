@@ -52,6 +52,25 @@ def _get_arg_parser():
              "with this script will be used."
     )
 
+    # TODO
+    # parser.add_argument(
+    #     "--best-practices",
+    #     dest="best_practices",
+    #     action='store_true',
+    #     default=False,
+    #     help="Check that the document follows authoring best practices."
+    # )
+
+    # Output options
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        dest="verbose",
+        action="store_true",
+        default=False,
+        help="Print informational notes and more verbose error messages."
+    )
+
     # 110: All open vocabulary value checks
     # 111: Legitimate attack-motivation open vocab values
     # 112: Legitimate attack-resource-level open vocab values
@@ -70,27 +89,9 @@ def _get_arg_parser():
         "-i",
         "--ignore",
         dest="ignored_errors",
+        default="",
         help="A comma-separated list of validation errors to skip. "
              "Example: ``--ignore 112,120``"
-    )
-
-    # TODO
-    # parser.add_argument(
-    #     "--best-practices",
-    #     dest="best_practices",
-    #     action='store_true',
-    #     default=False,
-    #     help="Check that the document follows authoring best practices."
-    # )
-
-    # Output options
-    parser.add_argument(
-        "-v",
-        "--verbose",
-        dest="verbose",
-        action="store_true",
-        default=False,
-        help="Print informational notes and more verbose error messages."
     )
 
     return parser

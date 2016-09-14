@@ -1,7 +1,9 @@
 import unittest
+import copy
 import json
 from . import SCHEMA_DIR
-from .. import ValidationOptions, validate_string
+from .. import validate_string
+from ..validators import ValidationOptions
 
 VALID_TOOL = """
 {
@@ -26,7 +28,7 @@ class ToolTestCases(unittest.TestCase):
         self.assertTrue(results.is_valid)
 
     def test_vocab_tool_label(self):
-        tool = dict(self.valid_tool)
+        tool = copy.deepcopy(self.valid_tool)
         tool['labels'] += ["multi-purpose"]
         tool = json.dumps(tool)
         results = validate_string(tool, self.options).schema_results

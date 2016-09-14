@@ -1,7 +1,9 @@
 import unittest
+import copy
 import json
 from . import SCHEMA_DIR
-from .. import ValidationOptions, validate_string
+from .. import validate_string
+from ..validators import ValidationOptions
 
 VALID_REPORT = """
 {
@@ -33,7 +35,7 @@ class IdentityTestCases(unittest.TestCase):
         self.assertTrue(results.is_valid)
 
     def test_vocab_report_label(self):
-        report = dict(self.valid_report)
+        report = copy.deepcopy(self.valid_report)
         report['labels'] = ["something"]
         report = json.dumps(report)
         results = validate_string(report, self.options).schema_results

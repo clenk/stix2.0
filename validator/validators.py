@@ -13,6 +13,54 @@ from jsonschema import exceptions as schema_exceptions
 from . import vocabs
 
 
+class ValidationOptions(object):
+    """Collection of validation options which can be set via command line or
+    programmatically in a script.
+
+    It can be initialized either by passing in the result of parse_args() from
+    argparse, or by specifying individual options.
+
+    Args:
+        cmd_args: An instance of ``argparse.Namespace`` containing options
+            supplied on the command line.
+        verbose: True if informational notes and more verbose error messages
+            should be printed to stdout/stderr.
+        files: A list of input files and directories of files to be
+            validated.
+        recursive: Recursively descend into input directories.
+        schema_dir: A user-defined schema directory to validate against.
+
+    Attributes:
+        verbose: True if informational notes and more verbose error messages
+            should be printed to stdout/stderr.
+        files: A list of input files and directories of files to be
+            validated.
+        recursive: Recursively descend into input directories.
+        schema_dir: A user-defined schema directory to validate against.
+
+    """
+    def __init__(self, cmd_args=None, verbose=False, files=None, recursive=False, schema_dir=None, ignored_errors=""):
+        if cmd_args is not None:
+            self.verbose = cmd_args.verbose
+            self.files = cmd_args.files
+            self.recursive = cmd_args.recursive
+            self.schema_dir = cmd_args.schema_dir
+            self.ignored_errors = cmd_args.ignored_errors
+        else:
+            # SHOULD requirements
+            # TODO
+            # self.best_practice_validate = False
+
+            # output options
+            self.verbose = verbose
+            self.ignored_errors = ignored_errors
+
+            # input options
+            self.files = files
+            self.recursive = recursive
+            self.schema_dir = schema_dir
+
+
 class JSONError(schema_exceptions.ValidationError):
     """Wrapper for errors thrown by iter_errors() in the jsonschema module.
     """
@@ -215,7 +263,8 @@ class CustomDraft4Validator(Draft4Validator):
     """Custom validator class for JSON Schema Draft 4.
 
     """
-    def __init__(self, schema, types=(), resolver=None, format_checker=None, options=None):
+    def __init__(self, schema, types=(), resolver=None, format_checker=None,
+                 options=ValidationOptions()):
         super(CustomDraft4Validator, self).__init__(schema, types, resolver, format_checker)
         # Construct list of validators to be run by this validator
         self.validator_list = [
@@ -229,36 +278,33 @@ class CustomDraft4Validator(Draft4Validator):
             timestamp_precision
         ]
 
-        if not options or not options.ignored_errors:
-            return
-
         ignored = options.ignored_errors.split(",")
 
         # Ignore vocabulary value checks
-        if '110' not in ignored:
-            if '111' not in ignored:
+        if vocabs.IGNORE_ALL_VOCABS not in ignored:
+            if vocabs.IGNORE_ATTACK_MOTIVATION not in ignored:
                 self.validator_list.append(vocab_attack_motivation)
-            if '112' not in ignored:
+            if vocabs.IGNORE_ATTACK_RESOURCE_LEVEL not in ignored:
                 self.validator_list.append(vocab_attack_resource_level)
-            if '113' not in ignored:
+            if vocabs.IGNORE_IDENTITY_CLASS not in ignored:
                 self.validator_list.append(vocab_identity_class)
-            if '114' not in ignored:
+            if vocabs.IGNORE_INDICATOR_LABEL not in ignored:
                 self.validator_list.append(vocab_indicator_label)
-            if '115' not in ignored:
+            if vocabs.IGNORE_INDUSTRY_SECTOR not in ignored:
                 self.validator_list.append(vocab_industry_sector)
-            if '116' not in ignored:
+            if vocabs.IGNORE_MALWARE_LABEL not in ignored:
                 self.validator_list.append(vocab_malware_label)
-            if '117' not in ignored:
+            if vocabs.IGNORE_PATTERN_LANG not in ignored:
                 self.validator_list.append(vocab_pattern_lang)
-            if '118' not in ignored:
+            if vocabs.IGNORE_REPORT_LABEL not in ignored:
                 self.validator_list.append(vocab_report_label)
-            if '119' not in ignored:
+            if vocabs.IGNORE_THREAT_ACTOR_LABEL not in ignored:
                 self.validator_list.append(vocab_threat_actor_label)
-            if '120' not in ignored:
+            if vocabs.IGNORE_THREAT_ACTOR_ROLE not in ignored:
+                self.validator_list.append(vocab_threat_actor_role)
+            if vocabs.IGNORE_THREAT_ACTOR_SOPHISTICATION_LEVEL not in ignored:
                 self.validator_list.append(vocab_threat_actor_sophistication_level)
-            if '121' not in ignored:
-                self.validator_list.append(vocab_attack_motivation)
-            if '122' not in ignored:
+            if vocabs.IGNORE_TOOL_LABEL not in ignored:
                 self.validator_list.append(vocab_tool_label)
 
 

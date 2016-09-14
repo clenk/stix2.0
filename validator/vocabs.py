@@ -186,6 +186,22 @@ TOOL_LABEL_USES = {
 }
 
 
+# Error codes for setting which checks to ignore
+IGNORE_ALL_VOCABS =                         '110'
+IGNORE_ATTACK_MOTIVATION =                  '111'
+IGNORE_ATTACK_RESOURCE_LEVEL =              '112'
+IGNORE_IDENTITY_CLASS =                     '113'
+IGNORE_INDICATOR_LABEL =                    '114'
+IGNORE_INDUSTRY_SECTOR =                    '115'
+IGNORE_MALWARE_LABEL =                      '116'
+IGNORE_PATTERN_LANG =                       '117'
+IGNORE_REPORT_LABEL =                       '118'
+IGNORE_THREAT_ACTOR_LABEL =                 '119'
+IGNORE_THREAT_ACTOR_ROLE =                  '120'
+IGNORE_THREAT_ACTOR_SOPHISTICATION_LEVEL =  '121'
+IGNORE_TOOL_LABEL =                         '122'
+
+
 # List of default STIX object types
 TYPES = [
     "attack-pattern",

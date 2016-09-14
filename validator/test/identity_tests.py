@@ -1,7 +1,9 @@
 import unittest
+import copy
 import json
 from . import SCHEMA_DIR
-from .. import ValidationOptions, validate_string
+from .. import validate_string
+from ..validators import ValidationOptions
 
 VALID_IDENTITY = """
 {
@@ -26,21 +28,21 @@ class IdentityTestCases(unittest.TestCase):
         self.assertTrue(results.is_valid)
 
     def test_invalid_nationality(self):
-        identity = dict(self.valid_identity)
+        identity = copy.deepcopy(self.valid_identity)
         identity['nationalities'] = ["USA"]
         identity = json.dumps(identity)
         results = validate_string(identity, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
     def test_vocab_identity_class(self):
-        identity = dict(self.valid_identity)
+        identity = copy.deepcopy(self.valid_identity)
         identity['identity_class'] = "corporation"
         identity = json.dumps(identity)
         results = validate_string(identity, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
     def test_vocab_industry_sector(self):
-        identity = dict(self.valid_identity)
+        identity = copy.deepcopy(self.valid_identity)
         identity['sectors'] = ["something"]
         identity = json.dumps(identity)
         results = validate_string(identity, self.options).schema_results

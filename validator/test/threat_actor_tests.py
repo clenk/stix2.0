@@ -1,7 +1,10 @@
 import unittest
+import copy
 import json
 from . import SCHEMA_DIR
-from .. import ValidationOptions, validate_string
+from .. import validate_string
+from ..validators import ValidationOptions
+from ..vocabs import IGNORE_THREAT_ACTOR_SOPHISTICATION_LEVEL
 
 VALID_THREAT_ACTOR = """
 {
@@ -27,39 +30,44 @@ class ThreatActorTestCases(unittest.TestCase):
         self.assertTrue(results.is_valid)
 
     def test_vocab_attack_motivation(self):
-        threat_actor = dict(self.valid_threat_actor)
+        threat_actor = copy.deepcopy(self.valid_threat_actor)
         threat_actor['primary_motivation'] = ["selfishness", "pride"]
         threat_actor = json.dumps(threat_actor)
         results = validate_string(threat_actor, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
     def test_vocab_attack_resource_level(self):
-        threat_actor = dict(self.valid_threat_actor)
+        threat_actor = copy.deepcopy(self.valid_threat_actor)
         threat_actor['resource_level'] = "high"
         threat_actor = json.dumps(threat_actor)
         results = validate_string(threat_actor, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
     def test_vocab_threat_actor_label(self):
-        threat_actor = dict(self.valid_threat_actor)
-        threat_actor['labels'] += "anonymous"
+        threat_actor = copy.deepcopy(self.valid_threat_actor)
+        threat_actor['labels'] += ["anonymous"]
         threat_actor = json.dumps(threat_actor)
         results = validate_string(threat_actor, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
     def test_vocab_threat_actor_role(self):
-        threat_actor = dict(self.valid_threat_actor)
-        threat_actor['role'] = "contributor"
+        threat_actor = copy.deepcopy(self.valid_threat_actor)
+        threat_actor['roles'] = ["contributor"]
         threat_actor = json.dumps(threat_actor)
         results = validate_string(threat_actor, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
     def test_vocab_threat_actor_sophistication_level(self):
-        threat_actor = dict(self.valid_threat_actor)
-        threat_actor['sophistication_level'] = "high"
+        threat_actor = copy.deepcopy(self.valid_threat_actor)
+        threat_actor['sophistication'] = "high"
         threat_actor = json.dumps(threat_actor)
         results = validate_string(threat_actor, self.options).schema_results
         self.assertEqual(results.is_valid, False)
+
+        ignore_options = ValidationOptions(schema_dir=SCHEMA_DIR,
+                ignored_errors=IGNORE_THREAT_ACTOR_SOPHISTICATION_LEVEL)
+        results2 = validate_string(threat_actor, ignore_options).schema_results
+        self.assertTrue(results2.is_valid)
 
 
 if __name__ == "__main__":
