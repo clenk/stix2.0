@@ -1,9 +1,9 @@
 import unittest
 import copy
 import json
-from . import SCHEMA_DIR
+from . import ValidatorTest
 from .. import validate_string
-from ..validators import ValidationOptions
+from .. import vocabs
 
 VALID_INTRUSION_SET = """
 {
@@ -21,9 +21,8 @@ VALID_INTRUSION_SET = """
 """
 
 
-class IntrusionSetTestCases(unittest.TestCase):
+class IntrusionSetTestCases(ValidatorTest):
     valid_intrusion_set = json.loads(VALID_INTRUSION_SET)
-    options = ValidationOptions(schema_dir=SCHEMA_DIR)
 
     def test_wellformed_intrusion_set(self):
         results = validate_string(VALID_INTRUSION_SET, self.options).schema_results
@@ -43,12 +42,16 @@ class IntrusionSetTestCases(unittest.TestCase):
         results = validate_string(intrusion_set, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
+        self.check_ignore(intrusion_set, vocabs.IGNORE_ATTACK_MOTIVATION)
+
     def test_vocab_attack_resource_level(self):
         intrusion_set = copy.deepcopy(self.valid_intrusion_set)
         intrusion_set['resource_level'] = "high"
         intrusion_set = json.dumps(intrusion_set)
         results = validate_string(intrusion_set, self.options).schema_results
         self.assertEqual(results.is_valid, False)
+
+        self.check_ignore(intrusion_set, vocabs.IGNORE_ATTACK_RESOURCE_LEVEL)
 
 
 if __name__ == "__main__":

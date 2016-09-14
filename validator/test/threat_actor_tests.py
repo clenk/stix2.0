@@ -1,10 +1,9 @@
 import unittest
 import copy
 import json
-from . import SCHEMA_DIR
+from . import ValidatorTest
 from .. import validate_string
-from ..validators import ValidationOptions
-from ..vocabs import IGNORE_THREAT_ACTOR_SOPHISTICATION_LEVEL
+from .. import vocabs
 
 VALID_THREAT_ACTOR = """
 {
@@ -21,9 +20,8 @@ VALID_THREAT_ACTOR = """
 """
 
 
-class ThreatActorTestCases(unittest.TestCase):
+class ThreatActorTestCases(ValidatorTest):
     valid_threat_actor = json.loads(VALID_THREAT_ACTOR)
-    options = ValidationOptions(schema_dir=SCHEMA_DIR)
 
     def test_wellformed_threat_actor(self):
         results = validate_string(VALID_THREAT_ACTOR, self.options).schema_results
@@ -31,10 +29,12 @@ class ThreatActorTestCases(unittest.TestCase):
 
     def test_vocab_attack_motivation(self):
         threat_actor = copy.deepcopy(self.valid_threat_actor)
-        threat_actor['primary_motivation'] = ["selfishness", "pride"]
+        threat_actor['primary_motivation'] = "selfishness"
         threat_actor = json.dumps(threat_actor)
         results = validate_string(threat_actor, self.options).schema_results
         self.assertEqual(results.is_valid, False)
+
+        self.check_ignore(threat_actor, vocabs.IGNORE_ATTACK_MOTIVATION)
 
     def test_vocab_attack_resource_level(self):
         threat_actor = copy.deepcopy(self.valid_threat_actor)
@@ -43,12 +43,16 @@ class ThreatActorTestCases(unittest.TestCase):
         results = validate_string(threat_actor, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
+        self.check_ignore(threat_actor, vocabs.IGNORE_ATTACK_RESOURCE_LEVEL)
+
     def test_vocab_threat_actor_label(self):
         threat_actor = copy.deepcopy(self.valid_threat_actor)
         threat_actor['labels'] += ["anonymous"]
         threat_actor = json.dumps(threat_actor)
         results = validate_string(threat_actor, self.options).schema_results
         self.assertEqual(results.is_valid, False)
+
+        self.check_ignore(threat_actor, vocabs.IGNORE_THREAT_ACTOR_LABEL)
 
     def test_vocab_threat_actor_role(self):
         threat_actor = copy.deepcopy(self.valid_threat_actor)
@@ -57,6 +61,8 @@ class ThreatActorTestCases(unittest.TestCase):
         results = validate_string(threat_actor, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
+        self.check_ignore(threat_actor, vocabs.IGNORE_THREAT_ACTOR_ROLE)
+
     def test_vocab_threat_actor_sophistication_level(self):
         threat_actor = copy.deepcopy(self.valid_threat_actor)
         threat_actor['sophistication'] = "high"
@@ -64,10 +70,8 @@ class ThreatActorTestCases(unittest.TestCase):
         results = validate_string(threat_actor, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
-        ignore_options = ValidationOptions(schema_dir=SCHEMA_DIR,
-                ignored_errors=IGNORE_THREAT_ACTOR_SOPHISTICATION_LEVEL)
-        results2 = validate_string(threat_actor, ignore_options).schema_results
-        self.assertTrue(results2.is_valid)
+        self.check_ignore(threat_actor,
+                          vocabs.IGNORE_THREAT_ACTOR_SOPHISTICATION_LEVEL)
 
 
 if __name__ == "__main__":

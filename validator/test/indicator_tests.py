@@ -1,9 +1,9 @@
 import unittest
 import copy
 import json
-from . import SCHEMA_DIR
+from . import ValidatorTest
 from .. import validate_string
-from ..validators import ValidationOptions
+from .. import vocabs
 
 VALID_INDICATOR = """
 {
@@ -25,9 +25,8 @@ VALID_INDICATOR = """
 """
 
 
-class IndicatorTestCases(unittest.TestCase):
+class IndicatorTestCases(ValidatorTest):
     valid_indicator = json.loads(VALID_INDICATOR)
-    options = ValidationOptions(schema_dir=SCHEMA_DIR)
 
     def test_wellformed_indicator(self):
         results = validate_string(VALID_INDICATOR, self.options).schema_results
@@ -236,12 +235,16 @@ class IndicatorTestCases(unittest.TestCase):
         results = validate_string(indicator, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
+        self.check_ignore(indicator, vocabs.IGNORE_INDICATOR_LABEL)
+
     def test_vocab_pattern_lang(self):
         indicator = copy.deepcopy(self.valid_indicator)
         indicator['pattern_lang'] = "something"
         indicator = json.dumps(indicator)
         results = validate_string(indicator, self.options).schema_results
         self.assertEqual(results.is_valid, False)
+
+        self.check_ignore(indicator, vocabs.IGNORE_PATTERN_LANG)
 
 
 if __name__ == "__main__":

@@ -1,9 +1,9 @@
 import unittest
 import copy
 import json
-from . import SCHEMA_DIR
+from . import ValidatorTest
 from .. import validate_string
-from ..validators import ValidationOptions
+from .. import vocabs
 
 VALID_TOOL = """
 {
@@ -19,9 +19,8 @@ VALID_TOOL = """
 """
 
 
-class ToolTestCases(unittest.TestCase):
+class ToolTestCases(ValidatorTest):
     valid_tool = json.loads(VALID_TOOL)
-    options = ValidationOptions(schema_dir=SCHEMA_DIR)
 
     def test_wellformed_tool(self):
         results = validate_string(VALID_TOOL, self.options).schema_results
@@ -33,6 +32,8 @@ class ToolTestCases(unittest.TestCase):
         tool = json.dumps(tool)
         results = validate_string(tool, self.options).schema_results
         self.assertEqual(results.is_valid, False)
+
+        self.check_ignore(tool, vocabs.IGNORE_TOOL_LABEL)
 
 
 if __name__ == "__main__":

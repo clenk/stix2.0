@@ -1,9 +1,9 @@
 import unittest
 import copy
 import json
-from . import SCHEMA_DIR
+from . import ValidatorTest
 from .. import validate_string
-from ..validators import ValidationOptions
+from .. import vocabs
 
 VALID_REPORT = """
 {
@@ -26,9 +26,8 @@ VALID_REPORT = """
 """
 
 
-class IdentityTestCases(unittest.TestCase):
+class IdentityTestCases(ValidatorTest):
     valid_report = json.loads(VALID_REPORT)
-    options = ValidationOptions(schema_dir=SCHEMA_DIR)
 
     def test_wellformed_report(self):
         results = validate_string(VALID_REPORT, self.options).schema_results
@@ -40,6 +39,8 @@ class IdentityTestCases(unittest.TestCase):
         report = json.dumps(report)
         results = validate_string(report, self.options).schema_results
         self.assertEqual(results.is_valid, False)
+
+        self.check_ignore(report, vocabs.IGNORE_REPORT_LABEL)
 
 
 if __name__ == "__main__":
