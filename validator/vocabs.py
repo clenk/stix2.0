@@ -200,6 +200,7 @@ IGNORE_THREAT_ACTOR_LABEL =                 '119'
 IGNORE_THREAT_ACTOR_ROLE =                  '120'
 IGNORE_THREAT_ACTOR_SOPHISTICATION_LEVEL =  '121'
 IGNORE_TOOL_LABEL =                         '122'
+IGNORE_MARKING_DEFINITION_TYPE =            '129'
 
 
 # List of default STIX object types

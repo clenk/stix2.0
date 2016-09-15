@@ -2,7 +2,6 @@
 # builtin
 import os
 import json
-import logging
 from itertools import chain
 import fnmatch
 

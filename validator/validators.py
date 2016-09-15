@@ -259,6 +259,29 @@ def vocab_tool_label(instance):
     return check_vocab(instance, "TOOL_LABEL")
 
 
+def vocab_marking_definition(instance):
+    # vocab_uses = getattr(vocabs, vocab + "_USES")
+    # for k in vocab_uses.keys():
+    # if instance['type'] == 'marking-definition':
+    #     # for prop in vocab_uses[k]:
+    #     if ('definition_type' in instance and not instance['definition_type']
+    #             in vocabs.MARKING_DEFINITION_TYPES):
+    if (instance['type'] == 'marking-definition' and
+            'definition_type' in instance and not
+            instance['definition_type'] in vocabs.MARKING_DEFINITION_TYPES):
+
+            # vocab_ov = getattr(vocabs, vocab + "_OV")
+            # if type(instance[prop]) is list:
+            #     is_in = set(instance[prop]).issubset(set(vocab_ov))
+            # else:
+            #     is_in = instance[prop] in vocab_ov
+
+            # if not is_in:
+                # vocab_name = vocab.replace('_', '-').lower()
+        return JSONError("Marking definition's `definition_type` must be one of "
+                         "%s." % vocabs.MARKING_DEFINITION_TYPES, instance['type'])
+
+
 class CustomDraft4Validator(Draft4Validator):
     """Custom validator class for JSON Schema Draft 4.
 
@@ -306,7 +329,8 @@ class CustomDraft4Validator(Draft4Validator):
                 self.validator_list.append(vocab_threat_actor_sophistication_level)
             if vocabs.IGNORE_TOOL_LABEL not in ignored:
                 self.validator_list.append(vocab_tool_label)
-
+            if vocabs.IGNORE_MARKING_DEFINITION_TYPE not in ignored:
+                self.validator_list.append(vocab_marking_definition)
 
     def iter_errors_more(self, instance, options=None, _schema=None):
         """Custom function to perform additional validation not possible
