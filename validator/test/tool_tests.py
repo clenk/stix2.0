@@ -3,7 +3,7 @@ import copy
 import json
 from . import ValidatorTest
 from .. import validate_string
-from .. import vocabs
+from .. import enums
 
 VALID_TOOL = """
 {
@@ -39,7 +39,7 @@ class ToolTestCases(ValidatorTest):
         results = validate_string(tool, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
-        self.check_ignore(tool, vocabs.IGNORE_TOOL_LABEL)
+        self.check_ignore(tool, enums.IGNORE_TOOL_LABEL)
 
     def test_kill_chain_name(self):
         tool = copy.deepcopy(self.valid_tool)
@@ -58,7 +58,7 @@ class ToolTestCases(ValidatorTest):
         results = validate_string(tool_string, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
-        self.check_ignore(tool_string, vocabs.IGNORE_KILL_CHAIN_NAMES)
+        self.check_ignore(tool_string, enums.IGNORE_KILL_CHAIN_NAMES)
 
     def test_kill_chain_phase_name(self):
         tool = copy.deepcopy(self.valid_tool)
@@ -77,7 +77,7 @@ class ToolTestCases(ValidatorTest):
         results = validate_string(tool_string, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
-        self.check_ignore(tool_string, vocabs.IGNORE_KILL_CHAIN_NAMES)
+        self.check_ignore(tool_string, enums.IGNORE_KILL_CHAIN_NAMES)
 
 
 if __name__ == "__main__":

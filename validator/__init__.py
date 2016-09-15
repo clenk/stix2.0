@@ -333,8 +333,6 @@ def validate_string(string, options):
 
     """
     results = FileResults("input string")
-    import logging
-    logging.error(string)
     output.info("Performing JSON schema validation on input string: " + string)
     instance = json.loads(string)
 

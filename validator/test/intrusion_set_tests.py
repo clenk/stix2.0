@@ -3,7 +3,7 @@ import copy
 import json
 from . import ValidatorTest
 from .. import validate_string
-from .. import vocabs
+from .. import enums
 
 VALID_INTRUSION_SET = """
 {
@@ -42,7 +42,7 @@ class IntrusionSetTestCases(ValidatorTest):
         results = validate_string(intrusion_set, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
-        self.check_ignore(intrusion_set, vocabs.IGNORE_ATTACK_MOTIVATION)
+        self.check_ignore(intrusion_set, enums.IGNORE_ATTACK_MOTIVATION)
 
     def test_vocab_attack_resource_level(self):
         intrusion_set = copy.deepcopy(self.valid_intrusion_set)
@@ -51,7 +51,7 @@ class IntrusionSetTestCases(ValidatorTest):
         results = validate_string(intrusion_set, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
-        self.check_ignore(intrusion_set, vocabs.IGNORE_ATTACK_RESOURCE_LEVEL)
+        self.check_ignore(intrusion_set, enums.IGNORE_ATTACK_RESOURCE_LEVEL)
 
 
 if __name__ == "__main__":

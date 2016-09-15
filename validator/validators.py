@@ -10,7 +10,7 @@ from jsonschema import Draft4Validator
 from jsonschema import exceptions as schema_exceptions
 
 # internal
-from . import vocabs
+from . import enums
 
 
 class ValidationOptions(object):
@@ -39,26 +39,28 @@ class ValidationOptions(object):
         schema_dir: A user-defined schema directory to validate against.
 
     """
-    def __init__(self, cmd_args=None, verbose=False, files=None, recursive=False, schema_dir=None, ignored_errors=""):
+    def __init__(self, cmd_args=None, verbose=False, files=None, recursive=False, schema_dir=None, ignored_errors="", lax_prefix=False):
         if cmd_args is not None:
             self.verbose = cmd_args.verbose
             self.files = cmd_args.files
             self.recursive = cmd_args.recursive
             self.schema_dir = cmd_args.schema_dir
             self.ignored_errors = cmd_args.ignored_errors
+            self.lax_prefix = cmd_args.lax_prefix
         else:
             # SHOULD requirements
             # TODO
             # self.best_practice_validate = False
 
-            # output options
-            self.verbose = verbose
-            self.ignored_errors = ignored_errors
-
             # input options
             self.files = files
             self.recursive = recursive
             self.schema_dir = schema_dir
+
+            # output options
+            self.verbose = verbose
+            self.ignored_errors = ignored_errors
+            self.lax_prefix = lax_prefix
 
 
 class JSONError(schema_exceptions.ValidationError):
@@ -191,14 +193,14 @@ def check_vocab(instance, vocab):
     dictionary to determine which properties SHOULD use the given vocabulary,
     then checks that the values in those properties are from the vocabulary.
     """
-    vocab_uses = getattr(vocabs, vocab + "_USES")
+    vocab_uses = getattr(enums, vocab + "_USES")
     for k in vocab_uses.keys():
         if instance['type'] == k:
             for prop in vocab_uses[k]:
                 if prop not in instance:
                     continue
 
-                vocab_ov = getattr(vocabs, vocab + "_OV")
+                vocab_ov = getattr(enums, vocab + "_OV")
                 if type(instance[prop]) is list:
                     is_in = set(instance[prop]).issubset(set(vocab_ov))
                 else:
@@ -259,16 +261,22 @@ def vocab_tool_label(instance):
 
 
 def vocab_marking_definition(instance):
+    """Ensure that the `definition_type` property of `marking-definition`
+    objects is one of the values in the STIX 2.0 specification.
+    """
     if (instance['type'] == 'marking-definition' and
             'definition_type' in instance and not
-            instance['definition_type'] in vocabs.MARKING_DEFINITION_TYPES):
+            instance['definition_type'] in enums.MARKING_DEFINITION_TYPES):
 
         return JSONError("Marking definition's `definition_type` should be one of "
-                         "%s." % vocabs.MARKING_DEFINITION_TYPES, instance['type'])
+                         "%s." % enums.MARKING_DEFINITION_TYPES, instance['type'])
 
 
 def kill_chain_phase_names(instance):
-    if instance['type'] in vocabs.KILL_CHAIN_PHASE_USES and 'kill_chain_phases' in instance:
+    """Ensure the `kill_chain_name` and `phase_name` properties of
+    `kill_chain_phase` objects follow naming style conventions.
+    """
+    if instance['type'] in enums.KILL_CHAIN_PHASE_USES and 'kill_chain_phases' in instance:
         for phase in instance['kill_chain_phases']:
 
             chain_name = phase['kill_chain_name']
@@ -284,6 +292,26 @@ def kill_chain_phase_names(instance):
                                  "use dashes instead of spaces or underscores "
                                  "as word separators." % phase_name,
                                  instance['type'])
+
+
+def custom_object_prefix_strict(instance):
+    """Ensure custom objects follow strict naming style conventions.
+    """
+    if instance['type'] not in enums.TYPES and not re.match("^x\-.+\-.+$", instance['type']):
+        return JSONError("Custom objects should have a type that starts with "
+                         "'x-' followed by a source unique identifier (like "
+                         "a domain name with dots replaced by dashes), a dash "
+                         "and then the name.", instance['type'])
+
+
+def custom_object_prefix_lax(instance):
+    """Ensure custom objects follow more lenient naming style conventions
+    for forward-compatibility.
+    """
+    if instance['type'] not in enums.TYPES and not re.match("^x\-.+$", instance['type']):
+        return JSONError("Custom objects should have a type that starts with "
+                         "'x-' in order to be compatible with future versions"
+                         " of the STIX 2 specification.", instance['type'])
 
 
 class CustomDraft4Validator(Draft4Validator):
@@ -307,36 +335,42 @@ class CustomDraft4Validator(Draft4Validator):
 
         ignored = options.ignored_errors.split(",")
 
+        if enums.IGNORE_CUSTOM_OBJECT_PREFIX not in ignored:
+            if options.lax_prefix:
+                self.validator_list.append(custom_object_prefix_lax)
+            else:
+                self.validator_list.append(custom_object_prefix_strict)
+
         # Ignore vocabulary value checks
-        if vocabs.IGNORE_ALL_VOCABS not in ignored:
-            if vocabs.IGNORE_ATTACK_MOTIVATION not in ignored:
+        if enums.IGNORE_ALL_VOCABS not in ignored:
+            if enums.IGNORE_ATTACK_MOTIVATION not in ignored:
                 self.validator_list.append(vocab_attack_motivation)
-            if vocabs.IGNORE_ATTACK_RESOURCE_LEVEL not in ignored:
+            if enums.IGNORE_ATTACK_RESOURCE_LEVEL not in ignored:
                 self.validator_list.append(vocab_attack_resource_level)
-            if vocabs.IGNORE_IDENTITY_CLASS not in ignored:
+            if enums.IGNORE_IDENTITY_CLASS not in ignored:
                 self.validator_list.append(vocab_identity_class)
-            if vocabs.IGNORE_INDICATOR_LABEL not in ignored:
+            if enums.IGNORE_INDICATOR_LABEL not in ignored:
                 self.validator_list.append(vocab_indicator_label)
-            if vocabs.IGNORE_INDUSTRY_SECTOR not in ignored:
+            if enums.IGNORE_INDUSTRY_SECTOR not in ignored:
                 self.validator_list.append(vocab_industry_sector)
-            if vocabs.IGNORE_MALWARE_LABEL not in ignored:
+            if enums.IGNORE_MALWARE_LABEL not in ignored:
                 self.validator_list.append(vocab_malware_label)
-            if vocabs.IGNORE_PATTERN_LANG not in ignored:
+            if enums.IGNORE_PATTERN_LANG not in ignored:
                 self.validator_list.append(vocab_pattern_lang)
-            if vocabs.IGNORE_REPORT_LABEL not in ignored:
+            if enums.IGNORE_REPORT_LABEL not in ignored:
                 self.validator_list.append(vocab_report_label)
-            if vocabs.IGNORE_THREAT_ACTOR_LABEL not in ignored:
+            if enums.IGNORE_THREAT_ACTOR_LABEL not in ignored:
                 self.validator_list.append(vocab_threat_actor_label)
-            if vocabs.IGNORE_THREAT_ACTOR_ROLE not in ignored:
+            if enums.IGNORE_THREAT_ACTOR_ROLE not in ignored:
                 self.validator_list.append(vocab_threat_actor_role)
-            if vocabs.IGNORE_THREAT_ACTOR_SOPHISTICATION_LEVEL not in ignored:
+            if enums.IGNORE_THREAT_ACTOR_SOPHISTICATION_LEVEL not in ignored:
                 self.validator_list.append(vocab_threat_actor_sophistication_level)
-            if vocabs.IGNORE_TOOL_LABEL not in ignored:
+            if enums.IGNORE_TOOL_LABEL not in ignored:
                 self.validator_list.append(vocab_tool_label)
-            if vocabs.IGNORE_MARKING_DEFINITION_TYPE not in ignored:
+            if enums.IGNORE_MARKING_DEFINITION_TYPE not in ignored:
                 self.validator_list.append(vocab_marking_definition)
 
-        if vocabs.IGNORE_KILL_CHAIN_NAMES not in ignored:
+        if enums.IGNORE_KILL_CHAIN_NAMES not in ignored:
             self.validator_list.append(kill_chain_phase_names)
 
     def iter_errors_more(self, instance, options=None, _schema=None):

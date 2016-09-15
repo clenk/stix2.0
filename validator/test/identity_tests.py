@@ -3,7 +3,7 @@ import copy
 import json
 from . import ValidatorTest
 from .. import validate_string
-from .. import vocabs
+from .. import enums
 
 VALID_IDENTITY = """
 {
@@ -47,7 +47,7 @@ class IdentityTestCases(ValidatorTest):
         results = validate_string(identity, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
-        self.check_ignore(identity, vocabs.IGNORE_INDUSTRY_SECTOR)
+        self.check_ignore(identity, enums.IGNORE_INDUSTRY_SECTOR)
 
 
 if __name__ == "__main__":

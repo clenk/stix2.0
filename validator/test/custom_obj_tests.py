@@ -60,6 +60,32 @@ class CustomObjectTestCases(unittest.TestCase):
         results = validate_string(custom_obj, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
+    def test_invalid_type_name(self):
+        custom_obj = copy.deepcopy(self.valid_custom_object)
+        custom_obj['type'] = "corpo_ration"
+        custom_obj_string = json.dumps(custom_obj)
+        results = validate_string(custom_obj_string, self.options).schema_results
+        self.assertEqual(results.is_valid, False)
+
+        custom_obj['type'] = "corpor@tion"
+        custom_obj_string = json.dumps(custom_obj)
+        results = validate_string(custom_obj_string, self.options).schema_results
+        self.assertEqual(results.is_valid, False)
+
+        custom_obj['type'] = "x-corporation"
+        custom_obj_string = json.dumps(custom_obj)
+        results = validate_string(custom_obj_string, self.options).schema_results
+        self.assertEqual(results.is_valid, False)
+
+        lax_options = ValidationOptions(schema_dir=SCHEMA_DIR, lax_prefix=True)
+        results = validate_string(custom_obj_string, lax_options).schema_results
+        self.assertTrue(results.is_valid)
+
+        custom_obj['type'] = "x-corp-oration"
+        custom_obj_string = json.dumps(custom_obj)
+        results = validate_string(custom_obj_string, self.options).schema_results
+        self.assertTrue(results.is_valid)
+
 
 if __name__ == "__main__":
     unittest.main()

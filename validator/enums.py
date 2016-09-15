@@ -1,8 +1,10 @@
-"""STIX 2.0 Open Vocabularies and other lists
+"""STIX 2.0 open vocabularies and other lists
 """
 
 
 # Error codes for setting which checks to ignore
+IGNORE_CUSTOM_OBJECT_PREFIX =               '101'
+
 IGNORE_ALL_VOCABS =                         '110'
 IGNORE_ATTACK_MOTIVATION =                  '111'
 IGNORE_ATTACK_RESOURCE_LEVEL =              '112'

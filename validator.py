@@ -45,6 +45,7 @@ def _get_arg_parser():
         help="Recursively descend into input directories."
     )
     parser.add_argument(
+        "-s",
         "--schemas",
         dest="schema_dir",
         default='schemas/',
@@ -71,19 +72,7 @@ def _get_arg_parser():
         help="Print informational notes and more verbose error messages."
     )
 
-    # 110: All open vocabulary value checks
-    # 111: Legitimate attack-motivation open vocab values
-    # 112: Legitimate attack-resource-level open vocab values
-    # 113: Legitimate identity-class open vocab values
-    # 114: Legitimate indicator-label open vocab values
-    # 115: Legitimate industry-sector open vocab values
-    # 116: Legitimate malware-label open vocab values
-    # 117: Legitimate pattern-lang open vocab values
-    # 118: Legitimate report-label open vocab values
-    # 119: Legitimate threat-actor-label open vocab values
-    # 120: Legitimate threat-actor-role open vocab values
-    # 121: Legitimate threat-actor-sophistication-level open vocab values
-    # 122: Legitimate tool-label open vocab values
+    # TODO: add a table/list of ignore options to -h output
 
     parser.add_argument(
         "-i",
@@ -91,7 +80,18 @@ def _get_arg_parser():
         dest="ignored_errors",
         default="",
         help="A comma-separated list of validation errors to skip. "
-             "Example: ``--ignore 112,120``"
+             "Example: `--ignore 112,120`"
+    )
+
+    parser.add_argument(
+        "--lax-prefix",
+        dest="lax_prefix",
+        action="store_true",
+        default=False,
+        help="Only check that custom objects' `type` property values start "
+             "with 'x-' and custom property names start with 'x_'. Default: "
+             "check that they are of the form 'x-[source]-[name]' and "
+             "'x_[source]_[name]', respectively."
     )
 
     return parser
