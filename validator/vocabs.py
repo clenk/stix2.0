@@ -1,6 +1,26 @@
 """STIX 2.0 Open Vocabularies and other lists
 """
 
+
+# Error codes for setting which checks to ignore
+IGNORE_ALL_VOCABS =                         '110'
+IGNORE_ATTACK_MOTIVATION =                  '111'
+IGNORE_ATTACK_RESOURCE_LEVEL =              '112'
+IGNORE_IDENTITY_CLASS =                     '113'
+IGNORE_INDICATOR_LABEL =                    '114'
+IGNORE_INDUSTRY_SECTOR =                    '115'
+IGNORE_MALWARE_LABEL =                      '116'
+IGNORE_PATTERN_LANG =                       '117'
+IGNORE_REPORT_LABEL =                       '118'
+IGNORE_THREAT_ACTOR_LABEL =                 '119'
+IGNORE_THREAT_ACTOR_ROLE =                  '120'
+IGNORE_THREAT_ACTOR_SOPHISTICATION_LEVEL =  '121'
+IGNORE_TOOL_LABEL =                         '122'
+IGNORE_MARKING_DEFINITION_TYPE =            '129'
+
+IGNORE_KILL_CHAIN_NAMES =                   '131'
+
+
 # Enumerations of the default values of STIX open vocabularies
 ATTACK_MOTIVATION_OV = [
     "accidental",
@@ -186,23 +206,6 @@ TOOL_LABEL_USES = {
 }
 
 
-# Error codes for setting which checks to ignore
-IGNORE_ALL_VOCABS =                         '110'
-IGNORE_ATTACK_MOTIVATION =                  '111'
-IGNORE_ATTACK_RESOURCE_LEVEL =              '112'
-IGNORE_IDENTITY_CLASS =                     '113'
-IGNORE_INDICATOR_LABEL =                    '114'
-IGNORE_INDUSTRY_SECTOR =                    '115'
-IGNORE_MALWARE_LABEL =                      '116'
-IGNORE_PATTERN_LANG =                       '117'
-IGNORE_REPORT_LABEL =                       '118'
-IGNORE_THREAT_ACTOR_LABEL =                 '119'
-IGNORE_THREAT_ACTOR_ROLE =                  '120'
-IGNORE_THREAT_ACTOR_SOPHISTICATION_LEVEL =  '121'
-IGNORE_TOOL_LABEL =                         '122'
-IGNORE_MARKING_DEFINITION_TYPE =            '129'
-
-
 # List of default STIX object types
 TYPES = [
     "attack-pattern",
@@ -228,4 +231,12 @@ TYPES = [
 MARKING_DEFINITION_TYPES = [
     "statement",
     "tlp"
+]
+
+# List of object types which have a `kill-chain-phases` property
+KILL_CHAIN_PHASE_USES = [
+    "attack-pattern",
+    "indicator",
+    "malware",
+    "tool"
 ]

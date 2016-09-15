@@ -14,5 +14,5 @@ class ValidatorTest(unittest.TestCase):
         """
         ignore_options = ValidationOptions(schema_dir=SCHEMA_DIR,
                                            ignored_errors=ignored_error)
-        results2 = validate_string(instance, ignore_options).schema_results
-        self.assertTrue(results2.is_valid)
+        results = validate_string(instance, ignore_options).schema_results
+        self.assertTrue(results.is_valid)

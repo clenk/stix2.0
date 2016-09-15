@@ -333,6 +333,8 @@ def validate_string(string, options):
 
     """
     results = FileResults("input string")
+    import logging
+    logging.error(string)
     output.info("Performing JSON schema validation on input string: " + string)
     instance = json.loads(string)
 
@@ -396,7 +398,8 @@ def load_schema(schema_path):
         with open(schema_path) as schema_file:
             schema = json.load(schema_file)
     except ValueError as e:
-        raise SchemaInvalidError('Invalid JSON in schema or included schema: ' + schema_file.name + "\n" + str(e))
+        raise SchemaInvalidError('Invalid JSON in schema or included schema: '
+                                 '%s\n%s' % (schema_file.name, str(e)))
 
     return schema
 
@@ -438,6 +441,8 @@ def schema_validate(instance, options):
         raise SchemaInvalidError('Invalid JSON schema: ' + str(e))
 
     validator = load_validator(schema_path, schema, options)
+    output.info("Running the following additional checks: %s."
+                % ", ".join(x.__name__ for x in validator.validator_list))
 
     # Actual validation of JSON document
     try:

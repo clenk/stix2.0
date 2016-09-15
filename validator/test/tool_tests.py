@@ -14,7 +14,13 @@ VALID_TOOL = """
   "modified": "2016-04-06T20:03:48Z",
   "version": 1,
   "name": "VNC",
-  "labels": ["remote-access"]
+  "labels": ["remote-access"],
+  "kill_chain_phases": [
+    {
+      "kill_chain_name": "lockheed-martin-cyber-kill-chain",
+      "phase_name": "command-and-control"
+    }
+  ]
 }
 """
 
@@ -34,6 +40,44 @@ class ToolTestCases(ValidatorTest):
         self.assertEqual(results.is_valid, False)
 
         self.check_ignore(tool, vocabs.IGNORE_TOOL_LABEL)
+
+    def test_kill_chain_name(self):
+        tool = copy.deepcopy(self.valid_tool)
+        tool['kill_chain_phases'][0]['kill_chain_name'] = "Something"
+        tool_string = json.dumps(tool)
+        results = validate_string(tool_string, self.options).schema_results
+        self.assertEqual(results.is_valid, False)
+
+        tool['kill_chain_phases'][0]['kill_chain_name'] = "some thing"
+        tool_string = json.dumps(tool)
+        results = validate_string(tool_string, self.options).schema_results
+        self.assertEqual(results.is_valid, False)
+
+        tool['kill_chain_phases'][0]['kill_chain_name'] = "some_thing"
+        tool_string = json.dumps(tool)
+        results = validate_string(tool_string, self.options).schema_results
+        self.assertEqual(results.is_valid, False)
+
+        self.check_ignore(tool_string, vocabs.IGNORE_KILL_CHAIN_NAMES)
+
+    def test_kill_chain_phase_name(self):
+        tool = copy.deepcopy(self.valid_tool)
+        tool['kill_chain_phases'][0]['phase_name'] = "Something"
+        tool_string = json.dumps(tool)
+        results = validate_string(tool_string, self.options).schema_results
+        self.assertEqual(results.is_valid, False)
+
+        tool['kill_chain_phases'][0]['phase_name'] = "some thing"
+        tool_string = json.dumps(tool)
+        results = validate_string(tool_string, self.options).schema_results
+        self.assertEqual(results.is_valid, False)
+
+        tool['kill_chain_phases'][0]['phase_name'] = "some_thing"
+        tool_string = json.dumps(tool)
+        results = validate_string(tool_string, self.options).schema_results
+        self.assertEqual(results.is_valid, False)
+
+        self.check_ignore(tool_string, vocabs.IGNORE_KILL_CHAIN_NAMES)
 
 
 if __name__ == "__main__":

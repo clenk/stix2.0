@@ -183,7 +183,6 @@ def timestamp_precision(instance):
 
 
 # Checks for SHOULD Requirements
-# TODO
 
 def check_vocab(instance, vocab):
     """Ensure that the open vocabulary specified by `vocab` is used properly.
@@ -260,26 +259,31 @@ def vocab_tool_label(instance):
 
 
 def vocab_marking_definition(instance):
-    # vocab_uses = getattr(vocabs, vocab + "_USES")
-    # for k in vocab_uses.keys():
-    # if instance['type'] == 'marking-definition':
-    #     # for prop in vocab_uses[k]:
-    #     if ('definition_type' in instance and not instance['definition_type']
-    #             in vocabs.MARKING_DEFINITION_TYPES):
     if (instance['type'] == 'marking-definition' and
             'definition_type' in instance and not
             instance['definition_type'] in vocabs.MARKING_DEFINITION_TYPES):
 
-            # vocab_ov = getattr(vocabs, vocab + "_OV")
-            # if type(instance[prop]) is list:
-            #     is_in = set(instance[prop]).issubset(set(vocab_ov))
-            # else:
-            #     is_in = instance[prop] in vocab_ov
-
-            # if not is_in:
-                # vocab_name = vocab.replace('_', '-').lower()
-        return JSONError("Marking definition's `definition_type` must be one of "
+        return JSONError("Marking definition's `definition_type` should be one of "
                          "%s." % vocabs.MARKING_DEFINITION_TYPES, instance['type'])
+
+
+def kill_chain_phase_names(instance):
+    if instance['type'] in vocabs.KILL_CHAIN_PHASE_USES and 'kill_chain_phases' in instance:
+        for phase in instance['kill_chain_phases']:
+
+            chain_name = phase['kill_chain_name']
+            if not chain_name.islower() or '_' in chain_name or ' ' in chain_name:
+                return JSONError("kill_chain_name (%s) should be all lowercase"
+                                 " and use dashes instead of spaces or "
+                                 "underscores as word separators." % chain_name,
+                                 instance['type'])
+
+            phase_name = phase['phase_name']
+            if not phase_name.islower() or '_' in phase_name or ' ' in phase_name:
+                return JSONError("phase_name (%s) should be all lowercase and "
+                                 "use dashes instead of spaces or underscores "
+                                 "as word separators." % phase_name,
+                                 instance['type'])
 
 
 class CustomDraft4Validator(Draft4Validator):
@@ -331,6 +335,9 @@ class CustomDraft4Validator(Draft4Validator):
                 self.validator_list.append(vocab_tool_label)
             if vocabs.IGNORE_MARKING_DEFINITION_TYPE not in ignored:
                 self.validator_list.append(vocab_marking_definition)
+
+        if vocabs.IGNORE_KILL_CHAIN_NAMES not in ignored:
+            self.validator_list.append(kill_chain_phase_names)
 
     def iter_errors_more(self, instance, options=None, _schema=None):
         """Custom function to perform additional validation not possible
