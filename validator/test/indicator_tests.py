@@ -89,6 +89,13 @@ class IndicatorTestCases(ValidatorTest):
         results = validate_string(indicator, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
+    def test_id_type(self):
+        indicator = copy.deepcopy(self.valid_indicator)
+        indicator['id'] = "something--8e2e2d2b-17d4-4cbf-938f-98ee46b3cd3f"
+        indicator = json.dumps(indicator)
+        results = validate_string(indicator, self.options).schema_results
+        self.assertEqual(results.is_valid, False)
+
     def test_timestamp_precision_name(self):
         indicator = copy.deepcopy(self.valid_indicator)
         del indicator['valid_from_precision']

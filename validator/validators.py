@@ -156,6 +156,15 @@ def empty_lists(instance):
             return JSONError("Empty lists are not permitted", prop_name)
 
 
+def id_type(instance):
+    """Ensure that an object's id` starts with its type.
+    Checking of the UUID portion of the id is handled in the JSON schemas.
+    """
+    t = instance['type']
+    if not re.search("%s\-\-" % t, instance['id']):
+        return JSONError("'id' must be prefixed by %s--." % t, t)
+
+
 def timestamp_precision(instance):
     """Ensure that for every precision property there is a matching timestamp
     property that uses the proper timestamp format for the given precision.
@@ -326,10 +335,10 @@ def custom_property_prefix_strict(instance):
                 prop_name not in enums.PROPERTIES[instance['type']] and
                 not re.match("^x_.+_.+$", prop_name)):
 
-            return JSONError("Custom objects should have a type that starts "
-                             "with 'x_' followed by a source unique identifier"
-                             " (like a domain name with dots replaced by "
-                             "dashes), a dash and then the name.",
+            return JSONError("Custom properties should have a type that starts"
+                             " with 'x_' followed by a source unique "
+                             "identifier (like a domain name with dots "
+                             "replaced by dashes), a dash and then the name.",
                              prop_name)
 
 
@@ -344,9 +353,9 @@ def custom_property_prefix_lax(instance):
                 prop_name not in enums.PROPERTIES[instance['type']] and
                 not re.match("^x_.+$", prop_name)):
 
-            return JSONError("Custom objects should have a type that starts "
-                             "with 'x_' in order to be compatible with future "
-                             "versions of the STIX 2 specification.",
+            return JSONError("Custom properties should have a type that starts"
+                             " with 'x_' in order to be compatible with future"
+                             " versions of the STIX 2 specification.",
                              prop_name)
 
 
@@ -366,6 +375,7 @@ class CustomDraft4Validator(Draft4Validator):
             custom_property_names,
             cve,
             empty_lists,
+            id_type,
             timestamp_precision
         ]
 
