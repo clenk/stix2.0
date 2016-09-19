@@ -305,13 +305,47 @@ def custom_object_prefix_strict(instance):
 
 
 def custom_object_prefix_lax(instance):
-    """Ensure custom objects follow more lenient naming style conventions
+    """Ensure custom objects follow lenient naming style conventions
     for forward-compatibility.
     """
     if instance['type'] not in enums.TYPES and not re.match("^x\-.+$", instance['type']):
         return JSONError("Custom objects should have a type that starts with "
                          "'x-' in order to be compatible with future versions"
                          " of the STIX 2 specification.", instance['type'])
+
+
+def custom_property_prefix_strict(instance):
+    """Ensure custom properties follow strict naming style conventions.
+
+    Does not check property names in custom objects.
+    """
+    for prop_name in instance.keys():
+        if (instance['type'] in enums.PROPERTIES and
+                prop_name not in enums.PROPERTIES[instance['type']] and
+                not re.match("^x_.+_.+$", prop_name)):
+
+            return JSONError("Custom objects should have a type that starts "
+                             "with 'x_' followed by a source unique identifier"
+                             " (like a domain name with dots replaced by "
+                             "dashes), a dash and then the name.",
+                             prop_name)
+
+
+def custom_property_prefix_lax(instance):
+    """Ensure custom properties follow lenient naming style conventions
+    for forward-compatibility.
+
+    Does not check property names in custom objects.
+    """
+    for prop_name in instance.keys():
+        if (instance['type'] in enums.PROPERTIES and
+                prop_name not in enums.PROPERTIES[instance['type']] and
+                not re.match("^x_.+$", prop_name)):
+
+            return JSONError("Custom objects should have a type that starts "
+                             "with 'x_' in order to be compatible with future "
+                             "versions of the STIX 2 specification.",
+                             prop_name)
 
 
 class CustomDraft4Validator(Draft4Validator):
@@ -340,6 +374,12 @@ class CustomDraft4Validator(Draft4Validator):
                 self.validator_list.append(custom_object_prefix_lax)
             else:
                 self.validator_list.append(custom_object_prefix_strict)
+
+        if enums.IGNORE_CUSTOM_PROPERTY_PREFIX not in ignored:
+            if options.lax_prefix:
+                self.validator_list.append(custom_property_prefix_lax)
+            else:
+                self.validator_list.append(custom_property_prefix_strict)
 
         # Ignore vocabulary value checks
         if enums.IGNORE_ALL_VOCABS not in ignored:

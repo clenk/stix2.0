@@ -1,9 +1,9 @@
 import unittest
 import copy
 import json
-from . import SCHEMA_DIR
+from . import ValidatorTest
 from .. import validate_string, ValidationError
-from ..validators import ValidationOptions
+from .. import enums
 
 VALID_CUSTOM_OBJECT = """
 {
@@ -18,9 +18,8 @@ VALID_CUSTOM_OBJECT = """
 """
 
 
-class CustomObjectTestCases(unittest.TestCase):
+class CustomObjectTestCases(ValidatorTest):
     valid_custom_object = json.loads(VALID_CUSTOM_OBJECT)
-    options = ValidationOptions(schema_dir=SCHEMA_DIR)
 
     def test_wellformed_custom_object(self):
         results = validate_string(VALID_CUSTOM_OBJECT, self.options).schema_results
@@ -72,15 +71,19 @@ class CustomObjectTestCases(unittest.TestCase):
         results = validate_string(custom_obj_string, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
+    def test_invalid_type_name_lax(self):
+        custom_obj = copy.deepcopy(self.valid_custom_object)
         custom_obj['type'] = "x-corporation"
         custom_obj_string = json.dumps(custom_obj)
         results = validate_string(custom_obj_string, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
-        lax_options = ValidationOptions(schema_dir=SCHEMA_DIR, lax_prefix=True)
-        results = validate_string(custom_obj_string, lax_options).schema_results
-        self.assertTrue(results.is_valid)
+        self.check_lax_prefix(custom_obj_string)
 
+        self.check_ignore(custom_obj_string, enums.IGNORE_CUSTOM_OBJECT_PREFIX)
+
+    def test_valid_type_name(self):
+        custom_obj = copy.deepcopy(self.valid_custom_object)
         custom_obj['type'] = "x-corp-oration"
         custom_obj_string = json.dumps(custom_obj)
         results = validate_string(custom_obj_string, self.options).schema_results

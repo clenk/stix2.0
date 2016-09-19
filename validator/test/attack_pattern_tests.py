@@ -1,9 +1,9 @@
 import unittest
 import copy
 import json
-from . import SCHEMA_DIR
+from . import ValidatorTest
 from .. import validate_string
-from ..validators import ValidationOptions
+from .. import enums
 
 VALID_ATTACK_PATTERN = """
 {
@@ -24,9 +24,8 @@ VALID_ATTACK_PATTERN = """
 """
 
 
-class AttackPatternTestCases(unittest.TestCase):
+class AttackPatternTestCases(ValidatorTest):
     valid_attack_pattern = json.loads(VALID_ATTACK_PATTERN)
-    options = ValidationOptions(schema_dir=SCHEMA_DIR)
 
     def test_wellformed_attack_pattern(self):
         results = validate_string(VALID_ATTACK_PATTERN, self.options).schema_results
@@ -47,6 +46,31 @@ class AttackPatternTestCases(unittest.TestCase):
         attack_pattern = json.dumps(attack_pattern)
         results = validate_string(attack_pattern, self.options).schema_results
         self.assertEqual(results.is_valid, False)
+
+    def test_invalid_property_prefix(self):
+        attack_pattern = copy.deepcopy(self.valid_attack_pattern)
+        attack_pattern['x-something'] = "some value"
+        attack_pattern_string = json.dumps(attack_pattern)
+        results = validate_string(attack_pattern_string, self.options).schema_results
+        self.assertEqual(results.is_valid, False)
+
+    def test_invalid_property_prefix_lax(self):
+        attack_pattern = copy.deepcopy(self.valid_attack_pattern)
+        attack_pattern['x_something'] = "some value"
+        attack_pattern_string = json.dumps(attack_pattern)
+        results = validate_string(attack_pattern_string, self.options).schema_results
+        self.assertEqual(results.is_valid, False)
+
+        self.check_lax_prefix(attack_pattern_string)
+
+        self.check_ignore(attack_pattern_string, enums.IGNORE_CUSTOM_PROPERTY_PREFIX)
+
+    def test_valid_property_prefix(self):
+        attack_pattern = copy.deepcopy(self.valid_attack_pattern)
+        attack_pattern['x_source_something'] = "some value"
+        attack_pattern_string = json.dumps(attack_pattern)
+        results = validate_string(attack_pattern_string, self.options).schema_results
+        self.assertTrue(results.is_valid)
 
 
 if __name__ == "__main__":
