@@ -84,6 +84,14 @@ def _get_arg_parser():
     )
 
     parser.add_argument(
+        "--lax",
+        dest="lax",
+        action="store_true",
+        default=False,
+        help="Ignore recommended best practices and only check MUST requirements."
+    )
+
+    parser.add_argument(
         "--lax-prefix",
         dest="lax_prefix",
         action="store_true",

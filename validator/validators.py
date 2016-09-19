@@ -39,13 +39,14 @@ class ValidationOptions(object):
         schema_dir: A user-defined schema directory to validate against.
 
     """
-    def __init__(self, cmd_args=None, verbose=False, files=None, recursive=False, schema_dir=None, ignored_errors="", lax_prefix=False):
+    def __init__(self, cmd_args=None, verbose=False, files=None, recursive=False, schema_dir=None, ignored_errors="", lax=False, lax_prefix=False):
         if cmd_args is not None:
             self.verbose = cmd_args.verbose
             self.files = cmd_args.files
             self.recursive = cmd_args.recursive
             self.schema_dir = cmd_args.schema_dir
             self.ignored_errors = cmd_args.ignored_errors
+            self.lax = cmd_args.lax
             self.lax_prefix = cmd_args.lax_prefix
         else:
             # SHOULD requirements
@@ -60,6 +61,7 @@ class ValidationOptions(object):
             # output options
             self.verbose = verbose
             self.ignored_errors = ignored_errors
+            self.lax = lax
             self.lax_prefix = lax_prefix
 
 
@@ -367,6 +369,11 @@ class CustomDraft4Validator(Draft4Validator):
             timestamp_precision
         ]
 
+        # If only checking MUST requirements, the list is complete
+        if options.lax:
+            return
+
+        # Add SHOULD requirements to the list unless ignored
         ignored = options.ignored_errors.split(",")
 
         if enums.IGNORE_CUSTOM_OBJECT_PREFIX not in ignored:
@@ -381,7 +388,6 @@ class CustomDraft4Validator(Draft4Validator):
             else:
                 self.validator_list.append(custom_property_prefix_strict)
 
-        # Ignore vocabulary value checks
         if enums.IGNORE_ALL_VOCABS not in ignored:
             if enums.IGNORE_ATTACK_MOTIVATION not in ignored:
                 self.validator_list.append(vocab_attack_motivation)

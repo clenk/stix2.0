@@ -63,6 +63,14 @@ class RelationshipTestCases(unittest.TestCase):
         results = validate_string(relationship, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
+    def test_lax_option(self):
+        relationship = copy.deepcopy(self.valid_relationship)
+        relationship['relationship_type'] = "SOMETHING"
+        relationship = json.dumps(relationship)
+        lax_options = ValidationOptions(schema_dir=SCHEMA_DIR, lax=True)
+        results = validate_string(relationship, lax_options).schema_results
+        self.assertEqual(results.is_valid, False)
+
 
 if __name__ == "__main__":
     unittest.main()
