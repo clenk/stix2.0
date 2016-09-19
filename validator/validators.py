@@ -359,6 +359,32 @@ def custom_property_prefix_lax(instance):
                              prop_name)
 
 
+def relationships_strict(instance):
+    """Ensure that only the relationship types defined in the specification are
+    used.
+    """
+    if (instance['type'] != 'relationship' or
+            instance['type'] not in enums.TYPES):
+        return
+
+    r_type = instance['relationship_type']
+    r_source = re.search("(.+)\-\-", instance['source_ref']).group(1)
+    r_target = re.search("(.+)\-\-", instance['target_ref']).group(1)
+
+    if r_source not in enums.RELATIONSHIPS:
+        return JSONError("'%s' is not a valid relationship source object."
+                         % r_source, "relationship_type")
+
+    if r_type not in enums.RELATIONSHIPS[r_source]:
+        return JSONError("'%s' is not a valid relationship type for '%s' "
+                         "objects." % (r_type, r_source), "relationship_type")
+
+    if r_target not in enums.RELATIONSHIPS[r_source][r_type]:
+        return JSONError("'%s' is not a valid relationship target object for "
+                         "'%s' objects with the '%s' relationship."
+                         % (r_target, r_source, r_type), "relationship_type")
+
+
 class CustomDraft4Validator(Draft4Validator):
     """Custom validator class for JSON Schema Draft 4.
 
@@ -428,6 +454,9 @@ class CustomDraft4Validator(Draft4Validator):
 
         if enums.IGNORE_KILL_CHAIN_NAMES not in ignored:
             self.validator_list.append(kill_chain_phase_names)
+
+        if enums.IGNORE_RELATIONSHIP_TYPES not in ignored:
+            self.validator_list.append(relationships_strict)
 
     def iter_errors_more(self, instance, options=None, _schema=None):
         """Custom function to perform additional validation not possible

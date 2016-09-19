@@ -1,9 +1,9 @@
 import unittest
 import copy
 import json
-from . import SCHEMA_DIR
+from . import ValidatorTest
 from .. import validate_string
-from ..validators import ValidationOptions
+from .. import enums
 
 VALID_RELATIONSHIP = """
 {
@@ -20,9 +20,8 @@ VALID_RELATIONSHIP = """
 """
 
 
-class RelationshipTestCases(unittest.TestCase):
+class RelationshipTestCases(ValidatorTest):
     valid_relationship = json.loads(VALID_RELATIONSHIP)
-    options = ValidationOptions(schema_dir=SCHEMA_DIR)
 
     def test_wellformed_relationship(self):
         results = validate_string(VALID_RELATIONSHIP, self.options).schema_results
@@ -63,14 +62,25 @@ class RelationshipTestCases(unittest.TestCase):
         results = validate_string(relationship, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
-    def test_lax_option(self):
+    def test_relationship_types_invalid(self):
         relationship = copy.deepcopy(self.valid_relationship)
-        relationship['relationship_type'] = "SOMETHING"
+        relationship['source_ref'] = "malware--31b940d4-6f7f-459a-80ea-9c1f17b5891b"
+        relationship['target_ref'] = "campaign--9c1f891b-459a-6f7f-80ea-31b940d417b5"
+        relationship['relationship_type'] = "mitigates"
         relationship = json.dumps(relationship)
-        lax_options = ValidationOptions(schema_dir=SCHEMA_DIR, lax=True)
-        results = validate_string(relationship, lax_options).schema_results
+        results = validate_string(relationship, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
+        self.check_ignore(relationship, enums.IGNORE_RELATIONSHIP_TYPES)
+
+    def test_relationship_types_valid(self):
+        relationship = copy.deepcopy(self.valid_relationship)
+        relationship['source_ref'] = "tool--31b940d4-6f7f-459a-80ea-9c1f17b5891b"
+        relationship['target_ref'] = "vulnerability--9c1f891b-459a-6f7f-80ea-31b17b5940d4"
+        relationship['relationship_type'] = "targets"
+        relationship = json.dumps(relationship)
+        results = validate_string(relationship, self.options).schema_results
+        self.assertTrue(results.is_valid)
 
 if __name__ == "__main__":
     unittest.main()

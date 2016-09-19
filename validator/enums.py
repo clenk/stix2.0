@@ -21,7 +21,9 @@ IGNORE_THREAT_ACTOR_SOPHISTICATION_LEVEL =  '121'
 IGNORE_TOOL_LABEL =                         '122'
 IGNORE_MARKING_DEFINITION_TYPE =            '129'
 
-IGNORE_KILL_CHAIN_NAMES =                   '131'
+IGNORE_KILL_CHAIN_NAMES =                   '151'
+
+IGNORE_RELATIONSHIP_TYPES =                 '160'
 
 
 # Enumerations of the default values of STIX open vocabularies
@@ -541,4 +543,91 @@ PROPERTIES = {
         'definition_type',
         'definition'
     ]
+}
+
+
+# Mapping of official STIX objects to their official relationships
+RELATIONSHIPS = {
+    'attack-pattern': {
+        'targets': [
+            'vulnerability',
+            'identity'
+        ],
+        'uses': [
+            'malware',
+            'tool'
+        ]
+    },
+    'campaign': {
+        'attributed-to': [
+            'intrusion-set',
+            'threat-actor'
+        ],
+        'targets': [
+            'identity',
+            'vulnerability'
+        ],
+        'uses': [
+            'attack-pattern',
+            'malware',
+            'tool'
+        ]
+    },
+    'course-of-action': {
+        'mitigates': [
+            'attack-pattern',
+            'malware',
+            'tool',
+            'vulnerability'
+        ]
+    },
+    'indicator': {
+        'indicates': [
+            'attack-pattern',
+            'campaign',
+            'intrusion-set',
+            'malware',
+            'threat-actor',
+            'tool'
+        ],
+    },
+    'intrusion-set': {
+        'attributed-to': 'threat-actor',
+        'targets': [
+            'identity',
+            'vulnerability',
+        ],
+        'uses': [
+            'attack-pattern',
+            'malware',
+            'tool'
+        ],
+    },
+    'malware': {
+        'targets': [
+            'identity',
+            'vulnerability'
+        ],
+        'uses': 'tool',
+        'variant-of': 'malware'
+    },
+    'threat-actor': {
+        'attributed-to': 'identity',
+        'impersonates': 'identity',
+        'targets': [
+            'identity',
+            'vulnerability'
+        ],
+        'uses': [
+            'attack-pattern',
+            'malware',
+            'tool'
+        ]
+    },
+    'tool': {
+        'targets': [
+            'identity',
+            'vulnerability'
+        ]
+    }
 }

@@ -34,6 +34,12 @@ class Marking_definitionTestCases(ValidatorTest):
 
         self.check_ignore(marking_definition, enums.IGNORE_MARKING_DEFINITION_TYPE)
 
+    def test_lax_option(self):
+        marking_definition = copy.deepcopy(self.valid_marking_definition)
+        marking_definition['definition_type'] = "something"
+        marking_definition = json.dumps(marking_definition)
+        self.assertTrueWithOptions(marking_definition, lax=True)
+
 
 if __name__ == "__main__":
     unittest.main()
