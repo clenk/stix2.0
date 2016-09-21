@@ -25,6 +25,8 @@ IGNORE_KILL_CHAIN_NAMES =                   '151'
 
 IGNORE_RELATIONSHIP_TYPES =                 '160'
 
+IGNORE_OPEN_VOCAB_FORMAT =                  '170'
+
 
 # Enumerations of the default values of STIX open vocabularies
 ATTACK_MOTIVATION_OV = [
@@ -172,8 +174,15 @@ TOOL_LABEL_OV = [
 
 # Dictionaries mapping object types to properties that use a given vocabulary
 ATTACK_MOTIVATION_USES = {
-    "intrusion-set": ["primary_motivation", "secondary_motivations"],
-    "threat-actor": ["primary_motivation", "secondary_motivations", "personal_motivations"]
+    "intrusion-set": [
+        "primary_motivation",
+        "secondary_motivations"
+    ],
+    "threat-actor": [
+        "primary_motivation",
+        "secondary_motivations",
+        "personal_motivations"
+    ]
 }
 ATTACK_RESOURCE_LEVEL_USES = {
     "intrusion-set": ["resource_level"],
@@ -630,4 +639,44 @@ RELATIONSHIPS = {
             'vulnerability'
         ]
     }
+}
+
+
+# Mapping of official STIX objects to their open-vocab properties
+VOCAB_PROPERTIES = {
+    "identity": [
+        'identity_class',
+        'sectors'
+    ],
+    "indicator": [
+        'labels',
+        'pattern_lang'
+    ],
+    "intrusion-set": [
+        'resource_level',
+        'primary_motivation',
+        'secondary_motivations'
+    ],
+    "malware": [
+        'labels'
+    ],
+    "report": [
+        'labels'
+    ],
+    "threat-actor": [
+        'labels',
+        'roles',
+        'goals',
+        'sophistication',
+        'resource_level',
+        'primary_motivation',
+        'secondary_motivations',
+        'personal_motivations'
+    ],
+    "tool": [
+        'labels'
+    ],
+    "marking-definition": [
+        'definition_type'
+    ]
 }

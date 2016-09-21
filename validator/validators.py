@@ -364,9 +364,37 @@ def custom_property_prefix_lax(instance):
 
 
 def types_strict(instance):
+    """Ensure that no custom object types are used, but only the official ones
+    from the specification.
+    """
     if instance['type'] not in enums.TYPES:
         return JSONError("Object type should be one of those detailed in the"
                          " specification.", instance['type'])
+
+
+def open_vocab_values(instance):
+    """Ensure that the values of all properties which use open vocabularies are
+    in lowercase and use dashes isntead of spaces or underscores as word
+    separators.
+    """
+    if instance['type'] not in enums.VOCAB_PROPERTIES:
+        return
+
+    properties = enums.VOCAB_PROPERTIES[instance['type']]
+    for prop in properties:
+        if prop in instance:
+
+            if type(instance[prop]) is list:
+                values = instance[prop]
+            else:
+                values = [instance[prop]]
+
+            for v in values:
+                if not v.islower() or '_' in v or ' ' in v:
+                    return JSONError("Open vocabulary value (%s) should be all"
+                                     " lowercase and use dashes instead of"
+                                     " spaces or underscores as word"
+                                     " separators." % v, instance['type'])
 
 
 def relationships_strict(instance):
@@ -402,8 +430,12 @@ class CustomDraft4Validator(Draft4Validator):
     def __init__(self, schema, types=(), resolver=None, format_checker=None,
                  options=ValidationOptions()):
         super(CustomDraft4Validator, self).__init__(schema, types, resolver, format_checker)
-        # Construct list of validators to be run by this validator
-        self.validator_list = [
+        self.validator_list = self.list_validators(options)
+
+    def list_validators(self, options):
+        """Construct the list of validators to be run by this validator.
+        """
+        validator_list = [
             modified_created,
             version,
             cybox,
@@ -417,59 +449,64 @@ class CustomDraft4Validator(Draft4Validator):
 
         # If only checking MUST requirements, the list is complete
         if options.lax:
-            return
+            return validator_list
 
         # Add SHOULD requirements to the list unless ignored
         ignored = options.ignored_errors.split(",")
 
         if enums.IGNORE_CUSTOM_OBJECT_PREFIX not in ignored:
             if options.lax_prefix:
-                self.validator_list.append(custom_object_prefix_lax)
+                validator_list.append(custom_object_prefix_lax)
             else:
-                self.validator_list.append(custom_object_prefix_strict)
+                validator_list.append(custom_object_prefix_strict)
 
         if enums.IGNORE_CUSTOM_PROPERTY_PREFIX not in ignored:
             if options.lax_prefix:
-                self.validator_list.append(custom_property_prefix_lax)
+                validator_list.append(custom_property_prefix_lax)
             else:
-                self.validator_list.append(custom_property_prefix_strict)
+                validator_list.append(custom_property_prefix_strict)
 
         if enums.IGNORE_ALL_VOCABS not in ignored:
             if enums.IGNORE_ATTACK_MOTIVATION not in ignored:
-                self.validator_list.append(vocab_attack_motivation)
+                validator_list.append(vocab_attack_motivation)
             if enums.IGNORE_ATTACK_RESOURCE_LEVEL not in ignored:
-                self.validator_list.append(vocab_attack_resource_level)
+                validator_list.append(vocab_attack_resource_level)
             if enums.IGNORE_IDENTITY_CLASS not in ignored:
-                self.validator_list.append(vocab_identity_class)
+                validator_list.append(vocab_identity_class)
             if enums.IGNORE_INDICATOR_LABEL not in ignored:
-                self.validator_list.append(vocab_indicator_label)
+                validator_list.append(vocab_indicator_label)
             if enums.IGNORE_INDUSTRY_SECTOR not in ignored:
-                self.validator_list.append(vocab_industry_sector)
+                validator_list.append(vocab_industry_sector)
             if enums.IGNORE_MALWARE_LABEL not in ignored:
-                self.validator_list.append(vocab_malware_label)
+                validator_list.append(vocab_malware_label)
             if enums.IGNORE_PATTERN_LANG not in ignored:
-                self.validator_list.append(vocab_pattern_lang)
+                validator_list.append(vocab_pattern_lang)
             if enums.IGNORE_REPORT_LABEL not in ignored:
-                self.validator_list.append(vocab_report_label)
+                validator_list.append(vocab_report_label)
             if enums.IGNORE_THREAT_ACTOR_LABEL not in ignored:
-                self.validator_list.append(vocab_threat_actor_label)
+                validator_list.append(vocab_threat_actor_label)
             if enums.IGNORE_THREAT_ACTOR_ROLE not in ignored:
-                self.validator_list.append(vocab_threat_actor_role)
+                validator_list.append(vocab_threat_actor_role)
             if enums.IGNORE_THREAT_ACTOR_SOPHISTICATION_LEVEL not in ignored:
-                self.validator_list.append(vocab_threat_actor_sophistication_level)
+                validator_list.append(vocab_threat_actor_sophistication_level)
             if enums.IGNORE_TOOL_LABEL not in ignored:
-                self.validator_list.append(vocab_tool_label)
+                validator_list.append(vocab_tool_label)
             if enums.IGNORE_MARKING_DEFINITION_TYPE not in ignored:
-                self.validator_list.append(vocab_marking_definition)
+                validator_list.append(vocab_marking_definition)
 
         if enums.IGNORE_KILL_CHAIN_NAMES not in ignored:
-            self.validator_list.append(kill_chain_phase_names)
+            validator_list.append(kill_chain_phase_names)
+
+        if enums.IGNORE_OPEN_VOCAB_FORMAT not in ignored:
+            validator_list.append(open_vocab_values)
 
         if enums.IGNORE_RELATIONSHIP_TYPES not in ignored:
-            self.validator_list.append(relationships_strict)
+            validator_list.append(relationships_strict)
 
         if options.strict_types:
-            self.validator_list.append(types_strict)
+            validator_list.append(types_strict)
+
+        return validator_list
 
     def iter_errors_more(self, instance, options=None, _schema=None):
         """Custom function to perform additional validation not possible
