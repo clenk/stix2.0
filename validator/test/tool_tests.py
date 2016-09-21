@@ -79,6 +79,16 @@ class ToolTestCases(ValidatorTest):
 
         self.check_ignore(tool_string, enums.IGNORE_KILL_CHAIN_NAMES)
 
+    def test_format_and_value_checks(self):
+        tool = copy.deepcopy(self.valid_tool)
+        tool['kill_chain_phases'][0]['phase_name'] = "Something_invalid"
+        tool['labels'] += ["something-not-in-vocab"]
+        tool_string = json.dumps(tool)
+
+        self.assertFalseWithOptions(tool_string, ignored_errors='1')
+        self.assertFalseWithOptions(tool_string, ignored_errors='2')
+        self.assertTrueWithOptions(tool_string, ignored_errors='1,2')
+
 
 if __name__ == "__main__":
     unittest.main()

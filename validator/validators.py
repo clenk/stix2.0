@@ -201,6 +201,107 @@ def timestamp_precision(instance):
 
 # Checks for SHOULD Requirements
 
+def custom_object_prefix_strict(instance):
+    """Ensure custom objects follow strict naming style conventions.
+    """
+    if instance['type'] not in enums.TYPES and not re.match("^x\-.+\-.+$", instance['type']):
+        return JSONError("Custom objects should have a type that starts with "
+                         "'x-' followed by a source unique identifier (like "
+                         "a domain name with dots replaced by dashes), a dash "
+                         "and then the name.", instance['type'])
+
+
+def custom_object_prefix_lax(instance):
+    """Ensure custom objects follow lenient naming style conventions
+    for forward-compatibility.
+    """
+    if instance['type'] not in enums.TYPES and not re.match("^x\-.+$", instance['type']):
+        return JSONError("Custom objects should have a type that starts with "
+                         "'x-' in order to be compatible with future versions"
+                         " of the STIX 2 specification.", instance['type'])
+
+
+def custom_property_prefix_strict(instance):
+    """Ensure custom properties follow strict naming style conventions.
+
+    Does not check property names in custom objects.
+    """
+    for prop_name in instance.keys():
+        if (instance['type'] in enums.PROPERTIES and
+                prop_name not in enums.PROPERTIES[instance['type']] and
+                not re.match("^x_.+_.+$", prop_name)):
+
+            return JSONError("Custom properties should have a type that starts"
+                             " with 'x_' followed by a source unique "
+                             "identifier (like a domain name with dots "
+                             "replaced by dashes), a dash and then the name.",
+                             prop_name)
+
+
+def custom_property_prefix_lax(instance):
+    """Ensure custom properties follow lenient naming style conventions
+    for forward-compatibility.
+
+    Does not check property names in custom objects.
+    """
+    for prop_name in instance.keys():
+        if (instance['type'] in enums.PROPERTIES and
+                prop_name not in enums.PROPERTIES[instance['type']] and
+                not re.match("^x_.+$", prop_name)):
+
+            return JSONError("Custom properties should have a type that starts"
+                             " with 'x_' in order to be compatible with future"
+                             " versions of the STIX 2 specification.",
+                             prop_name)
+
+
+def open_vocab_values(instance):
+    """Ensure that the values of all properties which use open vocabularies are
+    in lowercase and use dashes isntead of spaces or underscores as word
+    separators.
+    """
+    if instance['type'] not in enums.VOCAB_PROPERTIES:
+        return
+
+    properties = enums.VOCAB_PROPERTIES[instance['type']]
+    for prop in properties:
+        if prop in instance:
+
+            if type(instance[prop]) is list:
+                values = instance[prop]
+            else:
+                values = [instance[prop]]
+
+            for v in values:
+                if not v.islower() or '_' in v or ' ' in v:
+                    return JSONError("Open vocabulary value (%s) should be all"
+                                     " lowercase and use dashes instead of"
+                                     " spaces or underscores as word"
+                                     " separators." % v, instance['type'])
+
+
+def kill_chain_phase_names(instance):
+    """Ensure the `kill_chain_name` and `phase_name` properties of
+    `kill_chain_phase` objects follow naming style conventions.
+    """
+    if instance['type'] in enums.KILL_CHAIN_PHASE_USES and 'kill_chain_phases' in instance:
+        for phase in instance['kill_chain_phases']:
+
+            chain_name = phase['kill_chain_name']
+            if not chain_name.islower() or '_' in chain_name or ' ' in chain_name:
+                return JSONError("kill_chain_name (%s) should be all lowercase"
+                                 " and use dashes instead of spaces or "
+                                 "underscores as word separators." % chain_name,
+                                 instance['type'])
+
+            phase_name = phase['phase_name']
+            if not phase_name.islower() or '_' in phase_name or ' ' in phase_name:
+                return JSONError("phase_name (%s) should be all lowercase and "
+                                 "use dashes instead of spaces or underscores "
+                                 "as word separators." % phase_name,
+                                 instance['type'])
+
+
 def check_vocab(instance, vocab):
     """Ensure that the open vocabulary specified by `vocab` is used properly.
 
@@ -287,116 +388,6 @@ def vocab_marking_definition(instance):
                          "%s." % enums.MARKING_DEFINITION_TYPES, instance['type'])
 
 
-def kill_chain_phase_names(instance):
-    """Ensure the `kill_chain_name` and `phase_name` properties of
-    `kill_chain_phase` objects follow naming style conventions.
-    """
-    if instance['type'] in enums.KILL_CHAIN_PHASE_USES and 'kill_chain_phases' in instance:
-        for phase in instance['kill_chain_phases']:
-
-            chain_name = phase['kill_chain_name']
-            if not chain_name.islower() or '_' in chain_name or ' ' in chain_name:
-                return JSONError("kill_chain_name (%s) should be all lowercase"
-                                 " and use dashes instead of spaces or "
-                                 "underscores as word separators." % chain_name,
-                                 instance['type'])
-
-            phase_name = phase['phase_name']
-            if not phase_name.islower() or '_' in phase_name or ' ' in phase_name:
-                return JSONError("phase_name (%s) should be all lowercase and "
-                                 "use dashes instead of spaces or underscores "
-                                 "as word separators." % phase_name,
-                                 instance['type'])
-
-
-def custom_object_prefix_strict(instance):
-    """Ensure custom objects follow strict naming style conventions.
-    """
-    if instance['type'] not in enums.TYPES and not re.match("^x\-.+\-.+$", instance['type']):
-        return JSONError("Custom objects should have a type that starts with "
-                         "'x-' followed by a source unique identifier (like "
-                         "a domain name with dots replaced by dashes), a dash "
-                         "and then the name.", instance['type'])
-
-
-def custom_object_prefix_lax(instance):
-    """Ensure custom objects follow lenient naming style conventions
-    for forward-compatibility.
-    """
-    if instance['type'] not in enums.TYPES and not re.match("^x\-.+$", instance['type']):
-        return JSONError("Custom objects should have a type that starts with "
-                         "'x-' in order to be compatible with future versions"
-                         " of the STIX 2 specification.", instance['type'])
-
-
-def custom_property_prefix_strict(instance):
-    """Ensure custom properties follow strict naming style conventions.
-
-    Does not check property names in custom objects.
-    """
-    for prop_name in instance.keys():
-        if (instance['type'] in enums.PROPERTIES and
-                prop_name not in enums.PROPERTIES[instance['type']] and
-                not re.match("^x_.+_.+$", prop_name)):
-
-            return JSONError("Custom properties should have a type that starts"
-                             " with 'x_' followed by a source unique "
-                             "identifier (like a domain name with dots "
-                             "replaced by dashes), a dash and then the name.",
-                             prop_name)
-
-
-def custom_property_prefix_lax(instance):
-    """Ensure custom properties follow lenient naming style conventions
-    for forward-compatibility.
-
-    Does not check property names in custom objects.
-    """
-    for prop_name in instance.keys():
-        if (instance['type'] in enums.PROPERTIES and
-                prop_name not in enums.PROPERTIES[instance['type']] and
-                not re.match("^x_.+$", prop_name)):
-
-            return JSONError("Custom properties should have a type that starts"
-                             " with 'x_' in order to be compatible with future"
-                             " versions of the STIX 2 specification.",
-                             prop_name)
-
-
-def types_strict(instance):
-    """Ensure that no custom object types are used, but only the official ones
-    from the specification.
-    """
-    if instance['type'] not in enums.TYPES:
-        return JSONError("Object type should be one of those detailed in the"
-                         " specification.", instance['type'])
-
-
-def open_vocab_values(instance):
-    """Ensure that the values of all properties which use open vocabularies are
-    in lowercase and use dashes isntead of spaces or underscores as word
-    separators.
-    """
-    if instance['type'] not in enums.VOCAB_PROPERTIES:
-        return
-
-    properties = enums.VOCAB_PROPERTIES[instance['type']]
-    for prop in properties:
-        if prop in instance:
-
-            if type(instance[prop]) is list:
-                values = instance[prop]
-            else:
-                values = [instance[prop]]
-
-            for v in values:
-                if not v.islower() or '_' in v or ' ' in v:
-                    return JSONError("Open vocabulary value (%s) should be all"
-                                     " lowercase and use dashes instead of"
-                                     " spaces or underscores as word"
-                                     " separators." % v, instance['type'])
-
-
 def relationships_strict(instance):
     """Ensure that only the relationship types defined in the specification are
     used.
@@ -421,6 +412,15 @@ def relationships_strict(instance):
         return JSONError("'%s' is not a valid relationship target object for "
                          "'%s' objects with the '%s' relationship."
                          % (r_target, r_source, r_type), "relationship_type")
+
+
+def types_strict(instance):
+    """Ensure that no custom object types are used, but only the official ones
+    from the specification.
+    """
+    if instance['type'] not in enums.TYPES:
+        return JSONError("Object type should be one of those detailed in the"
+                         " specification.", instance['type'])
 
 
 class CustomDraft4Validator(Draft4Validator):
@@ -454,54 +454,58 @@ class CustomDraft4Validator(Draft4Validator):
         # Add SHOULD requirements to the list unless ignored
         ignored = options.ignored_errors.split(",")
 
-        if enums.IGNORE_CUSTOM_OBJECT_PREFIX not in ignored:
-            if options.lax_prefix:
-                validator_list.append(custom_object_prefix_lax)
-            else:
-                validator_list.append(custom_object_prefix_strict)
+        # Checks for the format of certain values
+        if enums.IGNORE_FORMAT_CHECKS not in ignored:
+            if enums.IGNORE_CUSTOM_OBJECT_PREFIX not in ignored:
+                if options.lax_prefix:
+                    validator_list.append(custom_object_prefix_lax)
+                else:
+                    validator_list.append(custom_object_prefix_strict)
 
-        if enums.IGNORE_CUSTOM_PROPERTY_PREFIX not in ignored:
-            if options.lax_prefix:
-                validator_list.append(custom_property_prefix_lax)
-            else:
-                validator_list.append(custom_property_prefix_strict)
+            if enums.IGNORE_CUSTOM_PROPERTY_PREFIX not in ignored:
+                if options.lax_prefix:
+                    validator_list.append(custom_property_prefix_lax)
+                else:
+                    validator_list.append(custom_property_prefix_strict)
 
-        if enums.IGNORE_ALL_VOCABS not in ignored:
-            if enums.IGNORE_ATTACK_MOTIVATION not in ignored:
-                validator_list.append(vocab_attack_motivation)
-            if enums.IGNORE_ATTACK_RESOURCE_LEVEL not in ignored:
-                validator_list.append(vocab_attack_resource_level)
-            if enums.IGNORE_IDENTITY_CLASS not in ignored:
-                validator_list.append(vocab_identity_class)
-            if enums.IGNORE_INDICATOR_LABEL not in ignored:
-                validator_list.append(vocab_indicator_label)
-            if enums.IGNORE_INDUSTRY_SECTOR not in ignored:
-                validator_list.append(vocab_industry_sector)
-            if enums.IGNORE_MALWARE_LABEL not in ignored:
-                validator_list.append(vocab_malware_label)
-            if enums.IGNORE_PATTERN_LANG not in ignored:
-                validator_list.append(vocab_pattern_lang)
-            if enums.IGNORE_REPORT_LABEL not in ignored:
-                validator_list.append(vocab_report_label)
-            if enums.IGNORE_THREAT_ACTOR_LABEL not in ignored:
-                validator_list.append(vocab_threat_actor_label)
-            if enums.IGNORE_THREAT_ACTOR_ROLE not in ignored:
-                validator_list.append(vocab_threat_actor_role)
-            if enums.IGNORE_THREAT_ACTOR_SOPHISTICATION_LEVEL not in ignored:
-                validator_list.append(vocab_threat_actor_sophistication_level)
-            if enums.IGNORE_TOOL_LABEL not in ignored:
-                validator_list.append(vocab_tool_label)
-            if enums.IGNORE_MARKING_DEFINITION_TYPE not in ignored:
-                validator_list.append(vocab_marking_definition)
+            if enums.IGNORE_OPEN_VOCAB_FORMAT not in ignored:
+                validator_list.append(open_vocab_values)
 
-        if enums.IGNORE_KILL_CHAIN_NAMES not in ignored:
-            validator_list.append(kill_chain_phase_names)
+            if enums.IGNORE_KILL_CHAIN_NAMES not in ignored:
+                validator_list.append(kill_chain_phase_names)
 
-        if enums.IGNORE_OPEN_VOCAB_FORMAT not in ignored:
-            validator_list.append(open_vocab_values)
+        # Checks for the use of values not found in the specification
+        if enums.IGNORE_APPROVED_VALUES not in ignored:
+            if enums.IGNORE_ALL_VOCABS not in ignored:
+                if enums.IGNORE_ATTACK_MOTIVATION not in ignored:
+                    validator_list.append(vocab_attack_motivation)
+                if enums.IGNORE_ATTACK_RESOURCE_LEVEL not in ignored:
+                    validator_list.append(vocab_attack_resource_level)
+                if enums.IGNORE_IDENTITY_CLASS not in ignored:
+                    validator_list.append(vocab_identity_class)
+                if enums.IGNORE_INDICATOR_LABEL not in ignored:
+                    validator_list.append(vocab_indicator_label)
+                if enums.IGNORE_INDUSTRY_SECTOR not in ignored:
+                    validator_list.append(vocab_industry_sector)
+                if enums.IGNORE_MALWARE_LABEL not in ignored:
+                    validator_list.append(vocab_malware_label)
+                if enums.IGNORE_PATTERN_LANG not in ignored:
+                    validator_list.append(vocab_pattern_lang)
+                if enums.IGNORE_REPORT_LABEL not in ignored:
+                    validator_list.append(vocab_report_label)
+                if enums.IGNORE_THREAT_ACTOR_LABEL not in ignored:
+                    validator_list.append(vocab_threat_actor_label)
+                if enums.IGNORE_THREAT_ACTOR_ROLE not in ignored:
+                    validator_list.append(vocab_threat_actor_role)
+                if enums.IGNORE_THREAT_ACTOR_SOPHISTICATION_LEVEL not in ignored:
+                    validator_list.append(vocab_threat_actor_sophistication_level)
+                if enums.IGNORE_TOOL_LABEL not in ignored:
+                    validator_list.append(vocab_tool_label)
+                if enums.IGNORE_MARKING_DEFINITION_TYPE not in ignored:
+                    validator_list.append(vocab_marking_definition)
 
-        if enums.IGNORE_RELATIONSHIP_TYPES not in ignored:
-            validator_list.append(relationships_strict)
+            if enums.IGNORE_RELATIONSHIP_TYPES not in ignored:
+                validator_list.append(relationships_strict)
 
         if options.strict_types:
             validator_list.append(types_strict)

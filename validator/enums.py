@@ -3,29 +3,31 @@
 
 
 # Error codes for setting which checks to ignore
+IGNORE_FORMAT_CHECKS =                        '1'
+
 IGNORE_CUSTOM_OBJECT_PREFIX =               '101'
 IGNORE_CUSTOM_PROPERTY_PREFIX =             '102'
+IGNORE_OPEN_VOCAB_FORMAT =                  '110'
+IGNORE_KILL_CHAIN_NAMES =                   '120'
 
-IGNORE_ALL_VOCABS =                         '110'
-IGNORE_ATTACK_MOTIVATION =                  '111'
-IGNORE_ATTACK_RESOURCE_LEVEL =              '112'
-IGNORE_IDENTITY_CLASS =                     '113'
-IGNORE_INDICATOR_LABEL =                    '114'
-IGNORE_INDUSTRY_SECTOR =                    '115'
-IGNORE_MALWARE_LABEL =                      '116'
-IGNORE_PATTERN_LANG =                       '117'
-IGNORE_REPORT_LABEL =                       '118'
-IGNORE_THREAT_ACTOR_LABEL =                 '119'
-IGNORE_THREAT_ACTOR_ROLE =                  '120'
-IGNORE_THREAT_ACTOR_SOPHISTICATION_LEVEL =  '121'
-IGNORE_TOOL_LABEL =                         '122'
-IGNORE_MARKING_DEFINITION_TYPE =            '129'
+IGNORE_APPROVED_VALUES =                      '2'
 
-IGNORE_KILL_CHAIN_NAMES =                   '151'
+IGNORE_ALL_VOCABS =                         '210'
+IGNORE_ATTACK_MOTIVATION =                  '211'
+IGNORE_ATTACK_RESOURCE_LEVEL =              '212'
+IGNORE_IDENTITY_CLASS =                     '213'
+IGNORE_INDICATOR_LABEL =                    '214'
+IGNORE_INDUSTRY_SECTOR =                    '215'
+IGNORE_MALWARE_LABEL =                      '216'
+IGNORE_PATTERN_LANG =                       '217'
+IGNORE_REPORT_LABEL =                       '218'
+IGNORE_THREAT_ACTOR_LABEL =                 '219'
+IGNORE_THREAT_ACTOR_ROLE =                  '220'
+IGNORE_THREAT_ACTOR_SOPHISTICATION_LEVEL =  '221'
+IGNORE_TOOL_LABEL =                         '222'
+IGNORE_MARKING_DEFINITION_TYPE =            '229'
 
-IGNORE_RELATIONSHIP_TYPES =                 '160'
-
-IGNORE_OPEN_VOCAB_FORMAT =                  '170'
+IGNORE_RELATIONSHIP_TYPES =                 '250'
 
 
 # Enumerations of the default values of STIX open vocabularies
