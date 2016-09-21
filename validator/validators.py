@@ -39,7 +39,9 @@ class ValidationOptions(object):
         schema_dir: A user-defined schema directory to validate against.
 
     """
-    def __init__(self, cmd_args=None, verbose=False, files=None, recursive=False, schema_dir=None, ignored_errors="", lax=False, lax_prefix=False):
+    def __init__(self, cmd_args=None, verbose=False, files=None,
+                 recursive=False, schema_dir=None, ignored_errors="",
+                 lax=False, lax_prefix=False, strict_types=False):
         if cmd_args is not None:
             self.verbose = cmd_args.verbose
             self.files = cmd_args.files
@@ -48,6 +50,7 @@ class ValidationOptions(object):
             self.ignored_errors = cmd_args.ignored_errors
             self.lax = cmd_args.lax
             self.lax_prefix = cmd_args.lax_prefix
+            self.strict_types = cmd_args.strict_types
         else:
             # SHOULD requirements
             # TODO
@@ -63,6 +66,7 @@ class ValidationOptions(object):
             self.ignored_errors = ignored_errors
             self.lax = lax
             self.lax_prefix = lax_prefix
+            self.strict_types = strict_types
 
 
 class JSONError(schema_exceptions.ValidationError):
@@ -359,6 +363,12 @@ def custom_property_prefix_lax(instance):
                              prop_name)
 
 
+def types_strict(instance):
+    if instance['type'] not in enums.TYPES:
+        return JSONError("Object type should be one of those detailed in the"
+                         " specification.", instance['type'])
+
+
 def relationships_strict(instance):
     """Ensure that only the relationship types defined in the specification are
     used.
@@ -457,6 +467,9 @@ class CustomDraft4Validator(Draft4Validator):
 
         if enums.IGNORE_RELATIONSHIP_TYPES not in ignored:
             self.validator_list.append(relationships_strict)
+
+        if options.strict_types:
+            self.validator_list.append(types_strict)
 
     def iter_errors_more(self, instance, options=None, _schema=None):
         """Custom function to perform additional validation not possible

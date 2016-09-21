@@ -102,6 +102,15 @@ def _get_arg_parser():
              "'x_[source]_[name]', respectively."
     )
 
+    parser.add_argument(
+        "--strict-types",
+        dest="strict_types",
+        action="store_true",
+        default=False,
+        help="Ensure that no custom object types are used, only those detailed"
+             " in the STIX specification."
+    )
+
     return parser
 
 

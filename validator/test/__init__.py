@@ -39,3 +39,16 @@ class ValidatorTest(unittest.TestCase):
         options = ValidationOptions(schema_dir=SCHEMA_DIR, **kwargs)
         results = validate_string(instance, options).schema_results
         self.assertTrue(results.is_valid)
+
+    def assertFalseWithOptions(self, instance, **kwargs):
+        """Test that the given instance is NOT valid when using the validation
+        options provided by kwargs.
+
+        Args:
+            instance: The JSON string to be validated.
+            kwargs: Any number of keyword arguments to be passed to the
+                    ValidationOptions constructor.
+        """
+        options = ValidationOptions(schema_dir=SCHEMA_DIR, **kwargs)
+        results = validate_string(instance, options).schema_results
+        self.assertEqual(results.is_valid, False)

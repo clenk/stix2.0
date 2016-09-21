@@ -93,6 +93,9 @@ class CustomObjectTestCases(ValidatorTest):
         results = validate_string(custom_obj_string, self.options).schema_results
         self.assertTrue(results.is_valid)
 
+    def test_strict_types(self):
+        self.assertFalseWithOptions(VALID_CUSTOM_OBJECT, strict_types=True)
+
 
 if __name__ == "__main__":
     unittest.main()
