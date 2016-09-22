@@ -69,7 +69,9 @@ class ValidationOptions(object):
 class JSONError(schema_exceptions.ValidationError):
     """Wrapper for errors thrown by iter_errors() in the jsonschema module.
     """
-    def __init__(self, msg=None, instance_type=None):
+    def __init__(self, msg=None, instance_type=None, check_code=None):
+        if check_code is not None:
+            msg = '{%s} %s' % (check_code, msg)
         super(JSONError, self).__init__(msg, path=deque([instance_type]))
 
 
@@ -205,7 +207,8 @@ def custom_object_prefix_strict(instance):
         return JSONError("Custom objects should have a type that starts with "
                          "'x-' followed by a source unique identifier (like "
                          "a domain name with dots replaced by dashes), a dash "
-                         "and then the name.", instance['type'])
+                         "and then the name.", instance['type'],
+                         enums.IGNORE_CUSTOM_OBJECT_PREFIX)
 
 
 def custom_object_prefix_lax(instance):
@@ -215,7 +218,8 @@ def custom_object_prefix_lax(instance):
     if instance['type'] not in enums.TYPES and not re.match("^x\-.+$", instance['type']):
         return JSONError("Custom objects should have a type that starts with "
                          "'x-' in order to be compatible with future versions"
-                         " of the STIX 2 specification.", instance['type'])
+                         " of the STIX 2 specification.", instance['type'],
+                         enums.IGNORE_CUSTOM_OBJECT_PREFIX)
 
 
 def custom_property_prefix_strict(instance):
@@ -232,7 +236,7 @@ def custom_property_prefix_strict(instance):
                              " with 'x_' followed by a source unique "
                              "identifier (like a domain name with dots "
                              "replaced by dashes), a dash and then the name.",
-                             prop_name)
+                             prop_name, enums.IGNORE_CUSTOM_PROPERTY_PREFIX)
 
 
 def custom_property_prefix_lax(instance):
@@ -249,7 +253,7 @@ def custom_property_prefix_lax(instance):
             return JSONError("Custom properties should have a type that starts"
                              " with 'x_' in order to be compatible with future"
                              " versions of the STIX 2 specification.",
-                             prop_name)
+                             prop_name, enums.IGNORE_CUSTOM_PROPERTY_PREFIX)
 
 
 def open_vocab_values(instance):
@@ -274,7 +278,8 @@ def open_vocab_values(instance):
                     return JSONError("Open vocabulary value (%s) should be all"
                                      " lowercase and use dashes instead of"
                                      " spaces or underscores as word"
-                                     " separators." % v, instance['type'])
+                                     " separators." % v, instance['type'],
+                                     enums.IGNORE_OPEN_VOCAB_FORMAT)
 
 
 def kill_chain_phase_names(instance):
@@ -289,17 +294,17 @@ def kill_chain_phase_names(instance):
                 return JSONError("kill_chain_name (%s) should be all lowercase"
                                  " and use dashes instead of spaces or "
                                  "underscores as word separators." % chain_name,
-                                 instance['type'])
+                                 instance['type'], enums.IGNORE_KILL_CHAIN_NAMES)
 
             phase_name = phase['phase_name']
             if not phase_name.islower() or '_' in phase_name or ' ' in phase_name:
                 return JSONError("phase_name (%s) should be all lowercase and "
                                  "use dashes instead of spaces or underscores "
                                  "as word separators." % phase_name,
-                                 instance['type'])
+                                 instance['type'], enums.IGNORE_KILL_CHAIN_NAMES)
 
 
-def check_vocab(instance, vocab):
+def check_vocab(instance, vocab, code):
     """Ensure that the open vocabulary specified by `vocab` is used properly.
 
     It checks properties of objects specified in the appropriate `_USES`
@@ -322,55 +327,68 @@ def check_vocab(instance, vocab):
                 if not is_in:
                     vocab_name = vocab.replace('_', '-').lower()
                     return JSONError("%s contains a value not in the %s-ov "
-                                     "vocabulary." % (prop, vocab_name), prop)
+                                     "vocabulary." % (prop, vocab_name), prop,
+                                     code)
 
 
 def vocab_attack_motivation(instance):
-    return check_vocab(instance, "ATTACK_MOTIVATION")
+    return check_vocab(instance, "ATTACK_MOTIVATION",
+                       enums.IGNORE_ATTACK_MOTIVATION)
 
 
 def vocab_attack_resource_level(instance):
-    return check_vocab(instance, "ATTACK_RESOURCE_LEVEL")
+    return check_vocab(instance, "ATTACK_RESOURCE_LEVEL",
+                       enums.IGNORE_ATTACK_RESOURCE_LEVEL)
 
 
 def vocab_identity_class(instance):
-    return check_vocab(instance, "IDENTITY_CLASS")
+    return check_vocab(instance, "IDENTITY_CLASS",
+                       enums.IGNORE_IDENTITY_CLASS)
 
 
 def vocab_indicator_label(instance):
-    return check_vocab(instance, "INDICATOR_LABEL")
+    return check_vocab(instance, "INDICATOR_LABEL",
+                       enums.IGNORE_INDICATOR_LABEL)
 
 
 def vocab_industry_sector(instance):
-    return check_vocab(instance, "INDUSTRY_SECTOR")
+    return check_vocab(instance, "INDUSTRY_SECTOR",
+                       enums.IGNORE_INDUSTRY_SECTOR)
 
 
 def vocab_malware_label(instance):
-    return check_vocab(instance, "MALWARE_LABEL")
+    return check_vocab(instance, "MALWARE_LABEL",
+                       enums.IGNORE_MALWARE_LABEL)
 
 
 def vocab_pattern_lang(instance):
-    return check_vocab(instance, "PATTERN_LANG")
+    return check_vocab(instance, "PATTERN_LANG",
+                       enums.IGNORE_PATTERN_LANG)
 
 
 def vocab_report_label(instance):
-    return check_vocab(instance, "REPORT_LABEL")
+    return check_vocab(instance, "REPORT_LABEL",
+                       enums.IGNORE_REPORT_LABEL)
 
 
 def vocab_threat_actor_label(instance):
-    return check_vocab(instance, "THREAT_ACTOR_LABEL")
+    return check_vocab(instance, "THREAT_ACTOR_LABEL",
+                       enums.IGNORE_THREAT_ACTOR_LABEL)
 
 
 def vocab_threat_actor_role(instance):
-    return check_vocab(instance, "THREAT_ACTOR_ROLE")
+    return check_vocab(instance, "THREAT_ACTOR_ROLE",
+                       enums.IGNORE_THREAT_ACTOR_ROLE)
 
 
 def vocab_threat_actor_sophistication_level(instance):
-    return check_vocab(instance, "THREAT_ACTOR_SOPHISTICATION")
+    return check_vocab(instance, "THREAT_ACTOR_SOPHISTICATION",
+                       enums.IGNORE_THREAT_ACTOR_SOPHISTICATION)
 
 
 def vocab_tool_label(instance):
-    return check_vocab(instance, "TOOL_LABEL")
+    return check_vocab(instance, "TOOL_LABEL",
+                       enums.IGNORE_TOOL_LABEL)
 
 
 def vocab_marking_definition(instance):
@@ -381,8 +399,9 @@ def vocab_marking_definition(instance):
             'definition_type' in instance and not
             instance['definition_type'] in enums.MARKING_DEFINITION_TYPES):
 
-        return JSONError("Marking definition's `definition_type` should be one of "
-                         "%s." % enums.MARKING_DEFINITION_TYPES, instance['type'])
+        return JSONError("Marking definition's `definition_type` should be one"
+                         " of %s." % enums.MARKING_DEFINITION_TYPES,
+                         instance['type'], enums.IGNORE_MARKING_DEFINITION_TYPE)
 
 
 def relationships_strict(instance):
@@ -399,16 +418,19 @@ def relationships_strict(instance):
 
     if r_source not in enums.RELATIONSHIPS:
         return JSONError("'%s' is not a valid relationship source object."
-                         % r_source, "relationship_type")
+                         % r_source, "relationship_type",
+                         enums.IGNORE_RELATIONSHIP_TYPES)
 
     if r_type not in enums.RELATIONSHIPS[r_source]:
         return JSONError("'%s' is not a valid relationship type for '%s' "
-                         "objects." % (r_type, r_source), "relationship_type")
+                         "objects." % (r_type, r_source), "relationship_type",
+                         enums.IGNORE_RELATIONSHIP_TYPES)
 
     if r_target not in enums.RELATIONSHIPS[r_source][r_type]:
         return JSONError("'%s' is not a valid relationship target object for "
                          "'%s' objects with the '%s' relationship."
-                         % (r_target, r_source, r_type), "relationship_type")
+                         % (r_target, r_source, r_type), "relationship_type",
+                         enums.IGNORE_RELATIONSHIP_TYPES)
 
 
 def types_strict(instance):
