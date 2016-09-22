@@ -62,6 +62,9 @@ class ValidationOptions(object):
             self.lax_prefix = lax_prefix
             self.strict_types = strict_types
 
+        if self.ignored_errors.lower() == 'all':
+            self.lax = True
+
 
 class JSONError(schema_exceptions.ValidationError):
     """Wrapper for errors thrown by iter_errors() in the jsonschema module.

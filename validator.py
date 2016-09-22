@@ -8,9 +8,10 @@ import logging
 import argparse
 import sys
 import textwrap
+from argparse import RawDescriptionHelpFormatter
 from validator import *
 from validator import codes
-from argparse import RawDescriptionHelpFormatter
+from validator.validators import ValidationOptions
 
 
 EXAMPLES_DIR = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'tests')
@@ -137,16 +138,17 @@ def _get_arg_parser():
         dest="ignored_errors",
         default="",
         help="A comma-separated list of recommended best practice checks to "
-            "skip. \n\nExample: `--ignore 212,220`"
+            "skip. \n\nExample: --ignore 212,220"
     )
 
     parser.add_argument(
+        "-l",
         "--lax",
         dest="lax",
         action="store_true",
         default=False,
         help="Ignore all recommended best practices and only check mandatory "
-             "requirements."
+             "requirements. Equivalent to: --ignore all"
     )
 
     parser.add_argument(
@@ -182,15 +184,17 @@ def main():
     if args.files == [EXAMPLES_DIR]:
         args.recursive = True
 
+    options = ValidationOptions(args)
+
     try:
         # Set the output level (e.g., quiet vs. verbose)
-        output.set_level(args.verbose)
+        output.set_level(options.verbose)
 
         # Validate input documents
-        results = run_validation(args)
+        results = run_validation(options)
 
         # Print validation results
-        output.print_results(results, args)
+        output.print_results(results, options)
 
         # Determine exit status code and exit.
         code = codes.get_code(results)
