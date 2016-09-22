@@ -33,15 +33,10 @@ def get_code(results):
 
     for result in itervalues(results):
         schema = result.schema_results
-        # TODO
-        # best_practice = result.best_practice_results
         fatal = result.fatal
 
         if schema and not schema.is_valid:
             status |= EXIT_SCHEMA_INVALID
-        # TODO
-        # if best_practice and not best_practice.is_valid:
-        #     status |= codes.EXIT_BEST_PRACTICE_INVALID
         if fatal:
             status |= EXIT_VALIDATION_ERROR
 

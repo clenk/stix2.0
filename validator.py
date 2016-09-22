@@ -1,17 +1,83 @@
 #!/usr/bin/env python
 
-"""Validate STIX 2.0 documents against the schemas.
+"""Validate STIX 2.0 documents against the specification.
 """
 
 
 import logging
 import argparse
 import sys
+import textwrap
 from validator import *
 from validator import codes
+from argparse import RawDescriptionHelpFormatter
 
 
 EXAMPLES_DIR = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'tests')
+
+CODES_TABLE ="""
+The following is a table of all the recommended "best practice" checks which
+the validator performs, along with the code to use with the --ignore option
+to skip them.
+
++------+-----------------------------+----------------------------------------+
+| Code | Name                        | Ensures...                             |
++------+-----------------------------+----------------------------------------+
+|  1   | format_checks               | all 1xx checks are run                 |
+| 101  | custom_object_prefix        | custom object type names follow the    |
+|      |                             | correct format                         |
+| 101  | custom_object_prefix        | custom object type names follow the    |
+|      |                             | correct format                         |
+| 102  | custom_property_prefix      | custom object property names follow    |
+|      |                             | the correct format                     |
+| 110  | open_vocab_format           | values of open vocabularies follow the |
+|      |                             | correct format                         |
+| 120  | kill_chain_names            | kill-chain-phase name and phase follow |
+|      |                             | the correct format                     |
+|      |                             |                                        |
+|  2   | approved_values             | all 2xx checks are run                 |
+| 210  | all_vocabs                  | all of the following open vocabulary   |
+|      |                             | checks are run                         |
+| 211  | attack_motivation           | certain property values are from the   |
+|      |                             | attack_motivation vocabulary           |
+| 212  | attack_resource_level       | certain property values are from the   |
+|      |                             | attack_resource_level vocabulary       |
+| 213  | identity_class              | certain property values are from the   |
+|      |                             | identity_class vocabulary              |
+| 214  | indicator_label             | certain property values are from the   |
+|      |                             | indicator_label vocabulary             |
+| 215  | industry_sector             | certain property values are from the   |
+|      |                             | industry_sector vocabulary             |
+| 216  | malware_label               | certain property values are from the   |
+|      |                             | malware_label vocabulary               |
+| 217  | pattern_lang                | certain property values are from the   |
+|      |                             | pattern_lang vocabulary                |
+| 218  | report_label                | certain property values are from the   |
+|      |                             | report_label vocabulary                |
+| 219  | threat_actor_label          | certain property values are from the   |
+|      |                             | threat_actor_label vocabulary          |
+| 220  | threat_actor_role           | certain property values are from the   |
+|      |                             | threat_actor_role vocabulary           |
+| 221  | threat_actor_sophistication | certain property values are from the   |
+|      |                             | threat_actor_sophistication vocabulary |
+| 222  | tool_label                  | certain property values are from the   |
+|      |                             | tool_label vocabulary                  |
+| 229  | marking_definition_type     | marking definitions use a valid        |
+|      |                             | definition_type                        |
+| 250  | relationship_types          | relationships are among those defined  |
+|      |                             | in the specification                   |
++------+-----------------------------+----------------------------------------+
+"""
+
+
+class NewlinesHelpFormatter(RawDescriptionHelpFormatter):
+    """Custom help formatter to insert newlines between argument help texts.
+    """
+    def _split_lines(self, text, width):
+        text = self._whitespace_matcher.sub(' ', text).strip()
+        txt = textwrap.wrap(text, width)
+        txt[-1] += '\n'
+        return txt
 
 
 def _get_arg_parser():
@@ -23,7 +89,9 @@ def _get_arg_parser():
 
     """
     parser = argparse.ArgumentParser(
-        description=__doc__
+        description=__doc__,
+        formatter_class=NewlinesHelpFormatter,
+        epilog=CODES_TABLE
     )
 
     # Input options
@@ -53,15 +121,6 @@ def _get_arg_parser():
              "with this script will be used."
     )
 
-    # TODO
-    # parser.add_argument(
-    #     "--best-practices",
-    #     dest="best_practices",
-    #     action='store_true',
-    #     default=False,
-    #     help="Check that the document follows authoring best practices."
-    # )
-
     # Output options
     parser.add_argument(
         "-v",
@@ -72,15 +131,13 @@ def _get_arg_parser():
         help="Print informational notes and more verbose error messages."
     )
 
-    # TODO: add a table/list of ignore options to -h output
-
     parser.add_argument(
         "-i",
         "--ignore",
         dest="ignored_errors",
         default="",
-        help="A comma-separated list of validation errors to skip. "
-             "Example: `--ignore 112,120`"
+        help="A comma-separated list of recommended best practice checks to "
+            "skip. \n\nExample: `--ignore 212,220`"
     )
 
     parser.add_argument(
@@ -88,7 +145,8 @@ def _get_arg_parser():
         dest="lax",
         action="store_true",
         default=False,
-        help="Ignore recommended best practices and only check MUST requirements."
+        help="Ignore all recommended best practices and only check mandatory "
+             "requirements."
     )
 
     parser.add_argument(

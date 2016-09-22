@@ -80,8 +80,6 @@ class FileResults(object):
     def __init__(self, fn=None):
         self.fn = fn
         self.schema_results = None
-        # TODO
-        # self.best_practice_results = None
         self.fatal = None
 
 
@@ -301,9 +299,6 @@ def validate_file(fn, options):
     try:
         if options.files:
             results.schema_results = schema_validate(instance, options)
-        # TODO
-        # if options.best_practice_validate:
-        #     results.best_practice_results = best_practice_validate(fn, options)
     except SchemaInvalidError as ex:
         results.fatal = ValidationErrorResults(ex)
         msg = ("File '{fn}' was schema-invalid. No further validation "
@@ -338,9 +333,6 @@ def validate_string(string, options):
 
     try:
         results.schema_results = schema_validate(instance, options)
-        # TODO
-        # if options.best_practice_validate:
-        #     results.best_practice_results = best_practice_validate(string, options)
     except SchemaInvalidError as ex:
         results.fatal = ValidationErrorResults(ex)
         msg = ("String was schema-invalid. No further validation "

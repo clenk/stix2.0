@@ -121,8 +121,5 @@ def print_results(results, options):
 
         if result.schema_results is not None:
             print_schema_results(result.schema_results, level)
-        # TODO
-        # if result.best_practice_results is not None:
-        #     print_best_practice_results(result.best_practice_results, level)
         if result.fatal is not None:
             print_fatal_results(result.fatal, level)

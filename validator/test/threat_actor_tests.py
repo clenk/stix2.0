@@ -71,7 +71,7 @@ class ThreatActorTestCases(ValidatorTest):
         self.assertEqual(results.is_valid, False)
 
         self.check_ignore(threat_actor,
-                          enums.IGNORE_THREAT_ACTOR_SOPHISTICATION_LEVEL)
+                          enums.IGNORE_THREAT_ACTOR_SOPHISTICATION)
 
 
 if __name__ == "__main__":

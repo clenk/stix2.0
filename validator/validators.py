@@ -20,7 +20,7 @@ class ValidationOptions(object):
     It can be initialized either by passing in the result of parse_args() from
     argparse, or by specifying individual options.
 
-    Args:
+    Attributes:
         cmd_args: An instance of ``argparse.Namespace`` containing options
             supplied on the command line.
         verbose: True if informational notes and more verbose error messages
@@ -29,14 +29,12 @@ class ValidationOptions(object):
             validated.
         recursive: Recursively descend into input directories.
         schema_dir: A user-defined schema directory to validate against.
-
-    Attributes:
-        verbose: True if informational notes and more verbose error messages
-            should be printed to stdout/stderr.
-        files: A list of input files and directories of files to be
-            validated.
-        recursive: Recursively descend into input directories.
-        schema_dir: A user-defined schema directory to validate against.
+        lax: Specifies that only mandatory requirements, not ones which are
+            merely recommended, should be checked.
+        lax_prefix: Specifies that less strict requirements for custom object
+            and property names should be used.
+        strict_types: Specifies that no custom object types be used, only
+            those detailed in the STIX specification.
 
     """
     def __init__(self, cmd_args=None, verbose=False, files=None,
@@ -52,10 +50,6 @@ class ValidationOptions(object):
             self.lax_prefix = cmd_args.lax_prefix
             self.strict_types = cmd_args.strict_types
         else:
-            # SHOULD requirements
-            # TODO
-            # self.best_practice_validate = False
-
             # input options
             self.files = files
             self.recursive = recursive
@@ -257,7 +251,7 @@ def custom_property_prefix_lax(instance):
 
 def open_vocab_values(instance):
     """Ensure that the values of all properties which use open vocabularies are
-    in lowercase and use dashes isntead of spaces or underscores as word
+    in lowercase and use dashes instead of spaces or underscores as word
     separators.
     """
     if instance['type'] not in enums.VOCAB_PROPERTIES:
@@ -369,7 +363,7 @@ def vocab_threat_actor_role(instance):
 
 
 def vocab_threat_actor_sophistication_level(instance):
-    return check_vocab(instance, "THREAT_ACTOR_SOPHISTICATION_LEVEL")
+    return check_vocab(instance, "THREAT_ACTOR_SOPHISTICATION")
 
 
 def vocab_tool_label(instance):
@@ -497,7 +491,7 @@ class CustomDraft4Validator(Draft4Validator):
                     validator_list.append(vocab_threat_actor_label)
                 if enums.IGNORE_THREAT_ACTOR_ROLE not in ignored:
                     validator_list.append(vocab_threat_actor_role)
-                if enums.IGNORE_THREAT_ACTOR_SOPHISTICATION_LEVEL not in ignored:
+                if enums.IGNORE_THREAT_ACTOR_SOPHISTICATION not in ignored:
                     validator_list.append(vocab_threat_actor_sophistication_level)
                 if enums.IGNORE_TOOL_LABEL not in ignored:
                     validator_list.append(vocab_tool_label)
@@ -513,8 +507,7 @@ class CustomDraft4Validator(Draft4Validator):
         return validator_list
 
     def iter_errors_more(self, instance, options=None, _schema=None):
-        """Custom function to perform additional validation not possible
-        merely with JSON schemas.
+        """Perform additional validation not possible merely with JSON schemas.
 
         """
         # Ensure `instance` is a whole STIX object, not just a property of one

@@ -23,7 +23,7 @@ IGNORE_PATTERN_LANG =                       '217'
 IGNORE_REPORT_LABEL =                       '218'
 IGNORE_THREAT_ACTOR_LABEL =                 '219'
 IGNORE_THREAT_ACTOR_ROLE =                  '220'
-IGNORE_THREAT_ACTOR_SOPHISTICATION_LEVEL =  '221'
+IGNORE_THREAT_ACTOR_SOPHISTICATION =        '221'
 IGNORE_TOOL_LABEL =                         '222'
 IGNORE_MARKING_DEFINITION_TYPE =            '229'
 
@@ -154,7 +154,7 @@ THREAT_ACTOR_ROLE_OV = [
     "malware-author",
     "sponsor"
 ]
-THREAT_ACTOR_SOPHISTICATION_LEVEL_OV = [
+THREAT_ACTOR_SOPHISTICATION_OV = [
     "none",
     "minimal",
     "intermediate",
@@ -214,7 +214,7 @@ THREAT_ACTOR_LABEL_USES = {
 THREAT_ACTOR_ROLE_USES = {
     "threat-actor": ["roles"]
 }
-THREAT_ACTOR_SOPHISTICATION_LEVEL_USES = {
+THREAT_ACTOR_SOPHISTICATION_USES = {
     "threat-actor": ["sophistication"]
 }
 TOOL_LABEL_USES = {
