@@ -3,7 +3,6 @@ import copy
 import json
 from . import ValidatorTest
 from .. import validate_string
-from .. import enums
 
 VALID_TOOL = """
 {
@@ -39,7 +38,7 @@ class ToolTestCases(ValidatorTest):
         results = validate_string(tool, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
-        self.check_ignore(tool, enums.IGNORE_TOOL_LABEL)
+        self.check_ignore(tool, 'tool-label')
 
     def test_kill_chain_name(self):
         tool = copy.deepcopy(self.valid_tool)
@@ -58,7 +57,7 @@ class ToolTestCases(ValidatorTest):
         results = validate_string(tool_string, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
-        self.check_ignore(tool_string, enums.IGNORE_KILL_CHAIN_NAMES)
+        self.check_ignore(tool_string, 'kill-chain-names')
 
     def test_kill_chain_phase_name(self):
         tool = copy.deepcopy(self.valid_tool)
@@ -77,7 +76,7 @@ class ToolTestCases(ValidatorTest):
         results = validate_string(tool_string, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
-        self.check_ignore(tool_string, enums.IGNORE_KILL_CHAIN_NAMES)
+        self.check_ignore(tool_string, 'kill-chain-names')
 
     def test_format_and_value_checks(self):
         tool = copy.deepcopy(self.valid_tool)
@@ -85,9 +84,9 @@ class ToolTestCases(ValidatorTest):
         tool['labels'] += ["something-not-in-vocab"]
         tool_string = json.dumps(tool)
 
-        self.assertFalseWithOptions(tool_string, ignored_errors='1')
-        self.assertFalseWithOptions(tool_string, ignored_errors='2')
-        self.assertTrueWithOptions(tool_string, ignored_errors='1,2')
+        self.assertFalseWithOptions(tool_string, ignored='1')
+        self.assertFalseWithOptions(tool_string, ignored='2')
+        self.assertTrueWithOptions(tool_string, ignored='1,2')
 
 
 if __name__ == "__main__":

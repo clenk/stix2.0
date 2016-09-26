@@ -3,7 +3,6 @@ import copy
 import json
 from . import ValidatorTest
 from .. import validate_string
-from .. import enums
 
 VALID_ATTACK_PATTERN = """
 {
@@ -61,9 +60,9 @@ class AttackPatternTestCases(ValidatorTest):
         results = validate_string(attack_pattern_string, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
-        self.check_lax_prefix(attack_pattern_string)
+        self.assertTrueWithOptions(attack_pattern_string, enabled='custom-property-prefix-lax')
 
-        self.check_ignore(attack_pattern_string, enums.IGNORE_CUSTOM_PROPERTY_PREFIX)
+        self.check_ignore(attack_pattern_string, 'custom-property-prefix')
 
     def test_valid_property_prefix(self):
         attack_pattern = copy.deepcopy(self.valid_attack_pattern)

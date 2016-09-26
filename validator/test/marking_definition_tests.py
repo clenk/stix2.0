@@ -3,7 +3,6 @@ import copy
 import json
 from . import ValidatorTest
 from .. import validate_string
-from .. import enums
 
 VALID_MARKING_DEFINITION = """
 {
@@ -32,7 +31,7 @@ class Marking_definitionTestCases(ValidatorTest):
         results = validate_string(marking_definition, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
-        self.check_ignore(marking_definition, enums.IGNORE_MARKING_DEFINITION_TYPE)
+        self.check_ignore(marking_definition, 'marking-definition-type')
 
     def test_lax_option(self):
         marking_definition = copy.deepcopy(self.valid_marking_definition)

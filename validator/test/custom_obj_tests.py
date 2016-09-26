@@ -3,7 +3,6 @@ import copy
 import json
 from . import ValidatorTest
 from .. import validate_string, ValidationError
-from .. import enums
 
 VALID_CUSTOM_OBJECT = """
 {
@@ -81,9 +80,9 @@ class CustomObjectTestCases(ValidatorTest):
         results = validate_string(custom_obj_string, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
-        self.check_lax_prefix(custom_obj_string)
+        self.assertTrueWithOptions(custom_obj_string, enabled='custom-object-prefix-lax')
 
-        self.check_ignore(custom_obj_string, enums.IGNORE_CUSTOM_OBJECT_PREFIX)
+        self.check_ignore(custom_obj_string, 'custom-object-prefix')
 
     def test_valid_type_name(self):
         custom_obj = copy.deepcopy(self.valid_custom_object)

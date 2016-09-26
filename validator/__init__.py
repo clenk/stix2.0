@@ -262,7 +262,7 @@ def run_validation(options):
     """Validates files based on command line options.
 
     Args:
-        options: An instance of ``argparse.Namespace`` containing options for
+        options: An instance of ``ValidationOptions`` containing options for
             this validation run.
 
     """
@@ -284,7 +284,7 @@ def validate_file(fn, options):
 
     Args:
         fn: The filename of the JSON file to be validated.
-        options: An instance of ``argparse.Namespace``.
+        options: An instance of ``ValidationOptions``.
 
     Returns:
         An instance of FileResults.
@@ -321,7 +321,7 @@ def validate_string(string, options):
 
     Args:
         string: The string containing the JSON to be validated.
-        options: An instance of ``argparse.Namespace``.
+        options: An instance of ``ValidationOptions``.
 
     Returns:
         An instance of FileResults.

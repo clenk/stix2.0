@@ -3,7 +3,6 @@ import copy
 import json
 from . import ValidatorTest
 from .. import validate_string
-from .. import enums
 
 VALID_THREAT_ACTOR = """
 {
@@ -34,7 +33,7 @@ class ThreatActorTestCases(ValidatorTest):
         results = validate_string(threat_actor, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
-        self.check_ignore(threat_actor, enums.IGNORE_ATTACK_MOTIVATION)
+        self.check_ignore(threat_actor, 'attack-motivation')
 
     def test_vocab_attack_resource_level(self):
         threat_actor = copy.deepcopy(self.valid_threat_actor)
@@ -43,7 +42,7 @@ class ThreatActorTestCases(ValidatorTest):
         results = validate_string(threat_actor, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
-        self.check_ignore(threat_actor, enums.IGNORE_ATTACK_RESOURCE_LEVEL)
+        self.check_ignore(threat_actor, 'attack-resource-level')
 
     def test_vocab_threat_actor_label(self):
         threat_actor = copy.deepcopy(self.valid_threat_actor)
@@ -52,7 +51,7 @@ class ThreatActorTestCases(ValidatorTest):
         results = validate_string(threat_actor, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
-        self.check_ignore(threat_actor, enums.IGNORE_THREAT_ACTOR_LABEL)
+        self.check_ignore(threat_actor, 'threat-actor-label')
 
     def test_vocab_threat_actor_role(self):
         threat_actor = copy.deepcopy(self.valid_threat_actor)
@@ -61,7 +60,7 @@ class ThreatActorTestCases(ValidatorTest):
         results = validate_string(threat_actor, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
-        self.check_ignore(threat_actor, enums.IGNORE_THREAT_ACTOR_ROLE)
+        self.check_ignore(threat_actor, 'threat-actor-role')
 
     def test_vocab_threat_actor_sophistication_level(self):
         threat_actor = copy.deepcopy(self.valid_threat_actor)
@@ -71,7 +70,7 @@ class ThreatActorTestCases(ValidatorTest):
         self.assertEqual(results.is_valid, False)
 
         self.check_ignore(threat_actor,
-                          enums.IGNORE_THREAT_ACTOR_SOPHISTICATION)
+                          'threat-actor-sophistication')
 
 
 if __name__ == "__main__":

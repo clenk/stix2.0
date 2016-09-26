@@ -3,7 +3,6 @@ import copy
 import json
 from . import ValidatorTest
 from .. import validate_string
-from .. import enums
 
 VALID_RELATIONSHIP = """
 {
@@ -71,7 +70,7 @@ class RelationshipTestCases(ValidatorTest):
         results = validate_string(relationship, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
-        self.check_ignore(relationship, enums.IGNORE_RELATIONSHIP_TYPES)
+        self.check_ignore(relationship, 'relationship-types')
 
     def test_relationship_types_valid(self):
         relationship = copy.deepcopy(self.valid_relationship)

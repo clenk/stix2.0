@@ -9,23 +9,14 @@ SCHEMA_DIR = os.path.abspath(os.path.dirname(__file__) + "../../../schemas")
 class ValidatorTest(unittest.TestCase):
     options = ValidationOptions(schema_dir=SCHEMA_DIR)
 
-    def check_ignore(self, instance, error):
-        """Test that the given instance is valid if the given error is ignored.
+    def check_ignore(self, instance, code):
+        """Test that the given instance is valid if the given check is ignored.
 
         Args:
             instance: The JSON string to be validated.
-            error: The numerical error code to be ignored.
+            error: The numerical code of the check to be ignored.
         """
-        self.assertTrueWithOptions(instance, ignored_errors=error)
-
-    def check_lax_prefix(self, instance):
-        """Test that the given instance is valid if the --lax-prefix option is
-        used for custom object types and custom properties.
-
-        Args:
-            instance: The JSON string to be validated.
-        """
-        self.assertTrueWithOptions(instance, lax_prefix=True)
+        self.assertTrueWithOptions(instance, ignored=code)
 
     def assertTrueWithOptions(self, instance, **kwargs):
         """Test that the given instance is valid when using the validation

@@ -18,7 +18,8 @@ class ValidationOptions(object):
     programmatically in a script.
 
     It can be initialized either by passing in the result of parse_args() from
-    argparse, or by specifying individual options.
+    argparse to the cmd_args parameter, or by specifying individual options
+    with the other parameters.
 
     Attributes:
         cmd_args: An instance of ``argparse.Namespace`` containing options
@@ -38,16 +39,16 @@ class ValidationOptions(object):
 
     """
     def __init__(self, cmd_args=None, verbose=False, files=None,
-                 recursive=False, schema_dir=None, ignored_errors="",
-                 lax=False, lax_prefix=False, strict_types=False):
+                 recursive=False, schema_dir=None, ignored="",
+                 enabled="", lax=False, strict_types=False):
         if cmd_args is not None:
             self.verbose = cmd_args.verbose
             self.files = cmd_args.files
             self.recursive = cmd_args.recursive
             self.schema_dir = cmd_args.schema_dir
-            self.ignored_errors = cmd_args.ignored_errors
+            self.ignored = cmd_args.ignored
+            self.enabled = cmd_args.enabled
             self.lax = cmd_args.lax
-            self.lax_prefix = cmd_args.lax_prefix
             self.strict_types = cmd_args.strict_types
         else:
             # input options
@@ -57,13 +58,21 @@ class ValidationOptions(object):
 
             # output options
             self.verbose = verbose
-            self.ignored_errors = ignored_errors
             self.lax = lax
-            self.lax_prefix = lax_prefix
             self.strict_types = strict_types
-
-        if self.ignored_errors.lower() == 'all':
-            self.lax = True
+            self.ignored = ignored
+            self.enabled = enabled
+        
+        # Convert string of comma-separated checks to a list,
+        # and convert check code numbers to names
+        if self.ignored:
+            self.ignored = self.ignored.split(",")
+            self.ignored = [CHECK_CODES[x] if x in CHECK_CODES else x
+                                   for x in self.ignored]
+        if self.enabled:
+            self.enabled = self.enabled.split(",")
+            self.enabled = [CHECK_CODES[x] if x in CHECK_CODES else x
+                                   for x in self.enabled]
 
 
 class JSONError(schema_exceptions.ValidationError):
@@ -71,7 +80,9 @@ class JSONError(schema_exceptions.ValidationError):
     """
     def __init__(self, msg=None, instance_type=None, check_code=None):
         if check_code is not None:
-            msg = '{%s} %s' % (check_code, msg)
+            # Get code number code from name
+            code = list(CHECK_CODES.keys())[list(CHECK_CODES.values()).index(check_code)]
+            msg = '{%s} %s' % (code, msg)
         super(JSONError, self).__init__(msg, path=deque([instance_type]))
 
 
@@ -208,7 +219,7 @@ def custom_object_prefix_strict(instance):
                          "'x-' followed by a source unique identifier (like "
                          "a domain name with dots replaced by dashes), a dash "
                          "and then the name.", instance['type'],
-                         enums.IGNORE_CUSTOM_OBJECT_PREFIX)
+                         'custom-object-prefix')
 
 
 def custom_object_prefix_lax(instance):
@@ -219,7 +230,7 @@ def custom_object_prefix_lax(instance):
         return JSONError("Custom objects should have a type that starts with "
                          "'x-' in order to be compatible with future versions"
                          " of the STIX 2 specification.", instance['type'],
-                         enums.IGNORE_CUSTOM_OBJECT_PREFIX)
+                         'custom-object-prefix')
 
 
 def custom_property_prefix_strict(instance):
@@ -236,7 +247,7 @@ def custom_property_prefix_strict(instance):
                              " with 'x_' followed by a source unique "
                              "identifier (like a domain name with dots "
                              "replaced by dashes), a dash and then the name.",
-                             prop_name, enums.IGNORE_CUSTOM_PROPERTY_PREFIX)
+                             prop_name, 'custom-property-prefix')
 
 
 def custom_property_prefix_lax(instance):
@@ -253,7 +264,7 @@ def custom_property_prefix_lax(instance):
             return JSONError("Custom properties should have a type that starts"
                              " with 'x_' in order to be compatible with future"
                              " versions of the STIX 2 specification.",
-                             prop_name, enums.IGNORE_CUSTOM_PROPERTY_PREFIX)
+                             prop_name, 'custom-property-prefix')
 
 
 def open_vocab_values(instance):
@@ -279,7 +290,7 @@ def open_vocab_values(instance):
                                      " lowercase and use dashes instead of"
                                      " spaces or underscores as word"
                                      " separators." % v, instance['type'],
-                                     enums.IGNORE_OPEN_VOCAB_FORMAT)
+                                     'open-vocab-format')
 
 
 def kill_chain_phase_names(instance):
@@ -294,14 +305,14 @@ def kill_chain_phase_names(instance):
                 return JSONError("kill_chain_name (%s) should be all lowercase"
                                  " and use dashes instead of spaces or "
                                  "underscores as word separators." % chain_name,
-                                 instance['type'], enums.IGNORE_KILL_CHAIN_NAMES)
+                                 instance['type'], 'kill-chain-names')
 
             phase_name = phase['phase_name']
             if not phase_name.islower() or '_' in phase_name or ' ' in phase_name:
                 return JSONError("phase_name (%s) should be all lowercase and "
                                  "use dashes instead of spaces or underscores "
                                  "as word separators." % phase_name,
-                                 instance['type'], enums.IGNORE_KILL_CHAIN_NAMES)
+                                 instance['type'], 'kill-chain-names')
 
 
 def check_vocab(instance, vocab, code):
@@ -333,62 +344,62 @@ def check_vocab(instance, vocab, code):
 
 def vocab_attack_motivation(instance):
     return check_vocab(instance, "ATTACK_MOTIVATION",
-                       enums.IGNORE_ATTACK_MOTIVATION)
+                       'attack-motivation')
 
 
 def vocab_attack_resource_level(instance):
     return check_vocab(instance, "ATTACK_RESOURCE_LEVEL",
-                       enums.IGNORE_ATTACK_RESOURCE_LEVEL)
+                       'attack-resource-level')
 
 
 def vocab_identity_class(instance):
     return check_vocab(instance, "IDENTITY_CLASS",
-                       enums.IGNORE_IDENTITY_CLASS)
+                       'identity-class')
 
 
 def vocab_indicator_label(instance):
     return check_vocab(instance, "INDICATOR_LABEL",
-                       enums.IGNORE_INDICATOR_LABEL)
+                       'indicator-label')
 
 
 def vocab_industry_sector(instance):
     return check_vocab(instance, "INDUSTRY_SECTOR",
-                       enums.IGNORE_INDUSTRY_SECTOR)
+                       'indicator-label')
 
 
 def vocab_malware_label(instance):
     return check_vocab(instance, "MALWARE_LABEL",
-                       enums.IGNORE_MALWARE_LABEL)
+                       'malware-label')
 
 
 def vocab_pattern_lang(instance):
     return check_vocab(instance, "PATTERN_LANG",
-                       enums.IGNORE_PATTERN_LANG)
+                       'pattern-lang')
 
 
 def vocab_report_label(instance):
     return check_vocab(instance, "REPORT_LABEL",
-                       enums.IGNORE_REPORT_LABEL)
+                       'report-label')
 
 
 def vocab_threat_actor_label(instance):
     return check_vocab(instance, "THREAT_ACTOR_LABEL",
-                       enums.IGNORE_THREAT_ACTOR_LABEL)
+                       'threat-actor-label')
 
 
 def vocab_threat_actor_role(instance):
     return check_vocab(instance, "THREAT_ACTOR_ROLE",
-                       enums.IGNORE_THREAT_ACTOR_ROLE)
+                       'threat-actor-role')
 
 
 def vocab_threat_actor_sophistication_level(instance):
     return check_vocab(instance, "THREAT_ACTOR_SOPHISTICATION",
-                       enums.IGNORE_THREAT_ACTOR_SOPHISTICATION)
+                       'threat-actor-sophistication')
 
 
 def vocab_tool_label(instance):
     return check_vocab(instance, "TOOL_LABEL",
-                       enums.IGNORE_TOOL_LABEL)
+                       'tool-label')
 
 
 def vocab_marking_definition(instance):
@@ -401,7 +412,7 @@ def vocab_marking_definition(instance):
 
         return JSONError("Marking definition's `definition_type` should be one"
                          " of %s." % enums.MARKING_DEFINITION_TYPES,
-                         instance['type'], enums.IGNORE_MARKING_DEFINITION_TYPE)
+                         instance['type'], 'marking-definition-type')
 
 
 def relationships_strict(instance):
@@ -419,18 +430,18 @@ def relationships_strict(instance):
     if r_source not in enums.RELATIONSHIPS:
         return JSONError("'%s' is not a valid relationship source object."
                          % r_source, "relationship_type",
-                         enums.IGNORE_RELATIONSHIP_TYPES)
+                         'relationship-types')
 
     if r_type not in enums.RELATIONSHIPS[r_source]:
         return JSONError("'%s' is not a valid relationship type for '%s' "
                          "objects." % (r_type, r_source), "relationship_type",
-                         enums.IGNORE_RELATIONSHIP_TYPES)
+                         'relationship-types')
 
     if r_target not in enums.RELATIONSHIPS[r_source][r_type]:
         return JSONError("'%s' is not a valid relationship target object for "
                          "'%s' objects with the '%s' relationship."
                          % (r_target, r_source, r_type), "relationship_type",
-                         enums.IGNORE_RELATIONSHIP_TYPES)
+                         'relationship-types')
 
 
 def types_strict(instance):
@@ -442,13 +453,127 @@ def types_strict(instance):
                          " specification.", instance['type'])
 
 
+# Mapping of check code numbers to names
+CHECK_CODES = {
+    '1': 'format-checks',
+    '101': 'custom-object-prefix',
+    '102': 'custom-object-prefix-lax',
+    '103': 'custom-property-prefix',
+    '104': 'custom-property-prefix-lax',
+    '111': 'open-vocab-format',
+    '121': 'kill-chain-names',
+    '2': 'approved-values',
+    '210': 'all-vocabs',
+    '211': 'attack-motivation',
+    '212': 'attack-resource-level',
+    '213': 'identity-class',
+    '214': 'indicator-label',
+    '215': 'industry-sector',
+    '216': 'malware-label',
+    '217': 'pattern-lang',
+    '218': 'report-label',
+    '219': 'threat-actor-label',
+    '220': 'threat-actor-role',
+    '221': 'threat-actor-sophistication',
+    '222': 'tool-label',
+    '229': 'marking-definition-type',
+    '250': 'relationship-types'
+}
+
+# Mapping of check names to the functions which perform the checks
+CHECKS = {
+    'all': [
+        custom_object_prefix_strict,
+        custom_object_prefix_lax,
+        custom_property_prefix_strict,
+        custom_property_prefix_lax,
+        open_vocab_values,
+        kill_chain_phase_names,
+        vocab_attack_motivation,
+        vocab_attack_resource_level,
+        vocab_identity_class,
+        vocab_indicator_label,
+        vocab_industry_sector,
+        vocab_malware_label,
+        vocab_pattern_lang,
+        vocab_report_label,
+        vocab_threat_actor_label,
+        vocab_threat_actor_role,
+        vocab_threat_actor_sophistication_level,
+        vocab_tool_label,
+        vocab_marking_definition,
+        relationships_strict
+    ],
+    'format-checks': [
+        custom_object_prefix_strict,
+        custom_object_prefix_lax,
+        custom_property_prefix_strict,
+        custom_property_prefix_lax,
+        open_vocab_values,
+        kill_chain_phase_names
+    ],
+    'custom-object-prefix': custom_object_prefix_strict,
+    'custom-object-prefix-lax': custom_object_prefix_lax,
+    'custom-property-prefix': custom_property_prefix_strict,
+    'custom-property-prefix-lax': custom_property_prefix_lax,
+    'open-vocab-format': open_vocab_values,
+    'kill-chain-names': kill_chain_phase_names,
+    'approved-values': [
+        vocab_attack_motivation,
+        vocab_attack_resource_level,
+        vocab_identity_class,
+        vocab_indicator_label,
+        vocab_industry_sector,
+        vocab_malware_label,
+        vocab_pattern_lang,
+        vocab_report_label,
+        vocab_threat_actor_label,
+        vocab_threat_actor_role,
+        vocab_threat_actor_sophistication_level,
+        vocab_tool_label,
+        vocab_marking_definition,
+        relationships_strict
+    ],
+    'all-vocabs': [
+        vocab_attack_motivation,
+        vocab_attack_resource_level,
+        vocab_identity_class,
+        vocab_indicator_label,
+        vocab_industry_sector,
+        vocab_malware_label,
+        vocab_pattern_lang,
+        vocab_report_label,
+        vocab_threat_actor_label,
+        vocab_threat_actor_role,
+        vocab_threat_actor_sophistication_level,
+        vocab_tool_label,
+        vocab_marking_definition
+    ],
+    'attack-motivation': vocab_attack_motivation,
+    'attack-resource-level': vocab_attack_resource_level,
+    'identity-class': vocab_identity_class,
+    'indicator-label': vocab_indicator_label,
+    'industry-sector': vocab_industry_sector,
+    'malware-label': vocab_malware_label,
+    'pattern-lang': vocab_pattern_lang,
+    'report-label': vocab_report_label,
+    'threat-actor-label': vocab_threat_actor_label,
+    'threat-actor-role': vocab_threat_actor_role,
+    'threat-actor-sophistication': vocab_threat_actor_sophistication_level,
+    'tool-label': vocab_tool_label,
+    'marking-definition-type': vocab_marking_definition,
+    'relationship-types': relationships_strict
+}
+
+
 class CustomDraft4Validator(Draft4Validator):
     """Custom validator class for JSON Schema Draft 4.
 
     """
     def __init__(self, schema, types=(), resolver=None, format_checker=None,
                  options=ValidationOptions()):
-        super(CustomDraft4Validator, self).__init__(schema, types, resolver, format_checker)
+        super(CustomDraft4Validator, self).__init__(schema, types, resolver,
+                                                    format_checker)
         self.validator_list = self.list_validators(options)
 
     def list_validators(self, options):
@@ -466,68 +591,90 @@ class CustomDraft4Validator(Draft4Validator):
             timestamp_precision
         ]
 
+        # --strict-types
+        if options.strict_types:
+            validator_list.append(types_strict)
+
+        # --lax
         # If only checking MUST requirements, the list is complete
         if options.lax:
             return validator_list
 
+        # Default: enable all
+        if not options.ignored and not options.enabled:
+            validator_list.extend(CHECKS['format-checks'])
+            validator_list.extend(CHECKS['approved-values'])
+            return validator_list
+
+        # --disable
         # Add SHOULD requirements to the list unless ignored
-        ignored = options.ignored_errors.split(",")
+        if options.ignored:
+            if 'all' not in options.ignored:
+                if 'format-checks' not in options.ignored:
+                    if ('custom-object-prefix' not in options.ignored and
+                            'custom-object-prefix-lax' not in options.ignored):
+                        validator_list.append(CHECKS['custom-object-prefix'])
+                    elif 'custom-object-prefix' not in options.ignored:
+                        validator_list.append(CHECKS['custom-object-prefix'])
+                    elif 'custom-object-prefix-lax' not in options.ignored:
+                        validator_list.append(CHECKS['custom-object-prefix-lax'])
+                    if ('custom-property-prefix' not in options.ignored and 
+                            'custom-property-prefix-lax' not in options.ignored):
+                        validator_list.append(CHECKS['custom-property-prefix'])
+                    elif 'custom-property-prefix' not in options.ignored:
+                        validator_list.append(CHECKS['custom-property-prefix'])
+                    elif 'custom-property-prefix-lax' not in options.ignored:
+                        validator_list.append(CHECKS['custom-property-prefix-lax'])
+                    if 'open-vocab-format' not in options.ignored:
+                        validator_list.append(CHECKS['open-vocab-format'])
+                    if 'kill-chain-names' not in options.ignored:
+                        validator_list.append(CHECKS['kill-chain-names'])
 
-        # Checks for the format of certain values
-        if enums.IGNORE_FORMAT_CHECKS not in ignored:
-            if enums.IGNORE_CUSTOM_OBJECT_PREFIX not in ignored:
-                if options.lax_prefix:
-                    validator_list.append(custom_object_prefix_lax)
-                else:
-                    validator_list.append(custom_object_prefix_strict)
+                if 'approved-values' not in options.ignored:
+                    if 'all-vocabs' not in options.ignored:
+                        if 'attack-motivation' not in options.ignored:
+                            validator_list.append(CHECKS['attack-motivation'])
+                        if 'attack-resource-level' not in options.ignored:
+                            validator_list.append(CHECKS['attack-resource-level'])
+                        if 'identity-class' not in options.ignored:
+                            validator_list.append(CHECKS['identity-class'])
+                        if 'indicator-label' not in options.ignored:
+                            validator_list.append(CHECKS['indicator-label'])
+                        if 'industry-sector' not in options.ignored:
+                            validator_list.append(CHECKS['industry-sector'])
+                        if 'malware-label' not in options.ignored:
+                            validator_list.append(CHECKS['malware-label'])
+                        if 'pattern-lang' not in options.ignored:
+                            validator_list.append(CHECKS['pattern-lang'])
+                        if 'report-label' not in options.ignored:
+                            validator_list.append(CHECKS['report-label'])
+                        if 'threat-actor-label' not in options.ignored:
+                            validator_list.append(CHECKS['threat-actor-label'])
+                        if 'threat-actor-role' not in options.ignored:
+                            validator_list.append(CHECKS['threat-actor-role'])
+                        if 'threat-actor-sophistication' not in options.ignored:
+                            validator_list.append(CHECKS['threat-actor-sophistication'])
+                        if 'tool-label' not in options.ignored:
+                            validator_list.append(CHECKS['tool-label'])
+                        if 'marking-definition-type' not in options.ignored:
+                            validator_list.append(CHECKS['marking-definition-type'])
+                    if 'relationship-types' not in options.ignored:
+                        validator_list.append(CHECKS['relationship-types'])
 
-            if enums.IGNORE_CUSTOM_PROPERTY_PREFIX not in ignored:
-                if options.lax_prefix:
-                    validator_list.append(custom_property_prefix_lax)
-                else:
-                    validator_list.append(custom_property_prefix_strict)
+        # --enable
+        if options.enabled:
+            for check in options.enabled:
+                if CHECKS[check] in validator_list:
+                    continue
 
-            if enums.IGNORE_OPEN_VOCAB_FORMAT not in ignored:
-                validator_list.append(open_vocab_values)
-
-            if enums.IGNORE_KILL_CHAIN_NAMES not in ignored:
-                validator_list.append(kill_chain_phase_names)
-
-        # Checks for the use of values not found in the specification
-        if enums.IGNORE_APPROVED_VALUES not in ignored:
-            if enums.IGNORE_ALL_VOCABS not in ignored:
-                if enums.IGNORE_ATTACK_MOTIVATION not in ignored:
-                    validator_list.append(vocab_attack_motivation)
-                if enums.IGNORE_ATTACK_RESOURCE_LEVEL not in ignored:
-                    validator_list.append(vocab_attack_resource_level)
-                if enums.IGNORE_IDENTITY_CLASS not in ignored:
-                    validator_list.append(vocab_identity_class)
-                if enums.IGNORE_INDICATOR_LABEL not in ignored:
-                    validator_list.append(vocab_indicator_label)
-                if enums.IGNORE_INDUSTRY_SECTOR not in ignored:
-                    validator_list.append(vocab_industry_sector)
-                if enums.IGNORE_MALWARE_LABEL not in ignored:
-                    validator_list.append(vocab_malware_label)
-                if enums.IGNORE_PATTERN_LANG not in ignored:
-                    validator_list.append(vocab_pattern_lang)
-                if enums.IGNORE_REPORT_LABEL not in ignored:
-                    validator_list.append(vocab_report_label)
-                if enums.IGNORE_THREAT_ACTOR_LABEL not in ignored:
-                    validator_list.append(vocab_threat_actor_label)
-                if enums.IGNORE_THREAT_ACTOR_ROLE not in ignored:
-                    validator_list.append(vocab_threat_actor_role)
-                if enums.IGNORE_THREAT_ACTOR_SOPHISTICATION not in ignored:
-                    validator_list.append(vocab_threat_actor_sophistication_level)
-                if enums.IGNORE_TOOL_LABEL not in ignored:
-                    validator_list.append(vocab_tool_label)
-                if enums.IGNORE_MARKING_DEFINITION_TYPE not in ignored:
-                    validator_list.append(vocab_marking_definition)
-
-            if enums.IGNORE_RELATIONSHIP_TYPES not in ignored:
-                validator_list.append(relationships_strict)
-
-        if options.strict_types:
-            validator_list.append(types_strict)
+                try:
+                    if type(CHECKS[check]) is list:
+                        validator_list.extend(CHECKS[check])
+                    else:
+                        validator_list.append(CHECKS[check])
+                except KeyError:
+                    raise schema_exceptions.ValidationError("%s is not a valid"
+                                                            " check!" % check)
 
         return validator_list
 

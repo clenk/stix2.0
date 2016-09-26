@@ -18,54 +18,56 @@ EXAMPLES_DIR = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'tests')
 
 CODES_TABLE ="""
 The following is a table of all the recommended "best practice" checks which
-the validator performs, along with the code to use with the --ignore option
-to skip them.
+the validator performs, along with the code to use with the --enable or
+--disable options. By default, the validator checks all of them.
 
 +------+-----------------------------+----------------------------------------+
 | Code | Name                        | Ensures...                             |
 +------+-----------------------------+----------------------------------------+
-|  1   | format_checks               | all 1xx checks are run                 |
-| 101  | custom_object_prefix        | custom object type names follow the    |
+|  1   | format-checks               | all 1xx checks are run                 |
+| 101  | custom-object-prefix        | custom object type names follow the    |
 |      |                             | correct format                         |
-| 101  | custom_object_prefix        | custom object type names follow the    |
-|      |                             | correct format                         |
-| 102  | custom_property_prefix      | custom object property names follow    |
+| 102  | custom-object-prefix-lax    | same as 101 but more lenient; no       |
+|      |                             | source identifier needed in prefix     |
+| 103  | custom-property-prefix      | custom object property names follow    |
 |      |                             | the correct format                     |
-| 110  | open_vocab_format           | values of open vocabularies follow the |
+| 104  | custom-property-prefix-lax  | same as 103 but more lenient; no       |
+|      |                             | source identifier needed in prefix     |
+| 111  | open-vocab-format           | values of open vocabularies follow the |
 |      |                             | correct format                         |
-| 120  | kill_chain_names            | kill-chain-phase name and phase follow |
+| 121  | kill-chain-names            | kill-chain-phase name and phase follow |
 |      |                             | the correct format                     |
 |      |                             |                                        |
-|  2   | approved_values             | all 2xx checks are run                 |
-| 210  | all_vocabs                  | all of the following open vocabulary   |
+|  2   | approved-values             | all 2xx checks are run                 |
+| 210  | all-vocabs                  | all of the following open vocabulary   |
 |      |                             | checks are run                         |
-| 211  | attack_motivation           | certain property values are from the   |
+| 211  | attack-motivation           | certain property values are from the   |
 |      |                             | attack_motivation vocabulary           |
-| 212  | attack_resource_level       | certain property values are from the   |
+| 212  | attack-resource-level       | certain property values are from the   |
 |      |                             | attack_resource_level vocabulary       |
-| 213  | identity_class              | certain property values are from the   |
+| 213  | identity-class              | certain property values are from the   |
 |      |                             | identity_class vocabulary              |
-| 214  | indicator_label             | certain property values are from the   |
+| 214  | indicator-label             | certain property values are from the   |
 |      |                             | indicator_label vocabulary             |
-| 215  | industry_sector             | certain property values are from the   |
+| 215  | industry-sector             | certain property values are from the   |
 |      |                             | industry_sector vocabulary             |
-| 216  | malware_label               | certain property values are from the   |
+| 216  | malware-label               | certain property values are from the   |
 |      |                             | malware_label vocabulary               |
-| 217  | pattern_lang                | certain property values are from the   |
+| 217  | pattern-lang                | certain property values are from the   |
 |      |                             | pattern_lang vocabulary                |
-| 218  | report_label                | certain property values are from the   |
+| 218  | report-label                | certain property values are from the   |
 |      |                             | report_label vocabulary                |
-| 219  | threat_actor_label          | certain property values are from the   |
+| 219  | threat-actor-label          | certain property values are from the   |
 |      |                             | threat_actor_label vocabulary          |
-| 220  | threat_actor_role           | certain property values are from the   |
+| 220  | threat-actor-role           | certain property values are from the   |
 |      |                             | threat_actor_role vocabulary           |
-| 221  | threat_actor_sophistication | certain property values are from the   |
+| 221  | threat-actor-sophistication | certain property values are from the   |
 |      |                             | threat_actor_sophistication vocabulary |
-| 222  | tool_label                  | certain property values are from the   |
+| 222  | tool-label                  | certain property values are from the   |
 |      |                             | tool_label vocabulary                  |
-| 229  | marking_definition_type     | marking definitions use a valid        |
+| 229  | marking-definition-type     | marking definitions use a valid        |
 |      |                             | definition_type                        |
-| 250  | relationship_types          | relationships are among those defined  |
+| 250  | relationship-types          | relationships are among those defined  |
 |      |                             | in the specification                   |
 +------+-----------------------------+----------------------------------------+
 """
@@ -133,12 +135,24 @@ def _get_arg_parser():
     )
 
     parser.add_argument(
-        "-i",
+        "-d",
+        "--disable",
         "--ignore",
-        dest="ignored_errors",
+        dest="ignored",
         default="",
         help="A comma-separated list of recommended best practice checks to "
             "skip. \n\nExample: --ignore 212,220"
+    )
+
+    parser.add_argument(
+        "-e",
+        "--enable",
+        "--select",
+        dest="enabled",
+        default="",
+        help="A comma-separated list of recommended best practice checks to "
+            "enable. If the --disable option is not used, no other checks will"
+            " be run. \n\nExample: --enable 250"
     )
 
     parser.add_argument(
@@ -148,18 +162,8 @@ def _get_arg_parser():
         action="store_true",
         default=False,
         help="Ignore all recommended best practices and only check mandatory "
-             "requirements. Equivalent to: --ignore all"
-    )
-
-    parser.add_argument(
-        "--lax-prefix",
-        dest="lax_prefix",
-        action="store_true",
-        default=False,
-        help="Only check that custom objects' `type` property values start "
-             "with 'x-' and custom property names start with 'x_'. Default: "
-             "check that they are of the form 'x-[source]-[name]' and "
-             "'x_[source]_[name]', respectively."
+             "requirements. This option takes precedent over --enable or "
+             "--disable. Equivalent to: --disable all"
     )
 
     parser.add_argument(

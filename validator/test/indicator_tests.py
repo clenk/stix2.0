@@ -3,7 +3,6 @@ import copy
 import json
 from . import ValidatorTest
 from .. import validate_string
-from .. import enums
 
 VALID_INDICATOR = """
 {
@@ -242,7 +241,7 @@ class IndicatorTestCases(ValidatorTest):
         results = validate_string(indicator, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
-        self.check_ignore(indicator, enums.IGNORE_INDICATOR_LABEL)
+        self.check_ignore(indicator, 'indicator-label')
 
     def test_vocab_pattern_lang(self):
         indicator = copy.deepcopy(self.valid_indicator)
@@ -251,7 +250,7 @@ class IndicatorTestCases(ValidatorTest):
         results = validate_string(indicator, self.options).schema_results
         self.assertEqual(results.is_valid, False)
 
-        self.check_ignore(indicator, enums.IGNORE_PATTERN_LANG)
+        self.check_ignore(indicator, 'pattern-lang')
 
 
 if __name__ == "__main__":
